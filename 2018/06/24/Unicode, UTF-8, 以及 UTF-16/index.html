@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="en">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=6.4.1" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.4.1">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.4.1">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.4.1" color="#222">
+
+
+
+
+
+
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '6.4.1',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="Unicode, UTF-8, 以及 UTF-16对不起，但是必须要说，要想完全地搞懂 Unicode 编码，光看这篇文章是肯定不够的，你要自己去维基上看一系列文章。首推 Character encoding 条目。 基本术语来自维基百科的 character encoding（字符编码） 词条： Terminology related to code unit:  A character is">
+<meta name="keywords" content="unicode">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unicode, UTF-8, 以及 UTF-16">
+<meta property="og:url" content="http://yoursite.com/2018/06/24/Unicode, UTF-8, 以及 UTF-16/index.html">
+<meta property="og:site_name" content="Rust Shrugged">
+<meta property="og:description" content="Unicode, UTF-8, 以及 UTF-16对不起，但是必须要说，要想完全地搞懂 Unicode 编码，光看这篇文章是肯定不够的，你要自己去维基上看一系列文章。首推 Character encoding 条目。 基本术语来自维基百科的 character encoding（字符编码） 词条： Terminology related to code unit:  A character is">
+<meta property="og:locale" content="en">
+<meta property="og:updated_time" content="2018-06-23T16:00:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unicode, UTF-8, 以及 UTF-16">
+<meta name="twitter:description" content="Unicode, UTF-8, 以及 UTF-16对不起，但是必须要说，要想完全地搞懂 Unicode 编码，光看这篇文章是肯定不够的，你要自己去维基上看一系列文章。首推 Character encoding 条目。 基本术语来自维基百科的 character encoding（字符编码） 词条： Terminology related to code unit:  A character is">
+
+
+
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/24/Unicode, UTF-8, 以及 UTF-16/"/>
+
+
+
+<script type="text/javascript" id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Unicode, UTF-8, 以及 UTF-16 | Rust Shrugged</title>
+  
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style type="text/css">
+    .use-motion .motion-element,
+    .use-motion .brand,
+    .use-motion .menu-item,
+    .sidebar-inner,
+    .use-motion .post-block,
+    .use-motion .pagination,
+    .use-motion .comments,
+    .use-motion .post-header,
+    .use-motion .post-body,
+    .use-motion .collection-title { opacity: initial; }
+
+    .use-motion .logo,
+    .use-motion .site-title,
+    .use-motion .site-subtitle {
+      opacity: initial;
+      top: initial;
+    }
+
+    .use-motion {
+      .logo-line-before i { left: initial; }
+      .logo-line-after i { right: initial; }
+    }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="en">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Rust Shrugged</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="Toggle navigation bar">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+    <a href="/" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-home"></i> <br />Home</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+    <a href="/about" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />About</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+    <a href="/tags" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Tags</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+    <a href="/categories" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Categories</a>
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+    <a href="/archives" rel="section">
+      <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />Archives</a>
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/24/Unicode, UTF-8, 以及 UTF-16/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rust">
+      <meta itemprop="description" content="programming and free market">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unicode, UTF-8, 以及 UTF-16
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2018-06-24 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-24T00:00:00+08:00">2018-06-24</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/技术笔记/" itemprop="url" rel="index"><span itemprop="name">技术笔记</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Unicode-UTF-8-以及-UTF-16"><a href="#Unicode-UTF-8-以及-UTF-16" class="headerlink" title="Unicode, UTF-8, 以及 UTF-16"></a>Unicode, UTF-8, 以及 UTF-16</h1><p>对不起，但是必须要说，要想完全地搞懂 Unicode 编码，光看这篇文章是肯定不够的，你要自己去维基上看一系列文章。首推 <a href="https://en.wikipedia.org/wiki/Character_encoding" target="_blank" rel="noopener">Character encoding</a> 条目。</p>
+<h2 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h2><p>来自维基百科的 <a href="https://en.wikipedia.org/wiki/Character_encoding" target="_blank" rel="noopener">character encoding（字符编码）</a> 词条：</p>
+<p>Terminology related to code unit:</p>
+<ul>
+<li>A <em>character</em> is a minimal unit of text that has semantic value.</li>
+<li>A <em>character set</em> is a collection of characters that might be used by multiple languages.</li>
+</ul>
+<p><em>Example:</em> The Latin character set is used by English and most European languages, though the Greek character set is used only by the Greek language.</p>
+<ul>
+<li>A <em>coded character set</em> is a character set in which each character corresponds to a unique number.</li>
+<li>A <em>code point</em> of a coded character set is any allowed value in the character set.</li>
+<li>A <em>code unit</em> is a bit sequence used to encode each character of a repertoire within a given encoding form.</li>
+</ul>
+<p>几个关键术语对应的翻译：code point，码点；code unit，编码单元。所以，一个字符（character）是具有语义的最小文本单元，更多的是一个语言学的术语；一个<em>字符集</em>（character set）是可能被好几种语言使用的字符的集合，比如拉丁语字符集同时被英语和大多数欧洲语言使用。一个<em>编码字符集</em>（coded character set）是一个字符集，其中每一个字符都对应于一个唯一的数字。一个编码字符集的<em>码点</em>（code point）是指这个字符集中所有的数字值，每一个码点对应一个字符。一个<em>编码单元</em>是一个在给定的字符编码表下，给字符编码的字节序列。</p>
+<h2 id="Unicode-具体实现过程"><a href="#Unicode-具体实现过程" class="headerlink" title="Unicode 具体实现过程"></a>Unicode 具体实现过程</h2><h3 id="Unicode-四层模型"><a href="#Unicode-四层模型" class="headerlink" title="Unicode 四层模型"></a>Unicode 四层模型</h3><p>如果你能看到这，恭喜，接下来就会简单很多。Unicode 与传统的诸如 ASCII，摩斯电码用的一个重要不同在于，它们都是把字符（character）与字节序列直接对应。而对于 Unicode 来说，它会经过以下几个模型的处理：</p>
+<p><strong>character –(CCS)–&gt; code point –(CEF)–&gt; code unit –(CES)–&gt; byte stream</strong></p>
+<p>一个字符（character）经过编码字符集（CCS, coded character set）的映射，转化为码点（code point）。码点为<strong>十六进制</strong>，像这样：<code>U+20AC</code>，转化为字符是欧元的标志：<code>€</code>。</p>
+<p>码点经过<strong>字符编码表</strong>（CEF, character encoding form）的处理，转化为编码单元（code unit）。编码单元仍然是<strong>十六进制</strong>。举例来说，同一个字符<code>a</code>，它的编码单元在 UTF-32 中是<code>00000061</code>，在 UTF-16中是 <code>0061</code>，在 UTF-8 中是 <code>61</code>。</p>
+<p>最后，编码单元被 <strong>CES</strong> (Character Encoding Scheme) 转化为在机器中储存的二进制字节。”CES“ 是什么呢，举例来说，我们平常说的 UTF-8，UTF-16 其实都是 CES。</p>
+<h3 id="从码点到-UTF-16"><a href="#从码点到-UTF-16" class="headerlink" title="从码点到 UTF-16"></a>从码点到 UTF-16</h3><p>从<code>U+0000</code>到<code>U+FFFF</code>为基本多语种平面（BMP），可以用两个字节表示。对于高于这个范围的，用 ”代理对“ 来间接表示。低代理项的范围为<code>U+D800</code>至 <code>U+DBFF</code>，高代理项为<code>U+DC00</code>至<code>U+DFFF</code>，一共是2048个位置。这些位置其实是位于 BMP 的保留范围。</p>
+<p>从码点到 UTF-16 编码单元的解码过程：</p>
+<ol>
+<li>把码点减去<code>0x10000</code></li>
+<li>对于高代理项（high surrogate）：<ol>
+<li>地板除，除以<code>0x400</code></li>
+<li>加上<code>0xD800</code></li>
+</ol>
+</li>
+<li>对于低代理项（low surrogate）：<ol>
+<li>取余数，取除以<code>0x400</code>后的余数</li>
+<li>加上<code>0xDC00</code></li>
+</ol>
+</li>
+</ol>
+<p>写成直观公式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">difference = codepoint - 0x10000</span><br><span class="line">H = difference // 0x400 + 0xD800</span><br><span class="line">L = difference % 0x400 + 0xDC00</span><br></pre></td></tr></table></figure>
+<p>从 UTF-16 编码单元到码点的编码可以反向推算。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">codepoint = difference + 0x10000</span><br><span class="line">difference = (H - 0xD800) * 0x400 + (L - 0xDC00)</span><br></pre></td></tr></table></figure>
+<h4 id="UTF-16-与-UCS-2-兼容问题"><a href="#UTF-16-与-UCS-2-兼容问题" class="headerlink" title="UTF-16 与 UCS-2 兼容问题"></a>UTF-16 与 UCS-2 兼容问题</h4><p>Unicode 标准规定了从<code>U+D800</code>到<code>U+DFFF</code>为 reserved range，保留位。UTF-16 就是利用这一保留区段来对基本平面 BMP 以外的辅助平面进行映射。需要注意的是，虽然标准规定了这一区段不可使用，但是实际使用中，在 UCS-2 的年代是用到了这一区段的。因此在许多编码解码的应用中，如果遇到保留区段的码点，会先对这个做检查，看该码点后是否能构成代理对，而不是直接按标准，把这个定义为编码错误。</p>
+<h3 id="从码点到-UTF-8"><a href="#从码点到-UTF-8" class="headerlink" title="从码点到 UTF-8"></a>从码点到 UTF-8</h3>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/unicode/" rel="tag"># unicode</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/07/05/程序员练级指南/" rel="prev" title="程序员练级指南">
+                程序员练级指南 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Rust</p>
+              <p class="site-description motion-element" itemprop="description">programming and free market</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">posts</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">categories</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">tags</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+            
+          
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Unicode-UTF-8-以及-UTF-16"><span class="nav-number">1.</span> <span class="nav-text">Unicode, UTF-8, 以及 UTF-16</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本术语"><span class="nav-number">1.1.</span> <span class="nav-text">基本术语</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unicode-具体实现过程"><span class="nav-number">1.2.</span> <span class="nav-text">Unicode 具体实现过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Unicode-四层模型"><span class="nav-number">1.2.1.</span> <span class="nav-text">Unicode 四层模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从码点到-UTF-16"><span class="nav-number">1.2.2.</span> <span class="nav-text">从码点到 UTF-16</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#UTF-16-与-UCS-2-兼容问题"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">UTF-16 与 UCS-2 兼容问题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#从码点到-UTF-8"><span class="nav-number">1.2.3.</span> <span class="nav-text">从码点到 UTF-8</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Rust</span>
+
+  
+
+  
+</div>
+
+
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> v3.7.1</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme – <a class="theme-link" target="_blank" href="https://theme-next.org">NexT.Pisces</a> v6.4.1</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+	
+    
+
+    
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=6.4.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=6.4.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=6.4.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.4.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.4.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=6.4.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
