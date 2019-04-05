@@ -116,12 +116,12 @@
 <meta property="og:site_name" content="Rust Shrugged">
 <meta property="og:description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/images/Post_Images/HeapRepresentations.png">
+<meta property="og:image" content="http://yoursite.com/assets/images/Post_Images/HeapRepresentations.png">
 <meta property="og:updated_time" content="2019-04-04T16:00:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉堆与堆排序要点">
 <meta name="twitter:description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
-<meta name="twitter:image" content="http://yoursite.com/images/Post_Images/HeapRepresentations.png">
+<meta name="twitter:image" content="http://yoursite.com/assets/images/Post_Images/HeapRepresentations.png">
 
 
 
@@ -416,7 +416,7 @@
 </ol>
 <p>[TOC]</p>
 <h2 id="二叉堆定义与数组表示"><a href="#二叉堆定义与数组表示" class="headerlink" title="二叉堆定义与数组表示"></a>二叉堆定义与数组表示</h2><p>根节点大于等于左右两个子节点。当储存为数组时，根节点放在索引 1 的位置，为了计算便利数组的索引零不存储数据。位置为 k 的节点的父节点位置是 p &lt;= k/2，子节点在数组中的位置是 2k 和 2k+1。如图：</p>
-<p><img src="/images/Post_Images/HeapRepresentations.png" alt="Heap Representations"></p>
+<p><img src="/assets/images/Post_Images/HeapRepresentations.png" alt="Heap Representations"></p>
 <h2 id="二叉堆删除最大节点与插入数据过程"><a href="#二叉堆删除最大节点与插入数据过程" class="headerlink" title="二叉堆删除最大节点与插入数据过程"></a>二叉堆删除最大节点与插入数据过程</h2>
       
     </div>
