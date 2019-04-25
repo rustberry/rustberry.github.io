@@ -415,7 +415,7 @@
 <li>复杂度得出过程</li>
 </ol>
 <p>[TOC]</p>
-<h2 id="二叉堆定义与数组表示"><a href="#二叉堆定义与数组表示" class="headerlink" title="二叉堆定义与数组表示"></a>二叉堆定义与数组表示</h2><p>根节点大于等于左右两个子节点。当储存为数组时，根节点放在索引 1 的位置，为了计算便利数组的索引零不存储数据。位置为 k 的节点的父节点位置是 p &lt;= k/2，子节点在数组中的位置是 2k 和 2k+1。如图：</p>
+<h2 id="二叉堆定义与数组表示"><a href="#二叉堆定义与数组表示" class="headerlink" title="二叉堆定义与数组表示"></a>二叉堆定义与数组表示</h2><p>根节点大于<strong>等于</strong>左右两个子节点。当储存为数组时，根节点放在索引 1 的位置，为了计算便利数组的索引零不存储数据。位置为 k 的节点的父节点位置是 p &lt;= k/2，子节点在数组中的位置是 2k 和 2k+1。如图：</p>
 <p><img src="/content/images/2019/HeapRepresentations.png" alt="Heap Representations"></p>
 <p>另外，二叉堆<strong>属于</strong>完全二叉树。</p>
 <h2 id="二叉堆删除最大节点与插入数据过程"><a href="#二叉堆删除最大节点与插入数据过程" class="headerlink" title="二叉堆删除最大节点与插入数据过程"></a>二叉堆删除最大节点与插入数据过程</h2><h3 id="上浮、下沉操作"><a href="#上浮、下沉操作" class="headerlink" title="上浮、下沉操作"></a>上浮、下沉操作</h3><p>这两个操作是插入、删除 API 的基础操作。</p>
@@ -423,8 +423,17 @@
 <p><strong>下沉 sink</strong> 是相反的操作，由上至下比较。如果某节点小于它的子节点，则发生交换。每次下沉需要两次比较。首先比较找出两个子节点中较大的那个，然后比较较大子节点与父节点，如果父节点小于则交换。</p>
 <h3 id="删除最大-根节点"><a href="#删除最大-根节点" class="headerlink" title="删除最大/根节点"></a>删除最大/根节点</h3><p>在大端二叉堆中，根节点就是堆中最大元素。将根节点删除/取出之后，把堆中最末尾的元素（也就是树中最大一层最右边的叶子节点）放在根节点的位置，然后对这个节点进行<code>下沉</code>操作。</p>
 <p>每次删除操作，需要的时间复杂度最坏为 $\log n$，也就是从根节点一直比较、交换到叶子节点。假设树高度为 h，最坏情况下需要 h 次交换，2h 次比较。与此同时，作为一颗完全二叉树，二叉堆的高度 h 始终小于等于 $\log$~2~$n$，也就是 $\logn$ 复杂度。</p>
-<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>插入的数据将被放在最末端/最右端的叶子节点，然后对其使用上浮操作。最坏情况下需要 h 次比较，h 次交换，所以复杂度也为 $\log n​$。</p>
-<h2 id="堆排序对数据的初始化：建堆"><a href="#堆排序对数据的初始化：建堆" class="headerlink" title="堆排序对数据的初始化：建堆"></a>堆排序对数据的初始化：建堆</h2>
+<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>插入的数据将被放在最末端/最右端的叶子节点，然后对其使用上浮操作。最坏情况下需要 h 次比较，h 次交换，所以复杂度也为 $\log n$。</p>
+<h2 id="堆排序对数据的初始化：建堆"><a href="#堆排序对数据的初始化：建堆" class="headerlink" title="堆排序对数据的初始化：建堆"></a>堆排序对数据的初始化：建堆</h2><h2 id="优先队列实现注意小细节"><a href="#优先队列实现注意小细节" class="headerlink" title="优先队列实现注意小细节"></a>优先队列实现注意小细节</h2><ol>
+<li><p><code>sink</code> 的调用条件是当前被下沉节点的子节点索引<strong>小于等于</strong>优先队列元素数量。否则，在边界条件时，就会导致有元素没有被下沉。举个例子，当队列还有三个元素，<code>star, was, worst</code>， 删除顶端元素之后在顶端插入末尾元素 <code>worst</code>，此时 <code>worst</code> 子节点为 <code>was</code>，索引为 <code>1*2 = 2</code>，大于等于优先队列的元素总数量，<code>sink</code> 操作没有调用，<code>worst</code> 元素先于 <code>was</code> 被取出队列。</p>
+</li>
+<li><p>在下沉 <code>sink</code> 操作时，在将当前节点与子节点比较之前，应该先比较两个子节点。如果是大顶堆，则选出更大的节点来与父节点比较，小顶堆则选出两者中更小的节点。</p>
+</li>
+<li><p>在比较两子节点时，也要注意子节点索引不能越界。同样在只有两个元素时进行 <code>sink</code> 操作的情况下，只有一个子节点，试图寻找此子节点的下一个子节点将会超越数组边界。例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sink</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">2</span> * k;</span><br><span class="line">    <span class="keyword">while</span> (j &lt;= N) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j+<span class="number">1</span> &lt;= N &amp;&amp; less((j + <span class="number">1</span>), j)) &#123;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (less(j, k)) &#123;</span><br><span class="line">            exch(j, k);</span><br><span class="line">            k = j;</span><br><span class="line">            j *= <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+
       
     </div>
 
@@ -623,7 +632,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二叉堆，堆排序，与优先队列要点"><span class="nav-number">1.</span> <span class="nav-text">二叉堆，堆排序，与优先队列要点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆定义与数组表示"><span class="nav-number">1.1.</span> <span class="nav-text">二叉堆定义与数组表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆删除最大节点与插入数据过程"><span class="nav-number">1.2.</span> <span class="nav-text">二叉堆删除最大节点与插入数据过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上浮、下沉操作"><span class="nav-number">1.2.1.</span> <span class="nav-text">上浮、下沉操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除最大-根节点"><span class="nav-number">1.2.2.</span> <span class="nav-text">删除最大/根节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据"><span class="nav-number">1.2.3.</span> <span class="nav-text">插入数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆排序对数据的初始化：建堆"><span class="nav-number">1.3.</span> <span class="nav-text">堆排序对数据的初始化：建堆</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二叉堆，堆排序，与优先队列要点"><span class="nav-number">1.</span> <span class="nav-text">二叉堆，堆排序，与优先队列要点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆定义与数组表示"><span class="nav-number">1.1.</span> <span class="nav-text">二叉堆定义与数组表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆删除最大节点与插入数据过程"><span class="nav-number">1.2.</span> <span class="nav-text">二叉堆删除最大节点与插入数据过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上浮、下沉操作"><span class="nav-number">1.2.1.</span> <span class="nav-text">上浮、下沉操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除最大-根节点"><span class="nav-number">1.2.2.</span> <span class="nav-text">删除最大/根节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据"><span class="nav-number">1.2.3.</span> <span class="nav-text">插入数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆排序对数据的初始化：建堆"><span class="nav-number">1.3.</span> <span class="nav-text">堆排序对数据的初始化：建堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优先队列实现注意小细节"><span class="nav-number">1.4.</span> <span class="nav-text">优先队列实现注意小细节</span></a></li></ol></li></ol></div>
             
 
           </div>
