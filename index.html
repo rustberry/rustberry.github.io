@@ -304,6 +304,187 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/25/tiny-spring 踩坑记录（一）/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rust">
+      <meta itemprop="description" content="programming and free market">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/07/25/tiny-spring 踩坑记录（一）/" itemprop="url">
+                  tiny-spring 踩坑记录（一）可变长泛型参数与堆污染
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-07-25 09:23:11 / Modified: 09:29:12" itemprop="dateCreated datePublished" datetime="2019-07-25T09:23:11+08:00">2019-07-25</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="可变长泛型参数与堆污染"><a href="#可变长泛型参数与堆污染" class="headerlink" title="可变长泛型参数与堆污染"></a>可变长泛型参数与堆污染</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>什么是堆污染</p>
+</blockquote>
+<p>一个类型为泛型 <code>T</code> 的变量被指向一个类型不是 <code>T</code> 的对象，这就是堆污染。典型的情况是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;T&gt; listOfTs = <span class="keyword">new</span> ArrayList&lt;&gt;(Arrays.asList(t));</span><br><span class="line">List&lt;E&gt; listOfEs = (List&lt;E&gt;)(Object)listOfTs; <span class="comment">// 此时指向了含有 T 的 List, 但是不会抛出异常，只是在 Object -&gt; List&lt;E&gt; 的转型中抛出警告</span></span><br><span class="line"></span><br><span class="line">E e = listOfEs.get(<span class="number">0</span>);  <span class="comment">// 运行时错误，java.lang.ClassCastException</span></span><br></pre></td></tr></table></figure>
+<p>之所以编译器无法在转型时检查出类型转换错误，是因为 Java 泛型是通过类型擦除实现的，在泛型代码内部无法获得任何有关泛型参数类型的信息。</p>
+<p>一个更好一点的关于可变长泛型参数和堆污染一起的例子，来自 <a href="https://docs.oracle.com/javase/tutorial/java/generics/nonReifiableVarargsType.html" target="_blank" rel="noopener">Oracle 官方文档</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">faultyMethod</span><span class="params">(List&lt;String&gt;... l)</span> </span>&#123;</span><br><span class="line">    Object[] objectArray = l;     <span class="comment">// Valid</span></span><br><span class="line">    objectArray[<span class="number">0</span>] = Arrays.asList(<span class="number">42</span>);</span><br><span class="line">    String s = l[<span class="number">0</span>].get(<span class="number">0</span>);       <span class="comment">// ClassCastException thrown here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于泛型的<a href="https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html" target="_blank" rel="noopener">几大限制</a>中，最明显的一个就是不能创造泛型数组，如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt;[] arrayOfLists = <span class="keyword">new</span> List&lt;Integer&gt;[<span class="number">2</span>];  <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+<p>但是这一限制在可变长的泛型参数中被打破了。在可变长参数中，一个数组会在函数调用时建立（Effective Java，Item 53），每次调用都会引起一次数组分配和初始化。当可变长参数是泛型时，一个泛型数组就被创造出来了。</p>
+<h3 id="实操时的问题"><a href="#实操时的问题" class="headerlink" title="实操时的问题"></a>实操时的问题</h3><p>我在 tiny-spring 中写了一个方法，给定注解参数，获取所有带有该注解的类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? extends Annotation&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? extends Annotation&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就出现了一个可变长泛型参数的问题。另一个隐藏的问题是，这个方法并没有对传入的注解参数的数量检查参数为零的情况，而可变长参数允许传入零个参数。一个优美一点的解决方案是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SafeVarargs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? extends Annotation&gt; firstCls, Class&lt;? extends Annotation&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (c.isAnnotationPresent(firstCls)) &#123;</span><br><span class="line">            classSet.add(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? extends Annotation&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样既省去明显的检查参数数量，又能在调用处强制调用者传入至少一个参数，这也是这个方法的本意。</p>
+<h3 id="SafeVarargs-的使用标准"><a href="#SafeVarargs-的使用标准" class="headerlink" title="@SafeVarargs 的使用标准"></a>@SafeVarargs 的使用标准</h3><p>如上所见，可以将报警用 <code>@SafeVarargs</code> 注解掉。但是我们知道，这个注解仅仅是消除编译警告，完全不能保证消除这个错误。那么什么时候应该使用这个注解呢？</p>
+<p>在 StackOverflow 有一个票的<a href="https://stackoverflow.com/a/14252221" target="_blank" rel="noopener">回答</a>：</p>
+<p>If your method has an argument of type <code>T...</code> (where T is any type parameter), then:</p>
+<ul>
+<li>Safe: If your method only depends on the fact that the elements of the array are instances of <code>T</code></li>
+<li>Unsafe: If it depends on the fact that the array is an instance of <code>T[]</code></li>
+</ul>
+<p>Effective Java 也表示了类似的意思：如果你的方法使用可变长泛型参数的时候，只是用来一次传入多个参数，并且实际使用的时候只是把它们当作多个参数来看，那么就没有问题。如果你的方法体中把可变长参数当作数组来使用，那就会有问题，不要使用这个注解。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/20/并发编程bug之源：死锁成因与重排序/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1884,7 +2065,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -1909,7 +2090,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">6</span>
+                      
+                    
+                    <span class="site-state-item-count">7</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
@@ -1946,7 +2129,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">12</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">14</span>
                     <span class="site-state-item-name">tags</span>
                   </a>
                 </div>

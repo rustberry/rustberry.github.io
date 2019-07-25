@@ -108,27 +108,25 @@
 
 
 
-  <meta name="description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
-<meta name="keywords" content="sort,binary heap,priority queue">
+  <meta name="description" content="可变长泛型参数与堆污染定义 什么是堆污染  一个类型为泛型 T 的变量被指向一个类型不是 T 的对象，这就是堆污染。典型的情况是 1234List&amp;lt;T&amp;gt; listOfTs = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(t));List&amp;lt;E&amp;gt; listOfEs = (List&amp;lt;E&amp;gt;)(Object)listOfTs; // 此时指向了">
+<meta name="keywords" content="Generics,泛型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="二叉堆与堆排序要点">
-<meta property="og:url" content="http://yoursite.com/2019/04/05/二叉堆与堆排序要点/index.html">
+<meta property="og:title" content="tiny-spring 踩坑记录（一）可变长泛型参数与堆污染">
+<meta property="og:url" content="http://yoursite.com/2019/07/25/tiny-spring 踩坑记录（一）/index.html">
 <meta property="og:site_name" content="Rust Shrugged">
-<meta property="og:description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
+<meta property="og:description" content="可变长泛型参数与堆污染定义 什么是堆污染  一个类型为泛型 T 的变量被指向一个类型不是 T 的对象，这就是堆污染。典型的情况是 1234List&amp;lt;T&amp;gt; listOfTs = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(t));List&amp;lt;E&amp;gt; listOfEs = (List&amp;lt;E&amp;gt;)(Object)listOfTs; // 此时指向了">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/content/images/2019/HeapRepresentations.png">
-<meta property="og:updated_time" content="2019-04-04T16:00:00.000Z">
+<meta property="og:updated_time" content="2019-07-25T01:29:12.728Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="二叉堆与堆排序要点">
-<meta name="twitter:description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
-<meta name="twitter:image" content="http://yoursite.com/content/images/2019/HeapRepresentations.png">
+<meta name="twitter:title" content="tiny-spring 踩坑记录（一）可变长泛型参数与堆污染">
+<meta name="twitter:description" content="可变长泛型参数与堆污染定义 什么是堆污染  一个类型为泛型 T 的变量被指向一个类型不是 T 的对象，这就是堆污染。典型的情况是 1234List&amp;lt;T&amp;gt; listOfTs = new ArrayList&amp;lt;&amp;gt;(Arrays.asList(t));List&amp;lt;E&amp;gt; listOfEs = (List&amp;lt;E&amp;gt;)(Object)listOfTs; // 此时指向了">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/05/二叉堆与堆排序要点/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/07/25/tiny-spring 踩坑记录（一）/"/>
 
 
 
@@ -138,7 +136,7 @@
   };
 </script>
 
-  <title>二叉堆与堆排序要点 | Rust Shrugged</title>
+  <title>tiny-spring 踩坑记录（一）可变长泛型参数与堆污染 | Rust Shrugged</title>
   
 
 
@@ -307,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/二叉堆与堆排序要点/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/25/tiny-spring 踩坑记录（一）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rust">
@@ -324,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">二叉堆与堆排序要点
+          <h1 class="post-title" itemprop="name headline">tiny-spring 踩坑记录（一）可变长泛型参数与堆污染
               
             
           </h1>
@@ -349,9 +347,13 @@
                 
               
 
-              <time title="Created: 2019-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-05T00:00:00+08:00">2019-04-05</time>
+              <time title="Created: 2019-07-25 09:23:11 / Modified: 09:29:12" itemprop="dateCreated datePublished" datetime="2019-07-25T09:23:11+08:00">2019-07-25</time>
             
 
+            
+              
+
+              
             
           </span>
 
@@ -367,7 +369,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a></span>
 
                 
                 
@@ -401,38 +403,30 @@
       
 
       
-        <h1 id="二叉堆，堆排序，与优先队列要点"><a href="#二叉堆，堆排序，与优先队列要点" class="headerlink" title="二叉堆，堆排序，与优先队列要点"></a>二叉堆，堆排序，与优先队列要点</h1><p>今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为<code>logn</code>的<strong>原地</strong>排序算法，堆排序。</p>
-<p>要点：</p>
-<ol>
-<li>二叉堆定义（用数组表示时的细节）</li>
-<li><strong>插入</strong>（尾端叶子节点）与<strong>删除</strong>（根节点）的过程</li>
-<li>建堆方式 + sink 下沉操作 = 堆排序——堆排序的过程</li>
-<li>堆排序的优点与缺点<ol>
-<li><strong>优点</strong>：内存使用，原地排序</li>
-<li><strong>缺点</strong>：CPU cache 缓存命中，非稳定排序，比较次数大于快排</li>
-</ol>
-</li>
-<li>复杂度得出过程</li>
-</ol>
-<p>[TOC]</p>
-<h2 id="二叉堆定义与数组表示"><a href="#二叉堆定义与数组表示" class="headerlink" title="二叉堆定义与数组表示"></a>二叉堆定义与数组表示</h2><p>根节点大于<strong>等于</strong>左右两个子节点。当储存为数组时，根节点放在索引 1 的位置，为了计算便利数组的索引零不存储数据。位置为 k 的节点的父节点位置是 p &lt;= k/2，子节点在数组中的位置是 2k 和 2k+1。如图：</p>
-<p><img src="/content/images/2019/HeapRepresentations.png" alt="Heap Representations"></p>
-<p>另外，二叉堆<strong>属于</strong>完全二叉树。</p>
-<h2 id="二叉堆删除最大节点与插入数据过程"><a href="#二叉堆删除最大节点与插入数据过程" class="headerlink" title="二叉堆删除最大节点与插入数据过程"></a>二叉堆删除最大节点与插入数据过程</h2><h3 id="上浮、下沉操作"><a href="#上浮、下沉操作" class="headerlink" title="上浮、下沉操作"></a>上浮、下沉操作</h3><p>这两个操作是插入、删除 API 的基础操作。</p>
-<p><strong>上浮 swim</strong> 是指当某节点的子节点大于其父节点，破坏了堆的有序性，则将这个过大的子节点与它的父节点交换。如果交换之后，该子节点仍然大于交换位置之后的父节点，继续交换。这个过程就被形象化称为上浮。最终，节点上浮到正确的位置，它的父节点大于它，所有子节点小于它。每上浮一次需要 <code>1</code> 次比较。</p>
-<p><strong>下沉 sink</strong> 是相反的操作，由上至下比较。如果某节点小于它的子节点，则发生交换。每次下沉需要两次比较。首先比较找出两个子节点中较大的那个，然后比较较大子节点与父节点，如果父节点小于则交换。</p>
-<h3 id="删除最大-根节点"><a href="#删除最大-根节点" class="headerlink" title="删除最大/根节点"></a>删除最大/根节点</h3><p>在大端二叉堆中，根节点就是堆中最大元素。将根节点删除/取出之后，把堆中最末尾的元素（也就是树中最大一层最右边的叶子节点）放在根节点的位置，然后对这个节点进行<code>下沉</code>操作。</p>
-<p>每次删除操作，需要的时间复杂度最坏为 $\log n$，也就是从根节点一直比较、交换到叶子节点。假设树高度为 h，最坏情况下需要 h 次交换，2h 次比较。与此同时，作为一颗完全二叉树，二叉堆的高度 h 始终小于等于 $\log$~2~$n$，也就是 $\logn$ 复杂度。</p>
-<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>插入的数据将被放在最末端/最右端的叶子节点，然后对其使用上浮操作。最坏情况下需要 h 次比较，h 次交换，所以复杂度也为 $\log n$。</p>
-<h2 id="堆排序对数据的初始化：建堆"><a href="#堆排序对数据的初始化：建堆" class="headerlink" title="堆排序对数据的初始化：建堆"></a>堆排序对数据的初始化：建堆</h2><h2 id="优先队列实现注意小细节"><a href="#优先队列实现注意小细节" class="headerlink" title="优先队列实现注意小细节"></a>优先队列实现注意小细节</h2><ol>
-<li><p><code>sink</code> 的调用条件是当前被下沉节点的子节点索引<strong>小于等于</strong>优先队列元素数量。否则，在边界条件时，就会导致有元素没有被下沉。举个例子，当队列还有三个元素，<code>star, was, worst</code>， 删除顶端元素之后在顶端插入末尾元素 <code>worst</code>，此时 <code>worst</code> 子节点为 <code>was</code>，索引为 <code>1*2 = 2</code>，大于等于优先队列的元素总数量，<code>sink</code> 操作没有调用，<code>worst</code> 元素先于 <code>was</code> 被取出队列。</p>
-</li>
-<li><p>在下沉 <code>sink</code> 操作时，在将当前节点与子节点比较之前，应该先比较两个子节点。如果是大顶堆，则选出更大的节点来与父节点比较，小顶堆则选出两者中更小的节点。</p>
-</li>
-<li><p>在比较两子节点时，也要注意子节点索引不能越界。同样在只有两个元素时进行 <code>sink</code> 操作的情况下，只有一个子节点，试图寻找此子节点的下一个子节点将会超越数组边界。例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sink</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">2</span> * k;</span><br><span class="line">    <span class="keyword">while</span> (j &lt;= N) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j+<span class="number">1</span> &lt;= N &amp;&amp; less((j + <span class="number">1</span>), j)) &#123;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (less(j, k)) &#123;</span><br><span class="line">            exch(j, k);</span><br><span class="line">            k = j;</span><br><span class="line">            j *= <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+        <h2 id="可变长泛型参数与堆污染"><a href="#可变长泛型参数与堆污染" class="headerlink" title="可变长泛型参数与堆污染"></a>可变长泛型参数与堆污染</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>什么是堆污染</p>
+</blockquote>
+<p>一个类型为泛型 <code>T</code> 的变量被指向一个类型不是 <code>T</code> 的对象，这就是堆污染。典型的情况是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;T&gt; listOfTs = <span class="keyword">new</span> ArrayList&lt;&gt;(Arrays.asList(t));</span><br><span class="line">List&lt;E&gt; listOfEs = (List&lt;E&gt;)(Object)listOfTs; <span class="comment">// 此时指向了含有 T 的 List, 但是不会抛出异常，只是在 Object -&gt; List&lt;E&gt; 的转型中抛出警告</span></span><br><span class="line"></span><br><span class="line">E e = listOfEs.get(<span class="number">0</span>);  <span class="comment">// 运行时错误，java.lang.ClassCastException</span></span><br></pre></td></tr></table></figure>
+<p>之所以编译器无法在转型时检查出类型转换错误，是因为 Java 泛型是通过类型擦除实现的，在泛型代码内部无法获得任何有关泛型参数类型的信息。</p>
+<p>一个更好一点的关于可变长泛型参数和堆污染一起的例子，来自 <a href="https://docs.oracle.com/javase/tutorial/java/generics/nonReifiableVarargsType.html" target="_blank" rel="noopener">Oracle 官方文档</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">faultyMethod</span><span class="params">(List&lt;String&gt;... l)</span> </span>&#123;</span><br><span class="line">    Object[] objectArray = l;     <span class="comment">// Valid</span></span><br><span class="line">    objectArray[<span class="number">0</span>] = Arrays.asList(<span class="number">42</span>);</span><br><span class="line">    String s = l[<span class="number">0</span>].get(<span class="number">0</span>);       <span class="comment">// ClassCastException thrown here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>关于泛型的<a href="https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html" target="_blank" rel="noopener">几大限制</a>中，最明显的一个就是不能创造泛型数组，如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt;[] arrayOfLists = <span class="keyword">new</span> List&lt;Integer&gt;[<span class="number">2</span>];  <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+<p>但是这一限制在可变长的泛型参数中被打破了。在可变长参数中，一个数组会在函数调用时建立（Effective Java，Item 53），每次调用都会引起一次数组分配和初始化。当可变长参数是泛型时，一个泛型数组就被创造出来了。</p>
+<h3 id="实操时的问题"><a href="#实操时的问题" class="headerlink" title="实操时的问题"></a>实操时的问题</h3><p>我在 tiny-spring 中写了一个方法，给定注解参数，获取所有带有该注解的类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? extends Annotation&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? extends Annotation&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里就出现了一个可变长泛型参数的问题。另一个隐藏的问题是，这个方法并没有对传入的注解参数的数量检查参数为零的情况，而可变长参数允许传入零个参数。一个优美一点的解决方案是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SafeVarargs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? extends Annotation&gt; firstCls, Class&lt;? extends Annotation&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> HashSet&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (c.isAnnotationPresent(firstCls)) &#123;</span><br><span class="line">            classSet.add(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? extends Annotation&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样既省去明显的检查参数数量，又能在调用处强制调用者传入至少一个参数，这也是这个方法的本意。</p>
+<h3 id="SafeVarargs-的使用标准"><a href="#SafeVarargs-的使用标准" class="headerlink" title="@SafeVarargs 的使用标准"></a>@SafeVarargs 的使用标准</h3><p>如上所见，可以将报警用 <code>@SafeVarargs</code> 注解掉。但是我们知道，这个注解仅仅是消除编译警告，完全不能保证消除这个错误。那么什么时候应该使用这个注解呢？</p>
+<p>在 StackOverflow 有一个票的<a href="https://stackoverflow.com/a/14252221" target="_blank" rel="noopener">回答</a>：</p>
+<p>If your method has an argument of type <code>T...</code> (where T is any type parameter), then:</p>
+<ul>
+<li>Safe: If your method only depends on the fact that the elements of the array are instances of <code>T</code></li>
+<li>Unsafe: If it depends on the fact that the array is an instance of <code>T[]</code></li>
+</ul>
+<p>Effective Java 也表示了类似的意思：如果你的方法使用可变长泛型参数的时候，只是用来一次传入多个参数，并且实际使用的时候只是把它们当作多个参数来看，那么就没有问题。如果你的方法体中把可变长参数当作数组来使用，那就会有问题，不要使用这个注解。</p>
 
       
     </div>
@@ -453,11 +447,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/sort/" rel="tag"># sort</a>
+            <a href="/tags/Generics/" rel="tag"># Generics</a>
           
-            <a href="/tags/binary-heap/" rel="tag"># binary heap</a>
-          
-            <a href="/tags/priority-queue/" rel="tag"># priority queue</a>
+            <a href="/tags/泛型/" rel="tag"># 泛型</a>
           
         </div>
       
@@ -470,8 +462,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/09/Flask Web Development Notes/" rel="next" title="Flask Web Development Notes">
-                <i class="fa fa-chevron-left"></i> Flask Web Development Notes
+              <a href="/2019/06/20/并发编程bug之源：死锁成因与重排序/" rel="next" title="并发编程bug之源：死锁成因与重排序">
+                <i class="fa fa-chevron-left"></i> 并发编程bug之源：死锁成因与重排序
               </a>
             
           </div>
@@ -479,10 +471,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/22/程序员必知的内存知识/" rel="prev" title="程序员必知的内存知识">
-                程序员必知的内存知识 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -656,7 +644,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二叉堆，堆排序，与优先队列要点"><span class="nav-number">1.</span> <span class="nav-text">二叉堆，堆排序，与优先队列要点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆定义与数组表示"><span class="nav-number">1.1.</span> <span class="nav-text">二叉堆定义与数组表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆删除最大节点与插入数据过程"><span class="nav-number">1.2.</span> <span class="nav-text">二叉堆删除最大节点与插入数据过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上浮、下沉操作"><span class="nav-number">1.2.1.</span> <span class="nav-text">上浮、下沉操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除最大-根节点"><span class="nav-number">1.2.2.</span> <span class="nav-text">删除最大/根节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据"><span class="nav-number">1.2.3.</span> <span class="nav-text">插入数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆排序对数据的初始化：建堆"><span class="nav-number">1.3.</span> <span class="nav-text">堆排序对数据的初始化：建堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优先队列实现注意小细节"><span class="nav-number">1.4.</span> <span class="nav-text">优先队列实现注意小细节</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#可变长泛型参数与堆污染"><span class="nav-number">1.</span> <span class="nav-text">可变长泛型参数与堆污染</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#实操时的问题"><span class="nav-number">1.2.</span> <span class="nav-text">实操时的问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SafeVarargs-的使用标准"><span class="nav-number">1.3.</span> <span class="nav-text">@SafeVarargs 的使用标准</span></a></li></ol></li></ol></div>
             
 
           </div>
