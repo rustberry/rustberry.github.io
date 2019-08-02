@@ -304,6 +304,185 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/03/java.io 梳理与其中的三种设计模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rust">
+      <meta itemprop="description" content="programming and free market">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/03/java.io 梳理与其中的三种设计模式/" itemprop="url">
+                  java.io 梳理与其中的三种设计模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-03 00:00:09 / Modified: 00:25:29" itemprop="dateCreated datePublished" datetime="2019-08-03T00:00:09+08:00">2019-08-03</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Design-Patterns/" itemprop="url" rel="index"><span itemprop="name">Design Patterns</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="java-io-梳理与其中的三种设计模式"><a href="#java-io-梳理与其中的三种设计模式" class="headerlink" title="java#io 梳理与其中的三种设计模式"></a>java#io 梳理与其中的三种设计模式</h1><p>以 <code>Reader</code> 抽象类下的类为例。它们的主要构造函数如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FilterReader(Reader)</span><br><span class="line">BufferedReader(Reader)</span><br><span class="line"></span><br><span class="line">FileReader(File)</span><br><span class="line">StringReader(String)</span><br><span class="line">InputStreamReader(InputStream [, Charset])</span><br></pre></td></tr></table></figure>
+<p><img src="/content/images/2019/ReaderUML.png" alt="Reader UML"></p>
+<p>大致上，<code>java.io</code> 可以分为：</p>
+<ol>
+<li>字节流操作：<code>InputStream</code>、<code>OutputStream</code></li>
+<li>字符操作：<code>Reader</code>、<code>Writer</code></li>
+<li>针对磁盘操作：<code>File</code></li>
+</ol>
+<h2 id="适配器模式-Adapter-pattern"><a href="#适配器模式-Adapter-pattern" class="headerlink" title="适配器模式 Adapter pattern"></a>适配器模式 Adapter pattern</h2><p><code>InputStreamReader</code> 是字节流与字符流之间的桥梁，它的实现使用了适配器模式。适配器模式通过聚合将某个接口适配成为另一个接口来方便使用，类图如下：</p>
+<p><img src="/content/images/2019/InputStreamReaderAdapterPattern.png" alt="InputStreamReader Adapter Pattern"></p>
+<p>在开头的代码可以看到，<code>InputStreamReader</code> 的构造器需要传入一个字节流 <code>InputSream</code>，以及可选的字符集。如果没有传入字符集就会使用默认的。通过持有一个 <code>InputStream</code>，<code>InputStreamReader</code> 拥有了该接口的功能。同时，<code>InputStreamReader</code> 还是一个实现了 <code>Reader</code> 类，这样一来它就把 <code>InputStream</code> 适配成了一个 <code>Reader</code> 类。</p>
+<h2 id="装饰器模式-Decorator-pattern"><a href="#装饰器模式-Decorator-pattern" class="headerlink" title="装饰器模式 Decorator pattern"></a>装饰器模式 Decorator pattern</h2><p>这个应该是 <code>java.io</code> 更为人熟知的，装饰器模式与适配器模式都可以看作包装模式 Wrapper。通过对类的层层包裹，装饰器模式增强了目标类的功能。类图示意如下：</p>
+<p><img src="/content/images/2019/IODecoratorPattern.png" alt="IO Decorator Pattern"></p>
+<p><code>Decorator</code> 是 <code>Component</code> 的实现类，但是其内部也持有一个 <code>Decorator</code> 类。不同的 <code>Decorator</code> 类下的 <code>ConcreteDecorator</code> 子类包含了需要增强的功能。</p>
+<p>在 <code>java.io</code> 中的典型使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FilterReader pbr = <span class="keyword">new</span> PushbackReader(</span><br><span class="line">        <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in)))</span><br></pre></td></tr></table></figure>
+<h3 id="二者的不同"><a href="#二者的不同" class="headerlink" title="二者的不同"></a>二者的不同</h3><p>装饰器模式更多的是对目标类的功能上的增强；适配器没有对功能进行增进，只是为了使目标类能适应调用方的接口，方便被调用。</p>
+<h2 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a>模板方法</h2><p>在模板方法模式中，大的算法框架在抽象父类中被定义好，某些业务相关的实现则延迟到子类。</p>
+<p>在 <code>Reader</code> 抽象类中，<code>read</code> 方法的默认实现都留给了被重载的 <code>read(char[], int, int)</code>，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">char</span>[] cbuf)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">char</span>[] cbuf, <span class="keyword">int</span> offset, <span class="keyword">int</span> len)</span></span></span><br></pre></td></tr></table></figure>
+<p>具体的 <code>read</code> 的实现留给子类。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/25/tiny-spring 踩坑记录（一）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2065,7 +2244,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">8</span>
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2092,7 +2271,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">7</span>
+                      
+                    
+                    <span class="site-state-item-count">8</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>

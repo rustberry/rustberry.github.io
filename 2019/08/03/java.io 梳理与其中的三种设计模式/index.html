@@ -108,27 +108,28 @@
 
 
 
-  <meta name="description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
-<meta name="keywords" content="sort,binary heap,priority queue">
+  <meta name="description" content="java#io 梳理与其中的三种设计模式以 Reader 抽象类下的类为例。它们的主要构造函数如下： 123456FilterReader(Reader)BufferedReader(Reader)FileReader(File)StringReader(String)InputStreamReader(InputStream [, Charset])  大致上，java.io 可以分为：  字节">
 <meta property="og:type" content="article">
-<meta property="og:title" content="二叉堆与堆排序要点">
-<meta property="og:url" content="http://yoursite.com/2019/04/05/二叉堆与堆排序要点/index.html">
+<meta property="og:title" content="java.io 梳理与其中的三种设计模式">
+<meta property="og:url" content="http://yoursite.com/2019/08/03/java.io 梳理与其中的三种设计模式/index.html">
 <meta property="og:site_name" content="Rust Shrugged">
-<meta property="og:description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
+<meta property="og:description" content="java#io 梳理与其中的三种设计模式以 Reader 抽象类下的类为例。它们的主要构造函数如下： 123456FilterReader(Reader)BufferedReader(Reader)FileReader(File)StringReader(String)InputStreamReader(InputStream [, Charset])  大致上，java.io 可以分为：  字节">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/content/images/2019/HeapRepresentations.png">
-<meta property="og:updated_time" content="2019-04-04T16:00:00.000Z">
+<meta property="og:image" content="http://yoursite.com/content/images/2019/ReaderUML.png">
+<meta property="og:image" content="http://yoursite.com/content/images/2019/InputStreamReaderAdapterPattern.png">
+<meta property="og:image" content="http://yoursite.com/content/images/2019/IODecoratorPattern.png">
+<meta property="og:updated_time" content="2019-08-02T16:25:29.568Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="二叉堆与堆排序要点">
-<meta name="twitter:description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
-<meta name="twitter:image" content="http://yoursite.com/content/images/2019/HeapRepresentations.png">
+<meta name="twitter:title" content="java.io 梳理与其中的三种设计模式">
+<meta name="twitter:description" content="java#io 梳理与其中的三种设计模式以 Reader 抽象类下的类为例。它们的主要构造函数如下： 123456FilterReader(Reader)BufferedReader(Reader)FileReader(File)StringReader(String)InputStreamReader(InputStream [, Charset])  大致上，java.io 可以分为：  字节">
+<meta name="twitter:image" content="http://yoursite.com/content/images/2019/ReaderUML.png">
 
 
 
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/04/05/二叉堆与堆排序要点/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/08/03/java.io 梳理与其中的三种设计模式/"/>
 
 
 
@@ -138,7 +139,7 @@
   };
 </script>
 
-  <title>二叉堆与堆排序要点 | Rust Shrugged</title>
+  <title>java.io 梳理与其中的三种设计模式 | Rust Shrugged</title>
   
 
 
@@ -307,7 +308,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/二叉堆与堆排序要点/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/03/java.io 梳理与其中的三种设计模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Rust">
@@ -324,7 +325,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">二叉堆与堆排序要点
+          <h1 class="post-title" itemprop="name headline">java.io 梳理与其中的三种设计模式
               
             
           </h1>
@@ -349,9 +350,13 @@
                 
               
 
-              <time title="Created: 2019-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-05T00:00:00+08:00">2019-04-05</time>
+              <time title="Created: 2019-08-03 00:00:09 / Modified: 00:25:29" itemprop="dateCreated datePublished" datetime="2019-08-03T00:00:09+08:00">2019-08-03</time>
             
 
+            
+              
+
+              
             
           </span>
 
@@ -367,7 +372,7 @@
                 <span class="post-meta-item-text">In</span>
               
               
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a></span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Design-Patterns/" itemprop="url" rel="index"><span itemprop="name">Design Patterns</span></a></span>
 
                 
                 
@@ -401,38 +406,28 @@
       
 
       
-        <h1 id="二叉堆，堆排序，与优先队列要点"><a href="#二叉堆，堆排序，与优先队列要点" class="headerlink" title="二叉堆，堆排序，与优先队列要点"></a>二叉堆，堆排序，与优先队列要点</h1><p>今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为<code>logn</code>的<strong>原地</strong>排序算法，堆排序。</p>
-<p>要点：</p>
+        <h1 id="java-io-梳理与其中的三种设计模式"><a href="#java-io-梳理与其中的三种设计模式" class="headerlink" title="java#io 梳理与其中的三种设计模式"></a>java#io 梳理与其中的三种设计模式</h1><p>以 <code>Reader</code> 抽象类下的类为例。它们的主要构造函数如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FilterReader(Reader)</span><br><span class="line">BufferedReader(Reader)</span><br><span class="line"></span><br><span class="line">FileReader(File)</span><br><span class="line">StringReader(String)</span><br><span class="line">InputStreamReader(InputStream [, Charset])</span><br></pre></td></tr></table></figure>
+<p><img src="/content/images/2019/ReaderUML.png" alt="Reader UML"></p>
+<p>大致上，<code>java.io</code> 可以分为：</p>
 <ol>
-<li>二叉堆定义（用数组表示时的细节）</li>
-<li><strong>插入</strong>（尾端叶子节点）与<strong>删除</strong>（根节点）的过程</li>
-<li>建堆方式 + sink 下沉操作 = 堆排序——堆排序的过程</li>
-<li>堆排序的优点与缺点<ol>
-<li><strong>优点</strong>：内存使用，原地排序</li>
-<li><strong>缺点</strong>：CPU cache 缓存命中，非稳定排序，比较次数大于快排</li>
+<li>字节流操作：<code>InputStream</code>、<code>OutputStream</code></li>
+<li>字符操作：<code>Reader</code>、<code>Writer</code></li>
+<li>针对磁盘操作：<code>File</code></li>
 </ol>
-</li>
-<li>复杂度得出过程</li>
-</ol>
-<p>[TOC]</p>
-<h2 id="二叉堆定义与数组表示"><a href="#二叉堆定义与数组表示" class="headerlink" title="二叉堆定义与数组表示"></a>二叉堆定义与数组表示</h2><p>根节点大于<strong>等于</strong>左右两个子节点。当储存为数组时，根节点放在索引 1 的位置，为了计算便利数组的索引零不存储数据。位置为 k 的节点的父节点位置是 p &lt;= k/2，子节点在数组中的位置是 2k 和 2k+1。如图：</p>
-<p><img src="/content/images/2019/HeapRepresentations.png" alt="Heap Representations"></p>
-<p>另外，二叉堆<strong>属于</strong>完全二叉树。</p>
-<h2 id="二叉堆删除最大节点与插入数据过程"><a href="#二叉堆删除最大节点与插入数据过程" class="headerlink" title="二叉堆删除最大节点与插入数据过程"></a>二叉堆删除最大节点与插入数据过程</h2><h3 id="上浮、下沉操作"><a href="#上浮、下沉操作" class="headerlink" title="上浮、下沉操作"></a>上浮、下沉操作</h3><p>这两个操作是插入、删除 API 的基础操作。</p>
-<p><strong>上浮 swim</strong> 是指当某节点的子节点大于其父节点，破坏了堆的有序性，则将这个过大的子节点与它的父节点交换。如果交换之后，该子节点仍然大于交换位置之后的父节点，继续交换。这个过程就被形象化称为上浮。最终，节点上浮到正确的位置，它的父节点大于它，所有子节点小于它。每上浮一次需要 <code>1</code> 次比较。</p>
-<p><strong>下沉 sink</strong> 是相反的操作，由上至下比较。如果某节点小于它的子节点，则发生交换。每次下沉需要两次比较。首先比较找出两个子节点中较大的那个，然后比较较大子节点与父节点，如果父节点小于则交换。</p>
-<h3 id="删除最大-根节点"><a href="#删除最大-根节点" class="headerlink" title="删除最大/根节点"></a>删除最大/根节点</h3><p>在大端二叉堆中，根节点就是堆中最大元素。将根节点删除/取出之后，把堆中最末尾的元素（也就是树中最大一层最右边的叶子节点）放在根节点的位置，然后对这个节点进行<code>下沉</code>操作。</p>
-<p>每次删除操作，需要的时间复杂度最坏为 $\log n$，也就是从根节点一直比较、交换到叶子节点。假设树高度为 h，最坏情况下需要 h 次交换，2h 次比较。与此同时，作为一颗完全二叉树，二叉堆的高度 h 始终小于等于 $\log$~2~$n$，也就是 $\logn$ 复杂度。</p>
-<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>插入的数据将被放在最末端/最右端的叶子节点，然后对其使用上浮操作。最坏情况下需要 h 次比较，h 次交换，所以复杂度也为 $\log n$。</p>
-<h2 id="堆排序对数据的初始化：建堆"><a href="#堆排序对数据的初始化：建堆" class="headerlink" title="堆排序对数据的初始化：建堆"></a>堆排序对数据的初始化：建堆</h2><h2 id="优先队列实现注意小细节"><a href="#优先队列实现注意小细节" class="headerlink" title="优先队列实现注意小细节"></a>优先队列实现注意小细节</h2><ol>
-<li><p><code>sink</code> 的调用条件是当前被下沉节点的子节点索引<strong>小于等于</strong>优先队列元素数量。否则，在边界条件时，就会导致有元素没有被下沉。举个例子，当队列还有三个元素，<code>star, was, worst</code>， 删除顶端元素之后在顶端插入末尾元素 <code>worst</code>，此时 <code>worst</code> 子节点为 <code>was</code>，索引为 <code>1*2 = 2</code>，大于等于优先队列的元素总数量，<code>sink</code> 操作没有调用，<code>worst</code> 元素先于 <code>was</code> 被取出队列。</p>
-</li>
-<li><p>在下沉 <code>sink</code> 操作时，在将当前节点与子节点比较之前，应该先比较两个子节点。如果是大顶堆，则选出更大的节点来与父节点比较，小顶堆则选出两者中更小的节点。</p>
-</li>
-<li><p>在比较两子节点时，也要注意子节点索引不能越界。同样在只有两个元素时进行 <code>sink</code> 操作的情况下，只有一个子节点，试图寻找此子节点的下一个子节点将会超越数组边界。例子：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">sink</span><span class="params">(<span class="keyword">int</span> k)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> j = <span class="number">2</span> * k;</span><br><span class="line">    <span class="keyword">while</span> (j &lt;= N) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j+<span class="number">1</span> &lt;= N &amp;&amp; less((j + <span class="number">1</span>), j)) &#123;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (less(j, k)) &#123;</span><br><span class="line">            exch(j, k);</span><br><span class="line">            k = j;</span><br><span class="line">            j *= <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-</li>
-</ol>
+<h2 id="适配器模式-Adapter-pattern"><a href="#适配器模式-Adapter-pattern" class="headerlink" title="适配器模式 Adapter pattern"></a>适配器模式 Adapter pattern</h2><p><code>InputStreamReader</code> 是字节流与字符流之间的桥梁，它的实现使用了适配器模式。适配器模式通过聚合将某个接口适配成为另一个接口来方便使用，类图如下：</p>
+<p><img src="/content/images/2019/InputStreamReaderAdapterPattern.png" alt="InputStreamReader Adapter Pattern"></p>
+<p>在开头的代码可以看到，<code>InputStreamReader</code> 的构造器需要传入一个字节流 <code>InputSream</code>，以及可选的字符集。如果没有传入字符集就会使用默认的。通过持有一个 <code>InputStream</code>，<code>InputStreamReader</code> 拥有了该接口的功能。同时，<code>InputStreamReader</code> 还是一个实现了 <code>Reader</code> 类，这样一来它就把 <code>InputStream</code> 适配成了一个 <code>Reader</code> 类。</p>
+<h2 id="装饰器模式-Decorator-pattern"><a href="#装饰器模式-Decorator-pattern" class="headerlink" title="装饰器模式 Decorator pattern"></a>装饰器模式 Decorator pattern</h2><p>这个应该是 <code>java.io</code> 更为人熟知的，装饰器模式与适配器模式都可以看作包装模式 Wrapper。通过对类的层层包裹，装饰器模式增强了目标类的功能。类图示意如下：</p>
+<p><img src="/content/images/2019/IODecoratorPattern.png" alt="IO Decorator Pattern"></p>
+<p><code>Decorator</code> 是 <code>Component</code> 的实现类，但是其内部也持有一个 <code>Decorator</code> 类。不同的 <code>Decorator</code> 类下的 <code>ConcreteDecorator</code> 子类包含了需要增强的功能。</p>
+<p>在 <code>java.io</code> 中的典型使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FilterReader pbr = <span class="keyword">new</span> PushbackReader(</span><br><span class="line">        <span class="keyword">new</span> BufferedReader(<span class="keyword">new</span> InputStreamReader(System.in)))</span><br></pre></td></tr></table></figure>
+<h3 id="二者的不同"><a href="#二者的不同" class="headerlink" title="二者的不同"></a>二者的不同</h3><p>装饰器模式更多的是对目标类的功能上的增强；适配器没有对功能进行增进，只是为了使目标类能适应调用方的接口，方便被调用。</p>
+<h2 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a>模板方法</h2><p>在模板方法模式中，大的算法框架在抽象父类中被定义好，某些业务相关的实现则延迟到子类。</p>
+<p>在 <code>Reader</code> 抽象类中，<code>read</code> 方法的默认实现都留给了被重载的 <code>read(char[], int, int)</code>，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">()</span></span></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">char</span>[] cbuf)</span></span></span><br><span class="line"><span class="function"></span></span><br><span class="line"><span class="function"><span class="keyword">abstract</span> <span class="keyword">int</span> <span class="title">read</span><span class="params">(<span class="keyword">char</span>[] cbuf, <span class="keyword">int</span> offset, <span class="keyword">int</span> len)</span></span></span><br></pre></td></tr></table></figure>
+<p>具体的 <code>read</code> 的实现留给子类。</p>
 
       
     </div>
@@ -451,16 +446,6 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/sort/" rel="tag"># sort</a>
-          
-            <a href="/tags/binary-heap/" rel="tag"># binary heap</a>
-          
-            <a href="/tags/priority-queue/" rel="tag"># priority queue</a>
-          
-        </div>
-      
 
       
       
@@ -470,8 +455,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/09/Flask Web Development Notes/" rel="next" title="Flask Web Development Notes">
-                <i class="fa fa-chevron-left"></i> Flask Web Development Notes
+              <a href="/2019/07/25/tiny-spring 踩坑记录（一）/" rel="next" title="tiny-spring 踩坑记录（一）可变长泛型参数与堆污染">
+                <i class="fa fa-chevron-left"></i> tiny-spring 踩坑记录（一）可变长泛型参数与堆污染
               </a>
             
           </div>
@@ -479,10 +464,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/05/22/程序员必知的内存知识/" rel="prev" title="程序员必知的内存知识">
-                程序员必知的内存知识 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -658,7 +639,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#二叉堆，堆排序，与优先队列要点"><span class="nav-number">1.</span> <span class="nav-text">二叉堆，堆排序，与优先队列要点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆定义与数组表示"><span class="nav-number">1.1.</span> <span class="nav-text">二叉堆定义与数组表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二叉堆删除最大节点与插入数据过程"><span class="nav-number">1.2.</span> <span class="nav-text">二叉堆删除最大节点与插入数据过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#上浮、下沉操作"><span class="nav-number">1.2.1.</span> <span class="nav-text">上浮、下沉操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#删除最大-根节点"><span class="nav-number">1.2.2.</span> <span class="nav-text">删除最大/根节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#插入数据"><span class="nav-number">1.2.3.</span> <span class="nav-text">插入数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#堆排序对数据的初始化：建堆"><span class="nav-number">1.3.</span> <span class="nav-text">堆排序对数据的初始化：建堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#优先队列实现注意小细节"><span class="nav-number">1.4.</span> <span class="nav-text">优先队列实现注意小细节</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java-io-梳理与其中的三种设计模式"><span class="nav-number">1.</span> <span class="nav-text">java#io 梳理与其中的三种设计模式</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#适配器模式-Adapter-pattern"><span class="nav-number">1.1.</span> <span class="nav-text">适配器模式 Adapter pattern</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#装饰器模式-Decorator-pattern"><span class="nav-number">1.2.</span> <span class="nav-text">装饰器模式 Decorator pattern</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#二者的不同"><span class="nav-number">1.2.1.</span> <span class="nav-text">二者的不同</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#模板方法"><span class="nav-number">1.3.</span> <span class="nav-text">模板方法</span></a></li></ol></li></ol></div>
             
 
           </div>
