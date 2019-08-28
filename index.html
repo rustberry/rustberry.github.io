@@ -304,6 +304,205 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/29/Netty 基础组件与线程模型--概述/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rust">
+      <meta itemprop="description" content="programming and free market">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/08/29/Netty 基础组件与线程模型--概述/" itemprop="url">
+                  Netty 基础组件与线程模型--概述
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-08-29 00:05:16 / Modified: 00:20:47" itemprop="dateCreated datePublished" datetime="2019-08-29T00:05:16+08:00">2019-08-29</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Netty-基础组件与线程模型–概述"><a href="#Netty-基础组件与线程模型–概述" class="headerlink" title="Netty 基础组件与线程模型–概述"></a>Netty 基础组件与线程模型–概述</h1><p>即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 <em>Netty in Action</em> 总结一下。</p>
+<h2 id="Netty-想要解决什么问题"><a href="#Netty-想要解决什么问题" class="headerlink" title="Netty 想要解决什么问题"></a>Netty 想要解决什么问题</h2><p>一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。</p>
+<p>以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的严重不足。这种不足我现在看来有两部分：性能与易用性。</p>
+<p>性能方面，作为标准库，API 稳定、统一的需求更重要，从而无法在提升性能上下狠功夫。Netty 则在各种角落实行了优化。最明显的是对垃圾回收与内存分配的修改，使得 ByteBuf 一定程度由使用者手动管理；以及针对不同平台提供与底层实现紧密相关的优化，比如针对 Linux 的 EpollEventLoopGroup，从而能提供边缘触发，而非 Java NIO 默认的水平触发。另外，据 Norman Maurer <a href="https://stackoverflow.com/a/36058105/8144090" target="_blank" rel="noopener">自己所说</a>，还有更低的 GC。其它细节包括使用 OpenSSL 替换 Java 标准库，等等。</p>
+<p>另一方面，NIO 在使用上不够直观。仅仅 <code>flip</code> 这个方法的设计就很迷惑——像 Netty 一样为读和写单独设置两个指针多方便。</p>
+<h2 id="Netty-自测问题"><a href="#Netty-自测问题" class="headerlink" title="Netty 自测问题"></a>Netty 自测问题</h2><p>看完 Netty in Action 之后我反问自己都了解到了些什么，想到了如下的问题：</p>
+<p><code>EventLoop</code>  与 <code>EventLoopGroup</code> 的区别，之间的关系是什么？EventLoopGroup 拥有几个线程？EventLoop 呢？</p>
+<p>EventLoop 与 Channel 是什么关系？</p>
+<p>ChannelHandler 与 ChannelPipeline 是什么关系？</p>
+<p>ChannelHandlerAdapter 对 ChannelHandler 区别是什么，有何改进？</p>
+<p>Channel、ChannelHandler 生命周期？</p>
+<p>我发现很多问题自己居然都给不出回答，然后立刻回去看书的三、六、七章，有一种开窍的感觉。之前看第一遍时无感，并且不知道重点的内容，这一次都变成了问题的答案，看的过程也津津有味起来。</p>
+<h2 id="简单梳理"><a href="#简单梳理" class="headerlink" title="简单梳理"></a>简单梳理</h2><p>简单梳理一下基础的概念，下图来自《Netty in Action》，侵删：</p>
+<p><img src="/content/images/2019/Channel EventLoop and EventLoopGroup.png" alt="Channel EventLoop and EventLoopGroup"></p>
+<ul>
+<li>Channel 就是一种“传输（transport）”，一个 Socket 就属于 Channel，所以最简单可以理解为，Channel 就是一个 Socket；</li>
+<li>一个 Channel 在它的生命周期内只注册于一个 EventLoop；</li>
+<li>一个 EventLoop 在它的生命周期中只与一个 Thread 绑定。实际上，最常用的实现 NioEventLoop 扩展自 SingleThreadEventLoop；</li>
+<li><ul>
+<li>一个 EventLoop 可能会被分配给一个或多个 Channel（这样一来，不必每个 Socket 连接就分配一个线程，用有限的线程支撑更多的连接）；</li>
+</ul>
+</li>
+</ul>
+<p>这种设计消除了同步（synchronization）的需求，因为一个 Channel 的所有 I/O 操作都是由同一个线程（异步地）完成的。</p>
+<ul>
+<li>ChannelPipeline 提供了 ChannelHandler 链的容器</li>
+</ul>
+<h2 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h2><h3 id="Reactor-pattern-amp-Proactor-pattern"><a href="#Reactor-pattern-amp-Proactor-pattern" class="headerlink" title="Reactor pattern &amp; Proactor pattern"></a>Reactor pattern &amp; Proactor pattern</h3><p>在学习阅读 Netty 的时候，我意识到书的作者以及文档作者都假定了，读者对于所谓的 Proactor 模式、Reactor 模式有所了解。所以我认为有必要先简要了解一下这两种模式。</p>
+<p><a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="noopener">Reactor pattern</a> 有<strong>一个</strong>主线程，从多个 input 读取服务请求，然后把这些请求<strong>同步地</strong>分发给对应的服务处理线程。通常主线程使用同步的 <code>select</code> 来监听多个文件描述符，当一个阻塞操作，比如 <code>read()</code> 准备完毕，<code>select</code> 获得通知，就将其转发给服务处理线程。</p>
+<p>关于 <a href="https://en.wikipedia.org/wiki/Proactor_pattern" target="_blank" rel="noopener">Proactor pattern</a>：</p>
+<blockquote>
+<p>The proactor pattern can be considered to be an <a href="https://en.wiktionary.org/wiki/asynchronous" target="_blank" rel="noopener">asynchronous</a> variant of the <a href="https://en.wikipedia.org/wiki/Synchronization_(computer_science" target="_blank" rel="noopener">synchronous</a>) <a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="noopener">reactor pattern</a>.</p>
+<p>– Wikipedia</p>
+</blockquote>
+<p>Proactor 模式可以视作 Reactor 模式的异步形式。耗时长的任务异步地完成，在结束时发送通知。</p>
+<h3 id="Netty-的-Boss-Worker-EventLoopGroup"><a href="#Netty-的-Boss-Worker-EventLoopGroup" class="headerlink" title="Netty 的 Boss-Worker EventLoopGroup"></a>Netty 的 Boss-Worker EventLoopGroup</h3><p>了解了有这种主-从线程池的区分之后，就能理解，为什么很多 Netty 示例程序中 Server 的 <code>ServerBootStrap#group(EventLoopGroup, EventLoopGroup)</code> 会有绑定两个 EventLoopGroup。即使某些简单的 demo 实现中只绑定了一个，如： <code>group(EventLoopGroup)</code>，这一方法其实只是绑定主从 EventLoopGroup 的重载方法，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> ServerBootstrap <span class="title">group</span><span class="params">(EventLoopGroup group)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> group(group, group);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>官方 <a href="https://netty.io/wiki/user-guide-for-4.x.html" target="_blank" rel="noopener">User Guide</a> 的解释如下：</p>
+<blockquote>
+<p>The first one, often called ‘boss’, accepts an incoming connection. The second one, often called ‘worker’, handles the traffic of the accepted connection once the boss accepts the connection and registers the accepted connection to the worker. </p>
+</blockquote>
+<p>第一个是被称为 boss 的 EventLoopGroup，负责接受连接，第二个则被称为 worker，负责处理由 boss 分配给它的已接受的连接。</p>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/03/java.io 梳理与其中的三种设计模式/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -350,7 +549,7 @@
                 
               
 
-              <time title="Created: 2019-08-03 00:00:09 / Modified: 00:25:29" itemprop="dateCreated datePublished" datetime="2019-08-03T00:00:09+08:00">2019-08-03</time>
+              <time title="Created: 2019-08-03 00:00:09 / Modified: 00:29:51" itemprop="dateCreated datePublished" datetime="2019-08-03T00:00:09+08:00">2019-08-03</time>
             
 
             
@@ -408,7 +607,7 @@
       
         
           
-            <h1 id="java-io-梳理与其中的三种设计模式"><a href="#java-io-梳理与其中的三种设计模式" class="headerlink" title="java#io 梳理与其中的三种设计模式"></a>java#io 梳理与其中的三种设计模式</h1><p>以 <code>Reader</code> 抽象类下的类为例。它们的主要构造函数如下：</p>
+            <h1 id="java-io-梳理与其中的三种设计模式"><a href="#java-io-梳理与其中的三种设计模式" class="headerlink" title="java.io 梳理与其中的三种设计模式"></a>java.io 梳理与其中的三种设计模式</h1><p>以 <code>Reader</code> 抽象类下的类为例。它们的主要构造函数如下：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FilterReader(Reader)</span><br><span class="line">BufferedReader(Reader)</span><br><span class="line"></span><br><span class="line">FileReader(File)</span><br><span class="line">StringReader(String)</span><br><span class="line">InputStreamReader(InputStream [, Charset])</span><br></pre></td></tr></table></figure>
 <p><img src="/content/images/2019/ReaderUML.png" alt="Reader UML"></p>
 <p>大致上，<code>java.io</code> 可以分为：</p>
@@ -2244,7 +2443,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">9</span>
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2273,7 +2472,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">8</span>
+                      
+                    
+                    <span class="site-state-item-count">9</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
