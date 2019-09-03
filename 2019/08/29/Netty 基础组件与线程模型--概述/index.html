@@ -108,18 +108,18 @@
 
 
 
-  <meta name="description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的严重不足。这">
+  <meta name="description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的不足。这种不">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Netty 基础组件与线程模型--概述">
 <meta property="og:url" content="http://yoursite.com/2019/08/29/Netty 基础组件与线程模型--概述/index.html">
 <meta property="og:site_name" content="Rust Shrugged">
-<meta property="og:description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的严重不足。这">
+<meta property="og:description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的不足。这种不">
 <meta property="og:locale" content="en">
 <meta property="og:image" content="http://yoursite.com/content/images/2019/Channel%20EventLoop%20and%20EventLoopGroup.png">
-<meta property="og:updated_time" content="2019-08-28T16:20:47.939Z">
+<meta property="og:updated_time" content="2019-09-03T15:44:05.154Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Netty 基础组件与线程模型--概述">
-<meta name="twitter:description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的严重不足。这">
+<meta name="twitter:description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的不足。这种不">
 <meta name="twitter:image" content="http://yoursite.com/content/images/2019/Channel%20EventLoop%20and%20EventLoopGroup.png">
 
 
@@ -348,12 +348,24 @@
                 
               
 
-              <time title="Created: 2019-08-29 00:05:16 / Modified: 00:20:47" itemprop="dateCreated datePublished" datetime="2019-08-29T00:05:16+08:00">2019-08-29</time>
+              <time title="Created: 2019-08-29 00:05:16" itemprop="dateCreated datePublished" datetime="2019-08-29T00:05:16+08:00">2019-08-29</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">Edited on</span>
+                
+                <time title="Modified: 2019-09-03 23:44:05" itemprop="dateModified" datetime="2019-09-03T23:44:05+08:00">2019-09-03</time>
               
             
           </span>
@@ -406,7 +418,7 @@
       
         <h1 id="Netty-基础组件与线程模型–概述"><a href="#Netty-基础组件与线程模型–概述" class="headerlink" title="Netty 基础组件与线程模型–概述"></a>Netty 基础组件与线程模型–概述</h1><p>即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 <em>Netty in Action</em> 总结一下。</p>
 <h2 id="Netty-想要解决什么问题"><a href="#Netty-想要解决什么问题" class="headerlink" title="Netty 想要解决什么问题"></a>Netty 想要解决什么问题</h2><p>一项新技术/开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。</p>
-<p>以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的严重不足。这种不足我现在看来有两部分：性能与易用性。</p>
+<p>以我目前的水平回答，是为了弥补 Java 标准库在 I/O 上的不足。这种不足我现在看来有两部分：性能与易用性。</p>
 <p>性能方面，作为标准库，API 稳定、统一的需求更重要，从而无法在提升性能上下狠功夫。Netty 则在各种角落实行了优化。最明显的是对垃圾回收与内存分配的修改，使得 ByteBuf 一定程度由使用者手动管理；以及针对不同平台提供与底层实现紧密相关的优化，比如针对 Linux 的 EpollEventLoopGroup，从而能提供边缘触发，而非 Java NIO 默认的水平触发。另外，据 Norman Maurer <a href="https://stackoverflow.com/a/36058105/8144090" target="_blank" rel="noopener">自己所说</a>，还有更低的 GC。其它细节包括使用 OpenSSL 替换 Java 标准库，等等。</p>
 <p>另一方面，NIO 在使用上不够直观。仅仅 <code>flip</code> 这个方法的设计就很迷惑——像 Netty 一样为读和写单独设置两个指针多方便。</p>
 <h2 id="Netty-自测问题"><a href="#Netty-自测问题" class="headerlink" title="Netty 自测问题"></a>Netty 自测问题</h2><p>看完 Netty in Action 之后我反问自己都了解到了些什么，想到了如下的问题：</p>
@@ -422,10 +434,7 @@
 <li>Channel 就是一种“传输（transport）”，一个 Socket 就属于 Channel，所以最简单可以理解为，Channel 就是一个 Socket；</li>
 <li>一个 Channel 在它的生命周期内只注册于一个 EventLoop；</li>
 <li>一个 EventLoop 在它的生命周期中只与一个 Thread 绑定。实际上，最常用的实现 NioEventLoop 扩展自 SingleThreadEventLoop；</li>
-<li><ul>
 <li>一个 EventLoop 可能会被分配给一个或多个 Channel（这样一来，不必每个 Socket 连接就分配一个线程，用有限的线程支撑更多的连接）；</li>
-</ul>
-</li>
 </ul>
 <p>这种设计消除了同步（synchronization）的需求，因为一个 Channel 的所有 I/O 操作都是由同一个线程（异步地）完成的。</p>
 <ul>
@@ -482,6 +491,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/03/Netty 线程模型（二）/" rel="prev" title="Netty（二）线程模型与 Bytebuf">
+                Netty（二）线程模型与 Bytebuf <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -551,7 +564,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">10</span>
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
