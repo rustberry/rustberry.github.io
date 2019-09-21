@@ -304,6 +304,240 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/22/Zookeeper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Rust">
+      <meta itemprop="description" content="programming and free market">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/09/22/Zookeeper/" itemprop="url">
+                  ZooKeeper：分布式过程协同技术详解 -- 读书笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+
+              
+                
+              
+
+              <time title="Created: 2019-09-22 00:18:40 / Modified: 00:23:57" itemprop="dateCreated datePublished" datetime="2019-09-22T00:18:40+08:00">2019-09-22</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">In</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/ZooKeeper/" itemprop="url" rel="index"><span itemprop="name">ZooKeeper</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="ZooKeeper：分布式过程协同技术详解-–-读书笔记"><a href="#ZooKeeper：分布式过程协同技术详解-–-读书笔记" class="headerlink" title="ZooKeeper：分布式过程协同技术详解 – 读书笔记"></a>ZooKeeper：分布式过程协同技术详解 – 读书笔记</h1><blockquote>
+<p>要点：第九章 Zab 协议、ZK 对写事务日志的优化。</p>
+</blockquote>
+<h2 id="Installation-amp-configuration"><a href="#Installation-amp-configuration" class="headerlink" title="Installation &amp; configuration"></a>Installation &amp; configuration</h2><p>Todo: <code>/tmp/zookeeper</code> –&gt; <code>/var/lib/zookeeper</code></p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><h4 id="chapter-2"><a href="#chapter-2" class="headerlink" title="chapter 2"></a>chapter 2</h4><p>types of <code>znode</code>:</p>
+<ul>
+<li>persistent, ephemeral, persistent_sequential, ephemeral_sequential；</li>
+<li>持久节点、临时节点、持久有序节点、临时有序节点；</li>
+<li>被创建为有序的节点被分配一个递增的整数，总而，形成了一个全局唯一的名字；</li>
+<li>节点除了拥有名字（父节点名字 + 自身名字），还可以像文件夹一样，存有数据；</li>
+</ul>
+<p>通知</p>
+<p>Zookeeper 中可以在节点上注册事件，而不需要轮询。事件可以包括 znode 数据的变化、子节点的变化、znode 的创建删除。</p>
+<p>会话 session</p>
+<p>客户端通过 TCP 与服务端通信。当此前会话无法继续（掉线，超过延迟时限），客户端的会话会被透明地转移到下一个服务器。</p>
+<p>Zookeeper 保证，在同一个会话中的请求是以 FIFO 的顺序执行。但是如果客户端拥有多个并发的会话，则不保证。</p>
+<p>会话状态</p>
+<p>NOT_CONNECTED –&gt; CONNECTING &lt;==&gt; CONNECTED –&gt; CLOSED</p>
+<p>客户端不能声明自己的会话到期（timedout），但是可以显示关闭会话。</p>
+<p>进阶：事务标识符 zkid 在客户端连接中的使用。</p>
+<h5 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h5><p>Zookeeper 可以配置三种 TCP 端口。前两种是关于服务端的，第三种在 <code>zoo.cfg</code> 中称为  <code>clientPort</code>。一个仲裁模式（quorum）的配置示例如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">tickTime=2000</span><br><span class="line">initLimit=10</span><br><span class="line">syncLimit=5</span><br><span class="line">dataDir=./data</span><br><span class="line">clientPort=2181</span><br><span class="line"></span><br><span class="line">server.1=127.0.0.1:2222:2223</span><br><span class="line">server.2=127.0.0.1:3333:3334</span><br><span class="line">server.3=127.0.0.1:4444:4445</span><br></pre></td></tr></table></figure>
+<p>在对服务器的配置 <code>server.1=127.0.0.1:2222:2223</code> 中，第一个端口 <code>2222</code> 是<em>仲裁通信</em>，follower 通过这个端口来接受 leader 传达的更新指令；第二个端口用于 leader 选举。</p>
+<h4 id="connectString"><a href="#connectString" class="headerlink" title="connectString"></a>connectString</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zookeeper/bin/zkCli.sh -server 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</span><br></pre></td></tr></table></figure>
+<p>上面的 <code>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</code> 就是所谓连接字符串（connectString）。不仅在命令行的 <code>zkCli</code> 中使用，API 库也是同样的道理。连接字符串列出了本客户端可以连接的所有服务器。其中的端口，就是在各个 Zookeeper 服务器的 <code>zoo.cfg</code> 配置文件中的 <code>clientPort</code>。</p>
+<h4 id="chap-3-使用-Zookeeper-API-库"><a href="#chap-3-使用-Zookeeper-API-库" class="headerlink" title="chap 3 使用 Zookeeper API 库"></a>chap 3 使用 Zookeeper API 库</h4><p>创建 Zookeeper 句柄（handle）；实现 Watcher、认识 Zookeeper 自动管理与服务端的断连；同步地创建节点 <code>zk.create(...)</code>；同步地获取 znode 中的数据 <code>byte[] getData(...)</code>、处理 <code>ConnectionLossException</code> ；异步创建节点、实践：异步创建元数据 path；<code>StatCallback</code>；</p>
+<p>关于回调的注意：回调函数中的 <code>Object ctx</code> 在需要在回调中再次调用自身的场景中被使用到，如处理返回码为 <code>ConnectionLossException</code> 时，再次调用自身这个回调函数。</p>
+<p>chap 4 Dealing with State Change</p>
+<p>当一个监视点（watch）被一个事件（event）触发，就会产生一个通知（notification）。</p>
+<p>在某些 ZooKeeper 的封装库（wrapper ）中，对 ConnectionLoss 的处理就是自动重新发送相应指令。某些情况这会带来大问题，比如通过 <code>create</code> 创建 <code>/master</code> 节点来获取领导权。如果客户端在 <code>create</code> 成功之后丢失连接，此时 wrapper 库自动重发指令，就会收到创建失败的响应，因为节点之前已经被创建好了。但是如果不知道这一细节，应用就会认为是其它节点已经创建了 master 节点获得了领导权。</p>
+<h4 id="chap-9-原理"><a href="#chap-9-原理" class="headerlink" title="chap 9 原理"></a>chap 9 原理</h4><p>ZK 要求，新的 Quorum 数量的服务器中，必须有一台以上的机器是属于上一个群首的 Quorum。</p>
+<p>ZK 服务器的分类方式：分为 Leader 和 Follower，或者分为 Participant 和 Observer。Observer 和 Follower 可以统称为 Learner，因为它们“学习”群首的指示。</p>
+<p>对于 Follower 有两类广播：</p>
+<ul>
+<li><code>proposal</code>：包含有 transaction 的内容。</li>
+<li><code>commit</code>：只包含 zxid。</li>
+</ul>
+<p>对于 Observer 只有一类：</p>
+<ul>
+<li><code>INFORM</code>：已被 commit 了的 proposal 的内容。</li>
+</ul>
+<h5 id="ZAB-协议"><a href="#ZAB-协议" class="headerlink" title="ZAB 协议"></a>ZAB 协议</h5><ul>
+<li>两阶段提交：对于一个写请求操作，群首广播出一个 Proposal。对于这个 Proposal，追随者收到之后返回 ACK 消息，通知群首其已接收此 Proposal。在收到达到仲裁数量（群首自己也算在内）的服务器发送的 ACK 之后，群首发出 <code>commit</code> 的广播。</li>
+<li>Zab 提供的顺序保障：<ul>
+<li>如果群首按顺序广播了事务 <code>T1</code> 和 <code>T2</code>，那么每个服务器在 commit <code>T2</code> 之前保证 <code>T1</code> 已经被提交；</li>
+<li>如果某个服务器按照 <code>T1</code> 、<code>T2</code> 的顺序提交事务，那么其它服务器也保证是按这个顺序提交的。</li>
+</ul>
+</li>
+<li>epoch 时间戳：每次群首选举中递增 <code>1</code></li>
+<li>Zab 提供的脑裂保障：<ul>
+<li>新群首必须要确保所有之前的时间戳内需要提交的事务被全部提交完，然后才开始新的广播；</li>
+<li>在任何时间点，都不会同时出现两个被仲裁数量支持的群首。</li>
+</ul>
+</li>
+</ul>
+<p>由于在选举群首时，选举上的是 <code>zxid</code> 最大的服务器，我们就不需要将最新状态从跟随服务器更新到群首服务器，因为群首就是代表最新状态；我们所需要的，就是直接发送更新到追随者。</p>
+<h5 id="ZK-有效写入事务日志"><a href="#ZK-有效写入事务日志" class="headerlink" title="ZK 有效写入事务日志"></a>ZK 有效写入事务日志</h5><p>ZK 如何有效写入事务日志：写事务日志是写请求操作的关键，ZK 用了两种方式来优化：1）组团提交 2）预先填充（padding）。</p>
+<p>实际上，对于组团提交，就是在需要 flush 到磁盘（来保证事务已被持久化）时，把所有队列中的事务都<em>顺带</em> flush 到磁盘。注意，ZK 服务器只有在事务已经写入日志之后才会确认对应的 Proposal，也就是在确认事务之前，该事务已经被持久化到磁盘了。为了保证在 <code>commit</code> 方法返回后写入的数据已经存在于磁盘（而不是操作系统的写缓冲区），磁盘写缓存必须被关闭。</p>
+<p><strong>预先填充（padding）</strong>是指预先为日志文件分配多余的磁盘块。在 Linux 系统中，一个文件中的数据储存在一个个分配给它的块（block）中。当向文件中写入时，如果当前分配的磁盘块用尽了，就要花时间请求分配新的磁盘块。这种请求需要修改该文件所对应的元数据，因此预先分配就会减少这一次磁盘寻道。</p>
+<h5 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h5><p>Standalone 模式下的单独服务器与仲裁模式（Quorum）下的群首服务器负责跟踪<em>所有会话</em>。追随者只是将客户端的会话信息转发给群首。</p>
+<h5 id="监视点"><a href="#监视点" class="headerlink" title="监视点"></a>监视点</h5><p>服务端不会持久化监视点，因此监视点的数据在<em>客户端</em>保存。在掉线重连之后，客户端将监视点的信息同步到服务端</p>
+<h3 id="机翻问题。。"><a href="#机翻问题。。" class="headerlink" title="机翻问题。。"></a>机翻问题。。</h3><p>机翻</p>
+<p>P58：</p>
+<p>异步方法调用会简单化队列对 Zookeeper 服务器的请求，并在另一个线程中传输请求。</p>
+<p>当接收到响应信息，这些请求就会在一个专用回调线程中被处理。</p>
+<p>为了保持顺序，只会有一个单独的线程按照接收顺序处理响应包</p>
+<p>原文：</p>
+<p>The asynchronous method simply queues the request to the ZooKeeper server. Transmission happens on another thread. When responses are received, they are processed on a dedicated callback thread. To preserve order, there is a single callback thread and responses are processed in the order they are received.</p>
+<p>我认为好的翻译：</p>
+<p>这个异步方法只是简单地把请求加入 ZooKeeper 服务器的请求队列中。传输请求的任务由另一个线程完成。</p>
+<p>收到响应之后，<strong>响应</strong>由一个专门的回调线程处理。</p>
+<p>为了保证顺序，只会有一个单独的回调线程，按照接收到的顺序处理响应。</p>
+<p>Returns the result of the call：返回调用的结构。</p>
+<h3 id="关于-InterruptedException"><a href="#关于-InterruptedException" class="headerlink" title="关于 InterruptedException"></a>关于 <code>InterruptedException</code></h3><p>使用 ZK 的 API 库时会遇到不少的方法，抛出 <code>InterruptedException</code>。作者在书中也表示很无奈，没有一劳永逸的解决办法，还是要取决于具体状况，来决定是让这个异常沿着调用栈上浮，还是其它办法：</p>
+<blockquote>
+<p>In our example, we simply pass the InterruptedException to the caller and thus let it bubble up. Unfortunately, in Java there aren’t clear guidelines for how to deal with thread interruption, or even what it means. Sometimes the interruptions are used to signal threads that things are being shut down and they need to clean up. In other cases, an interruption is used to get control of a thread, but execution of the application continues.<br>Our handling of InterruptedException depends on our context. If the InterruptedException will bubble up and eventually close our zk handle, we can let it go up the stack and everything will get cleaned up when the handle is closed. If the zk handle is not closed, we need to figure out if we are the master before rethrowing the exception or asynchronously continuing the operation. This latter case is particularly tricky and requires careful design to handle properly.</p>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/Netty 线程模型（二）/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -2132,273 +2366,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/程序员练级指南/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Rust">
-      <meta itemprop="description" content="programming and free market">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rust Shrugged">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/05/程序员练级指南/" itemprop="url">
-                  程序员练级指南
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-
-            
-            
-            
-
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">Posted on</span>
-              
-
-              
-                
-              
-
-              <time title="Created: 2018-07-05 23:31:00" itemprop="dateCreated datePublished" datetime="2018-07-05T23:31:00+08:00">2018-07-05</time>
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">In</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/读书笔记/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a></span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <blockquote>
-<p>终于在极客时间上剁手了<br>这篇是耗子叔的那几篇入门指导的浓缩</p>
-</blockquote>
-<p>[TOC]</p>
-<h1 id="入门篇"><a href="#入门篇" class="headerlink" title="入门篇"></a>入门篇</h1><h2 id="零基础启蒙"><a href="#零基础启蒙" class="headerlink" title="零基础启蒙"></a>零基础启蒙</h2><h3 id="两份入门教程（Python-amp-JS）"><a href="#两份入门教程（Python-amp-JS）" class="headerlink" title="两份入门教程（Python &amp; JS）"></a>两份入门教程（Python &amp; JS）</h3><p>都是从零开始</p>
-<ul>
-<li><a href="https://book.douban.com/subject/5338024/" target="_blank" rel="noopener">与孩子一起学编程</a>，六、二十章为 GUI</li>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web" target="_blank" rel="noopener">MDN Web 开发入门</a>，教程带你建立一个网站</li>
-</ul>
-<h3 id="Python-与-JavaScript-入门语言"><a href="#Python-与-JavaScript-入门语言" class="headerlink" title="Python 与 JavaScript 入门语言"></a>Python 与 JavaScript 入门语言</h3><h4 id="Python-书籍"><a href="#Python-书籍" class="headerlink" title="Python 书籍"></a>Python 书籍</h4><ul>
-<li><a href="https://book.douban.com/subject/26836700/" target="_blank" rel="noopener">Python 编程快速上手</a>，控制鼠标、破解 PDF</li>
-<li><a href="https://book.douban.com/subject/26829016/" target="_blank" rel="noopener">Python 编程：从入门到实践</a>，“有 Web 项目、代码部署内容”，Django 学习笔记网站，Heroku 部署，若时间有限，这一本</li>
-</ul>
-<h4 id="JavaScript-在线教程"><a href="#JavaScript-在线教程" class="headerlink" title="JavaScript 在线教程"></a>JavaScript 在线教程</h4><ul>
-<li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target="_blank" rel="noopener">MDN JS 教程</a>，“从初级到中级再到高级，十分全面”</li>
-<li><a href="http://www.w3school.com.cn/js/" target="_blank" rel="noopener">W3School JS 教程，</a>偏 Web 方向</li>
-<li><a href="https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000" target="_blank" rel="noopener">廖雪峰 JS 全栈教程</a>，偏应用偏 Web，包括 Node.js</li>
-</ul>
-<h3 id="操作系统入门-Linux"><a href="#操作系统入门-Linux" class="headerlink" title="操作系统入门 Linux"></a>操作系统入门 Linux</h3><p><a href="https://www.w3cschool.cn/linux/" target="_blank" rel="noopener">W3CSchool Linux 教程</a></p>
-<h3 id="Microsoft-Visual-Studio-Code"><a href="#Microsoft-Visual-Studio-Code" class="headerlink" title="(Microsoft) Visual Studio Code"></a>(Microsoft) Visual Studio Code</h3><p><a href="https://legacy.gitbook.com/book/jeasonstudio/vscode-cn-doc/details" target="_blank" rel="noopener">中文手册</a>，不一定非要。吸引我：在终端工具内打印 Debug 信息</p>
-<h3 id="Web-编程入门"><a href="#Web-编程入门" class="headerlink" title="Web 编程入门"></a>Web 编程入门</h3><h4 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h4><ul>
-<li>MDN CSS 文档 与 HTML 文档，参考而不是记忆</li>
-<li>JS DOM 与动态网页 <a href="https://www.w3schools.com/js/js_htmldom.asp" target="_blank" rel="noopener">W3Schools 的 JavaScript HTML DOM 教程</a></li>
-<li>要点：<ul>
-<li>HTML 基本语法</li>
-<li>CSS 如何选中 HTML 元素，应用一些基本样式</li>
-<li>用 Firefox + Firebug 或 Chrome 查看炫酷网页结构</li>
-</ul>
-</li>
-</ul>
-<h4 id="后端（PHP）"><a href="#后端（PHP）" class="headerlink" title="后端（PHP）"></a>后端（PHP）</h4><h3 id="实践项目"><a href="#实践项目" class="headerlink" title="实践项目"></a>实践项目</h3><p>极简 Blog 系统，或是 BBS 系统，支持如下功能：</p>
-<ul>
-<li>用户登录和注册，无密码找回</li>
-<li>用户发帖，仅支持纯文本</li>
-<li>评论，纯文本</li>
-</ul>
-<p>从前端到后端，从 HTML/CSS/JS 到 Python，再到数据库</p>
-<p>注意的技术点：</p>
-<ul>
-<li>用户登录密码不保存为明文</li>
-<li>用户登录后，可对自己帖子 “重新编辑”、”删除“，但无权修改其它用户</li>
-<li>数据库设计。三张表：用户表，文章表，评论表，<strong>他们之间的关联</strong></li>
-</ul>
-<h2 id="正式入门"><a href="#正式入门" class="headerlink" title="正式入门"></a>正式入门</h2><h3 id="编程技能"><a href="#编程技能" class="headerlink" title="编程技能"></a>编程技能</h3><p><a href="http://blog.thefirehoseproject.com/posts/learn-to-code-and-be-self-reliant/" target="_blank" rel="noopener">The Key to Accelerating Your Coding Skills</a>，文章</p>
-<ul>
-<li>编程技巧：Code Complete</li>
-<li>编程语言：学习 Java</li>
-<li>操作系统：鸟哥的 Linux 私房菜</li>
-<li>网络协议：系统了解 HTTP 协议，<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP" target="_blank" rel="noopener">MDN HTTP 文档</a>，关键点：<ul>
-<li>HTTP 头、HTTP 请求方法、HTTP 返回码</li>
-<li>Cookie，缓存，会话，连接管理</li>
-</ul>
-</li>
-<li>数据库设计：慕课网在线课程；推荐学习 MySQL</li>
-<li>前端：jQuery，Bootstrap；Ajax 请求后端 API 接口方式；JS Promise 模式，阮一峰教程</li>
-<li>字符编码</li>
-</ul>
-<h3 id="编程工具"><a href="#编程工具" class="headerlink" title="编程工具"></a>编程工具</h3><ul>
-<li><strong>IDE</strong>：Eclipse，<a href="https://www.imooc.com/learn/924" target="_blank" rel="noopener">Intellij IDEA</a>，VS Code</li>
-<li><strong>版本管理工具</strong>：Git 使用资料</li>
-<li><strong>调试前端</strong>：用 Chrome 调试，资料</li>
-<li><strong>数据库设计工具</strong>：MySQL WorkBench，资料</li>
-</ul>
-<h3 id="实践项目-1"><a href="#实践项目-1" class="headerlink" title="实践项目"></a>实践项目</h3><p>投票系统</p>
-<p>业务需求：技术需求：</p>
-<h3 id="入门篇小结"><a href="#入门篇小结" class="headerlink" title="入门篇小结"></a>入门篇小结</h3><ul>
-<li>1 - 2 年时间</li>
-<li>不用精通，能独立做出实践项目即是真正入门（耗子叔对入门的定义）</li>
-<li>年薪 20万</li>
-</ul>
-<h1 id="修养篇"><a href="#修养篇" class="headerlink" title="修养篇"></a>修养篇</h1><h2 id="程序员修养"><a href="#程序员修养" class="headerlink" title="程序员修养"></a>程序员修养</h2><p>Quora 帖子</p>
-<h3 id="附录：编程规范"><a href="#附录：编程规范" class="headerlink" title="附录：编程规范"></a>附录：编程规范</h3><h1 id="专业基础篇"><a href="#专业基础篇" class="headerlink" title="专业基础篇"></a>专业基础篇</h1><h2 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h2><ul>
-<li>C 坑</li>
-<li>C ++</li>
-<li>Java<ul>
-<li>C –&gt; C ++ –&gt; Java</li>
-</ul>
-</li>
-<li>Go</li>
-</ul>
-<h2 id="理论学科"><a href="#理论学科" class="headerlink" title="理论学科"></a>理论学科</h2><p>”计算机学科最精华的知识，人类智慧的精华“</p>
-<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><ul>
-<li>三本书推荐，先后顺序</li>
-<li>LeetCode 使用</li>
-<li>“如果想要有科班生理论基础”：<ul>
-<li>数据结构与算法分析</li>
-</ul>
-</li>
-<li>小结</li>
-</ul>
-<h2 id="系统知识"><a href="#系统知识" class="headerlink" title="系统知识"></a>系统知识</h2><p>Wireshark 数据包分析实战</p>
-<h3 id="系统知识小程序"><a href="#系统知识小程序" class="headerlink" title="系统知识小程序"></a>系统知识小程序</h3><h3 id="实践项目-2"><a href="#实践项目-2" class="headerlink" title="实践项目"></a>实践项目</h3><ul>
-<li>实现一个 telnet 版本的聊天服务器<ul>
-<li><code>telnet ip:port</code>的方式连接服务器</li>
-<li><strong>新连接</strong>需要用户名和密码登录，无则注册</li>
-<li><em>然后</em>可以选择一个聊天室加入聊天</li>
-<li><strong>管理员</strong>有权创建删除聊天室，<strong>普通人员</strong>只有 加入、退出、查询、聊天室</li>
-<li>聊天室人数限制；每个人发出来的其他人都能看到</li>
-</ul>
-</li>
-<li>简单的 HTTP 服务器<ul>
-<li>解释浏览器传来的 HTTP 协议，只处理 URL path</li>
-<li><em>然后</em>列出所代理的目录</li>
-<li>浏览器上可以浏览目录里的文件，和下级目录</li>
-<li><em>点击文件</em>，则文件传给浏览器（浏览器可自动显示图片、PDF、等）</li>
-<li><em>点击子目录</em>，则进入子目录，并列出文件</li>
-</ul>
-</li>
-<li>生产者 / 消费者消息队列服务</li>
-</ul>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
-<li>还有热情与成就感：恭喜，超过了绝大多数人；50 万</li>
-<li>术业有专攻，建议的方向</li>
-</ul>
-<h1 id="软件设计篇"><a href="#软件设计篇" class="headerlink" title="软件设计篇"></a>软件设计篇</h1><h2 id="软件设计"><a href="#软件设计" class="headerlink" title="软件设计"></a>软件设计</h2><h1 id="高手成长篇"><a href="#高手成长篇" class="headerlink" title="高手成长篇"></a>高手成长篇</h1><h2 id="系统底层知识"><a href="#系统底层知识" class="headerlink" title="系统底层知识"></a>系统底层知识</h2>
-          
-        
-      
-    </div>
-
-    
-
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -2446,7 +2413,7 @@
                 
                   <a href="/archives">
                 
-                    <span class="site-state-item-count">11</span>
+                    <span class="site-state-item-count">12</span>
                     <span class="site-state-item-name">posts</span>
                   </a>
                 </div>
@@ -2477,7 +2444,9 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                    <span class="site-state-item-count">10</span>
                     <span class="site-state-item-name">categories</span>
                   </a>
                 </div>
