@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术&#x2F;开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Netty 基础组件与线程模型--概述">
+<meta property="og:url" content="http://yoursite.com/2023/02/10/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Rust Shrugged">
+<meta property="og:description" content="Netty 基础组件与线程模型–概述即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 Netty in Action 总结一下。 Netty 想要解决什么问题一项新技术&#x2F;开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。 以我目前的水平回答，是为了弥补 Java 标准库在 I&#x2F;">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-10T05:13:07.167Z">
+<meta property="article:modified_time" content="2023-02-10T05:13:07.167Z">
+<meta property="article:author" content="Jimmy Xu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2023/02/10/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2023/02/10/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/","path":"2023/02/10/Netty 基础组件与线程模型--概述/","title":"Netty 基础组件与线程模型--概述"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Netty 基础组件与线程模型--概述 | Rust Shrugged</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Rust Shrugged</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Programming and a free mind</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%E2%80%93%E6%A6%82%E8%BF%B0"><span class="nav-number">1.</span> <span class="nav-text">Netty 基础组件与线程模型–概述</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-%E6%83%B3%E8%A6%81%E8%A7%A3%E5%86%B3%E4%BB%80%E4%B9%88%E9%97%AE%E9%A2%98"><span class="nav-number">1.1.</span> <span class="nav-text">Netty 想要解决什么问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty-%E8%87%AA%E6%B5%8B%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.</span> <span class="nav-text">Netty 自测问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E5%8D%95%E6%A2%B3%E7%90%86"><span class="nav-number">1.3.</span> <span class="nav-text">简单梳理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B"><span class="nav-number">1.4.</span> <span class="nav-text">线程模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Reactor-pattern-amp-Proactor-pattern"><span class="nav-number">1.4.1.</span> <span class="nav-text">Reactor pattern &amp; Proactor pattern</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-%E7%9A%84-Boss-Worker-EventLoopGroup"><span class="nav-number">1.4.2.</span> <span class="nav-text">Netty 的 Boss-Worker EventLoopGroup</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimmy Xu</p>
+  <div class="site-description" itemprop="description">Tu ne cede malis, sed contra audentior ito</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/10/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Netty 基础组件与线程模型--概述 | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Netty 基础组件与线程模型--概述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-10 05:13:07" itemprop="dateCreated datePublished" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Netty-基础组件与线程模型–概述"><a href="#Netty-基础组件与线程模型–概述" class="headerlink" title="Netty 基础组件与线程模型–概述"></a>Netty 基础组件与线程模型–概述</h1><p>即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 <em>Netty in Action</em> 总结一下。</p>
+<h2 id="Netty-想要解决什么问题"><a href="#Netty-想要解决什么问题" class="headerlink" title="Netty 想要解决什么问题"></a>Netty 想要解决什么问题</h2><p>一项新技术&#x2F;开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。</p>
+<p>以我目前的水平回答，是为了弥补 Java 标准库在 I&#x2F;O 上的不足。这种不足我现在看来有两部分：性能与易用性。</p>
+<p>性能方面，作为标准库，API 稳定、统一的需求更重要，从而无法在提升性能上下狠功夫。Netty 则在各种角落实行了优化。最明显的是对垃圾回收与内存分配的修改，使得 ByteBuf 一定程度由使用者手动管理；以及针对不同平台提供与底层实现紧密相关的优化，比如针对 Linux 的 EpollEventLoopGroup，从而能提供边缘触发，而非 Java NIO 默认的水平触发。另外，据 Norman Maurer <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/36058105/8144090">自己所说</a>，还有更低的 GC。其它细节包括使用 OpenSSL 替换 Java 标准库，等等。</p>
+<p>另一方面，NIO 在使用上不够直观。仅仅 <code>flip</code> 这个方法的设计就很迷惑——像 Netty 一样为读和写单独设置两个指针多方便。</p>
+<h2 id="Netty-自测问题"><a href="#Netty-自测问题" class="headerlink" title="Netty 自测问题"></a>Netty 自测问题</h2><p>看完 Netty in Action 之后我反问自己都了解到了些什么，想到了如下的问题：</p>
+<p><code>EventLoop</code>  与 <code>EventLoopGroup</code> 的区别，之间的关系是什么？EventLoopGroup 拥有几个线程？EventLoop 呢？</p>
+<p>EventLoop 与 Channel 是什么关系？</p>
+<p>ChannelHandler 与 ChannelPipeline 是什么关系？</p>
+<p>ChannelHandlerAdapter 对 ChannelHandler 区别是什么，有何改进？</p>
+<p>Channel、ChannelHandler 生命周期？</p>
+<p>我发现很多问题自己居然都给不出回答，然后立刻回去看书的三、六、七章，有一种开窍的感觉。之前看第一遍时无感，并且不知道重点的内容，这一次都变成了问题的答案，看的过程也津津有味起来。</p>
+<h2 id="简单梳理"><a href="#简单梳理" class="headerlink" title="简单梳理"></a>简单梳理</h2><p>简单梳理一下基础的概念，下图来自《Netty in Action》，侵删：</p>
+<p>![Channel EventLoop and EventLoopGroup](&#x2F;content&#x2F;images&#x2F;2019&#x2F;Channel EventLoop and EventLoopGroup.png)</p>
+<ul>
+<li>Channel 就是一种“传输（transport）”，一个 Socket 就属于 Channel，所以最简单可以理解为，Channel 就是一个 Socket；</li>
+<li>一个 Channel 在它的生命周期内只注册于一个 EventLoop；</li>
+<li>一个 EventLoop 在它的生命周期中只与一个 Thread 绑定。实际上，最常用的实现 NioEventLoop 扩展自 SingleThreadEventLoop；</li>
+<li>一个 EventLoop 可能会被分配给一个或多个 Channel（这样一来，不必每个 Socket 连接就分配一个线程，用有限的线程支撑更多的连接）；</li>
+</ul>
+<p>这种设计消除了同步（synchronization）的需求，因为一个 Channel 的所有 I&#x2F;O 操作都是由同一个线程（异步地）完成的。</p>
+<ul>
+<li>ChannelPipeline 提供了 ChannelHandler 链的容器</li>
+</ul>
+<h2 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h2><h3 id="Reactor-pattern-amp-Proactor-pattern"><a href="#Reactor-pattern-amp-Proactor-pattern" class="headerlink" title="Reactor pattern &amp; Proactor pattern"></a>Reactor pattern &amp; Proactor pattern</h3><p>在学习阅读 Netty 的时候，我意识到书的作者以及文档作者都假定了，读者对于所谓的 Proactor 模式、Reactor 模式有所了解。所以我认为有必要先简要了解一下这两种模式。</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reactor_pattern">Reactor pattern</a> 有<strong>一个</strong>主线程，从多个 input 读取服务请求，然后把这些请求<strong>同步地</strong>分发给对应的服务处理线程。通常主线程使用同步的 <code>select</code> 来监听多个文件描述符，当一个阻塞操作，比如 <code>read()</code> 准备完毕，<code>select</code> 获得通知，就将其转发给服务处理线程。</p>
+<p>关于 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proactor_pattern">Proactor pattern</a>：</p>
+<blockquote>
+<p>The proactor pattern can be considered to be an <a target="_blank" rel="noopener" href="https://en.wiktionary.org/wiki/asynchronous">asynchronous</a> variant of the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Synchronization_(computer_science)">synchronous</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reactor_pattern">reactor pattern</a>.</p>
+<p>– Wikipedia</p>
+</blockquote>
+<p>Proactor 模式可以视作 Reactor 模式的异步形式。耗时长的任务异步地完成，在结束时发送通知。</p>
+<h3 id="Netty-的-Boss-Worker-EventLoopGroup"><a href="#Netty-的-Boss-Worker-EventLoopGroup" class="headerlink" title="Netty 的 Boss-Worker EventLoopGroup"></a>Netty 的 Boss-Worker EventLoopGroup</h3><p>了解了有这种主-从线程池的区分之后，就能理解，为什么很多 Netty 示例程序中 Server 的 <code>ServerBootStrap#group(EventLoopGroup, EventLoopGroup)</code> 会有绑定两个 EventLoopGroup。即使某些简单的 demo 实现中只绑定了一个，如： <code>group(EventLoopGroup)</code>，这一方法其实只是绑定主从 EventLoopGroup 的重载方法，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ServerBootstrap <span class="title function_">group</span><span class="params">(EventLoopGroup group)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> group(group, group);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>官方 <a target="_blank" rel="noopener" href="https://netty.io/wiki/user-guide-for-4.x.html">User Guide</a> 的解释如下：</p>
+<blockquote>
+<p>The first one, often called ‘boss’, accepts an incoming connection. The second one, often called ‘worker’, handles the traffic of the accepted connection once the boss accepts the connection and registers the accepted connection to the worker. </p>
+</blockquote>
+<p>第一个是被称为 boss 的 EventLoopGroup，负责接受连接，第二个则被称为 worker，负责处理由 boss 分配给它的已接受的连接。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/10/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/" rel="prev" title="Netty（二）线程模型与 Bytebuf">
+                  <i class="fa fa-chevron-left"></i> Netty（二）线程模型与 Bytebuf
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimmy Xu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

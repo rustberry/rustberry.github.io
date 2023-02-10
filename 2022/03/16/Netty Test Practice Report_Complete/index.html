@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Netty Test Practice Report[TOC] Introduction of NettyNetty is a high-performance network application framework with asynchronous event-driven APIs that enables developers to focus on business logic, i">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Netty Test Practice Report">
+<meta property="og:url" content="http://yoursite.com/2022/03/16/Netty%20Test%20Practice%20Report_Complete/index.html">
+<meta property="og:site_name" content="Rust Shrugged">
+<meta property="og:description" content="Netty Test Practice Report[TOC] Introduction of NettyNetty is a high-performance network application framework with asynchronous event-driven APIs that enables developers to focus on business logic, i">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/content/images/2022/image-20220217154452797.png">
+<meta property="og:image" content="http://yoursite.com/content/images/2022/image-20220217154953918.png">
+<meta property="og:image" content="http://yoursite.com/content/images/2022/image-20220217155708587.png">
+<meta property="og:image" content="http://yoursite.com/content/images/2022/finiste_state_machine.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/16-01-16-05-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-03-16%20011445.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/16-01-20-20-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-03-16%20011632.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/16-01-26-49-embedded_channel.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/22-19-37-15-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-22%20193642.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-04-57-14-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-23%20045702.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-05-00-05-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-23%20050000.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-05-19-22-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-23%20051716.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-17-21-uncovered%20branches.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-32-04-branch_switch%20statement.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-03-00-deprecated.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-13-01-2022-02-23-06-11-17-image.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-05-40-08-uncovered%20lines_protected%20methods.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-19-49-uncovered%20method.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/24-06-37-45-coverage_after.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/27-22-28-28-netty-bot.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-02-28-26-workflow_run.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-02-38-48-docker_build.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-03-06-44-Avoid_checkstyle.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-03-11-20-gha_error1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/03-15-16-45-private%20static.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/03-15-18-28-the_private.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/03-15-25-01-only_var.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-28-44-netty_dynamic_ana.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-44-25-CheckStyle1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-47-04-checkstyle1_2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-50-23-checkstyle_code1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-53-35-checkstyle_code1_1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-51-20-checkstyle_code2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-14-05-06-spotbugs.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-19-07-43-pmd_cmd.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-19-04-42-pmd_sum.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-19-11-16-pmd_plugin.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-20-38-15-spot1.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-20-47-38-spot2.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-21-02-52-performance.png">
+<meta property="article:published_time" content="2022-03-16T13:56:00.000Z">
+<meta property="article:modified_time" content="2022-03-16T13:56:00.000Z">
+<meta property="article:author" content="Jimmy Xu">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/content/images/2022/image-20220217154452797.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2022/03/16/Netty%20Test%20Practice%20Report_Complete/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2022/03/16/Netty%20Test%20Practice%20Report_Complete/","path":"2022/03/16/Netty Test Practice Report_Complete/","title":"Netty Test Practice Report"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Netty Test Practice Report | Rust Shrugged</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Rust Shrugged</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Programming and a free mind</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-Test-Practice-Report"><span class="nav-number">1.</span> <span class="nav-text">Netty Test Practice Report</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Introduction-of-Netty"><span class="nav-number">1.1.</span> <span class="nav-text">Introduction of Netty</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-vs-java-net-async-and-event-driven"><span class="nav-number">1.1.1.</span> <span class="nav-text">Netty vs java.net: async and event-driven</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-vs-java-nio-ByteBuffer-for-everyone"><span class="nav-number">1.1.2.</span> <span class="nav-text">Netty vs java.nio: ByteBuffer for everyone</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Beyond-nio-and-net-Extensibility"><span class="nav-number">1.1.3.</span> <span class="nav-text">Beyond nio and net: Extensibility</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Project-statistics"><span class="nav-number">1.1.4.</span> <span class="nav-text">Project statistics</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Building-the-project"><span class="nav-number">1.2.</span> <span class="nav-text">Building the project</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Existing-test-cases"><span class="nav-number">1.3.</span> <span class="nav-text">Existing test cases</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-suites-analysis-in-terms-of-functional-testing-and-partition-testing"><span class="nav-number">1.4.</span> <span class="nav-text">Test suites analysis in terms of functional testing and partition testing</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Partition-example-reference-counting-feature"><span class="nav-number">1.4.1.</span> <span class="nav-text">Partition example: reference counting feature</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#JUnit-cases-for-this-example"><span class="nav-number">1.4.1.1.</span> <span class="nav-text">JUnit cases for this example</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-Test-Practice-Report-Chapter-2"><span class="nav-number">2.</span> <span class="nav-text">Netty Test Practice Report - Chapter 2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-finite-model"><span class="nav-number">2.1.</span> <span class="nav-text">Why finite model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Functional-model-example-Netty%E2%80%99s-event-based-data-processing-components"><span class="nav-number">2.2.</span> <span class="nav-text">Functional model example: Netty’s event-based data processing components</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Finite-state-machine-for-the-inbound-components"><span class="nav-number">2.2.1.</span> <span class="nav-text">Finite state machine for the inbound components</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-suites-for-this-functional-model"><span class="nav-number">2.3.</span> <span class="nav-text">Test suites for this functional model</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References"><span class="nav-number">2.4.</span> <span class="nav-text">References</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-Test-Practice-Report-Chapter-3"><span class="nav-number">3.</span> <span class="nav-text">Netty Test Practice Report - Chapter 3</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Why-structural-testing"><span class="nav-number">3.1.</span> <span class="nav-text">Why structural testing</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Test-adequacy-report-on-netty-buffer-module"><span class="nav-number">3.2.</span> <span class="nav-text">Test adequacy report on netty-buffer module</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Configuration-for-collecting-test-coverage-data"><span class="nav-number">3.2.1.</span> <span class="nav-text">Configuration for collecting test coverage data</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Test-coverage-statistics"><span class="nav-number">3.2.2.</span> <span class="nav-text">Test coverage statistics</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Line-and-branch-level-coverage"><span class="nav-number">3.2.2.1.</span> <span class="nav-text">Line and branch level coverage</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Method-level-coverage"><span class="nav-number">3.2.2.2.</span> <span class="nav-text">Method level coverage</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Improving-test-coverage-of-netty-buffer"><span class="nav-number">3.3.</span> <span class="nav-text">Improving test coverage of netty-buffer</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Added-test-cases"><span class="nav-number">3.3.1.</span> <span class="nav-text">Added test cases</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Outcomes-of-newly-added-test-cases"><span class="nav-number">3.3.2.</span> <span class="nav-text">Outcomes of newly added test cases</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References-1"><span class="nav-number">3.4.</span> <span class="nav-text">References</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Address-of-the-repo"><span class="nav-number">3.5.</span> <span class="nav-text">Address of the repo</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-Test-Practice-Report-Chapter-4"><span class="nav-number">4.</span> <span class="nav-text">Netty Test Practice Report - Chapter 4</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#What-is-Continuous-Integration-and-Why-Use-it"><span class="nav-number">4.1.</span> <span class="nav-text">What is Continuous Integration and Why Use it</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Why-open-source-project-also-needs-continuous-integration"><span class="nav-number">4.1.1.</span> <span class="nav-text">Why open source project also needs continuous integration</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Netty%E2%80%99s-Continuous-Integration-Practice"><span class="nav-number">4.2.</span> <span class="nav-text">Netty’s Continuous Integration Practice</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Obstacles-while-practices-GitHub-Actions"><span class="nav-number">4.2.1.</span> <span class="nav-text">Obstacles while practices GitHub Actions</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Commit-address-of-new-changes"><span class="nav-number">4.3.</span> <span class="nav-text">Commit address of new changes</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References-2"><span class="nav-number">4.4.</span> <span class="nav-text">References</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-Test-Practice-Report-Chapter-5-Testable-Design-and-Mocking"><span class="nav-number">5.</span> <span class="nav-text">Netty Test Practice Report - Chapter 5: Testable Design and Mocking</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Definition-of-testable-design-and-its-goals"><span class="nav-number">5.1.</span> <span class="nav-text">Definition of testable design and its goals</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Testability-in-some-of-Netty%E2%80%99s-current-code"><span class="nav-number">5.2.</span> <span class="nav-text">Testability in some of Netty’s current code</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mocking-and-its-usage-in-Netty"><span class="nav-number">5.3.</span> <span class="nav-text">Mocking and its usage in Netty</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-mocking-example-in-Netty"><span class="nav-number">5.3.1.</span> <span class="nav-text">A mocking example in Netty</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References-3"><span class="nav-number">5.4.</span> <span class="nav-text">References</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty-Test-Practice-Report-Chapter-6"><span class="nav-number">6.</span> <span class="nav-text">Netty Test Practice Report - Chapter 6</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Static-analysis-tools-and-their-benefits"><span class="nav-number">6.1.</span> <span class="nav-text">Static analysis tools and their benefits</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-analysis-tools-in-current-Netty-project"><span class="nav-number">6.2.</span> <span class="nav-text">Code analysis tools in current Netty project</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Dynamic-analysis"><span class="nav-number">6.2.1.</span> <span class="nav-text">Dynamic analysis</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Static-analysis"><span class="nav-number">6.2.2.</span> <span class="nav-text">Static analysis</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Code-analysis-using-SpotBugs-and-PMD"><span class="nav-number">6.3.</span> <span class="nav-text">Code analysis using SpotBugs and PMD</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Overview-of-the-results"><span class="nav-number">6.3.1.</span> <span class="nav-text">Overview of the results</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Detailed-analysis-of-some-important-warnings"><span class="nav-number">6.3.2.</span> <span class="nav-text">Detailed analysis of some important warnings</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Findings-of-PMD"><span class="nav-number">6.3.2.1.</span> <span class="nav-text">Findings of PMD</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Findings-of-SpotBugs"><span class="nav-number">6.3.2.2.</span> <span class="nav-text">Findings of SpotBugs</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Conclusion-and-comparison"><span class="nav-number">6.3.3.</span> <span class="nav-text">Conclusion and comparison</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#References-4"><span class="nav-number">6.4.</span> <span class="nav-text">References</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimmy Xu</p>
+  <div class="site-description" itemprop="description">Tu ne cede malis, sed contra audentior ito</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2022/03/16/Netty%20Test%20Practice%20Report_Complete/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Netty Test Practice Report | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Netty Test Practice Report
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2022-03-16 13:56:00" itemprop="dateCreated datePublished" datetime="2022-03-16T13:56:00+00:00">2022-03-16</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Netty-Test-Practice-Report"><a href="#Netty-Test-Practice-Report" class="headerlink" title="Netty Test Practice Report"></a>Netty Test Practice Report</h1><p>[TOC]</p>
+<h2 id="Introduction-of-Netty"><a href="#Introduction-of-Netty" class="headerlink" title="Introduction of Netty"></a>Introduction of Netty</h2><p>Netty is a high-performance network application framework with asynchronous event-driven APIs that enables developers to focus on business logic, instead of low level details like synchronization, manual management of <code>ByteBuffer</code>. Simply put, Netty &gt; java.nio + java.net.</p>
+<h3 id="Netty-vs-java-net-async-and-event-driven"><a href="#Netty-vs-java-net-async-and-event-driven" class="headerlink" title="Netty vs java.net: async and event-driven"></a>Netty vs java.net: async and event-driven</h3><p>By leveraging callbacks, Netty implements a event model for network communication. User can register listeners to events and operations, and get async notification of the completion status of those registered handlers.</p>
+<p>Also, Netty eliminates the need for tedious synchronization by allowing only one thread to handle all the I&#x2F;O operations and events within a <code>EventLoop</code>.</p>
+<p>Those coming from other programming languages like JavaScript would find this practice very similar to async frameworks like Koa: accessing a global <code>ctx</code> from self-defined callbacks, and then easily attach them to different places.</p>
+<h3 id="Netty-vs-java-nio-ByteBuffer-for-everyone"><a href="#Netty-vs-java-nio-ByteBuffer-for-everyone" class="headerlink" title="Netty vs java.nio: ByteBuffer for everyone"></a>Netty vs java.nio: ByteBuffer for everyone</h3><p>Comparing JDK’s <code>ByteBuffer</code> to Netty’s <code>Bytebuf</code>, Netty mainly improved two issues: API friendliness and performance.</p>
+<ul>
+<li>No ease of use: <ul>
+<li>once it’s instantiated, its capacity cannot be extended; </li>
+<li>only one index for both reading and writing;</li>
+<li>no <code>forEach</code>, user has to do bound checking every time.</li>
+</ul>
+</li>
+<li>Performance and GC overhead<ul>
+<li>writing a heap-based <code>ByteBuffer</code> requires copying the memory to direct buffer before passing it to JNI</li>
+<li>Netty manages direct buffer <em>directly</em>.</li>
+<li>Netty uses reference counting for more real-time efficient GC</li>
+</ul>
+</li>
+</ul>
+<h3 id="Beyond-nio-and-net-Extensibility"><a href="#Beyond-nio-and-net-Extensibility" class="headerlink" title="Beyond nio and net: Extensibility"></a>Beyond nio and net: Extensibility</h3><p>Separate of concerns: Using React model, Netty guides developers to separate business logic from the implementation of the application. </p>
+<p>Netty also has built-in support for self-defined protocol application development.</p>
+<p>Netty has extensive support for application layer protocols including UDP, TCP, HTTP(S), and even self defined ones. User could also attach the serialization library they like (e.g. Protobuf, Thrift).</p>
+<h3 id="Project-statistics"><a href="#Project-statistics" class="headerlink" title="Project statistics"></a>Project statistics</h3><p>Lines of Java code: <code>481,008</code>. Get the LOC using below command:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git ls-files | grep -E <span class="string">&#x27;.java&#x27;</span> | xargs <span class="built_in">wc</span> -l</span><br></pre></td></tr></table></figure>
+
+<p>On GitHub there are currently 28.5k stars and 14.1k forks. The project is still under active development.</p>
+<h2 id="Building-the-project"><a href="#Building-the-project" class="headerlink" title="Building the project"></a>Building the project</h2><p>It requires JDK 8 and Maven 3.8.1 or below to build. Run <code>mvn package</code> to compile the jar file. Skip the test using <code>mvn package -Dmaven.test.skip</code>. If you experience errors with <code>checkstyle</code>, you could also skip it using the <code>-Dcheckstyle.skip</code> option. Replace those options by <code>-D&quot;[option]&quot;=true</code> when using Windows PowerShell.</p>
+<p>As a framework that deals with OS-level I&#x2F;O, it provides additional artifact on Unix platform so that user can gain better performance and GC comparing to the NIO transport provided by JDK. Take Linux as an example,  add <code>netty-transport-native-epoll</code> to the dependencies of <code>pom</code> file. Then user could use these features by simply importing the respective special classes if they already have the corresponding JAR file.</p>
+<h2 id="Existing-test-cases"><a href="#Existing-test-cases" class="headerlink" title="Existing test cases"></a>Existing test cases</h2><p>Netty uses JUnit5 for testing, Mockito for mocking. During daily development, user can use a special class <code>EmbeddedChannel</code> to mock a Netty connection for testing.</p>
+<p>Unit tests are written inside each package. Due to the large amount of test cases, sometimes abstract test classes are created to define common methods to test.</p>
+<h2 id="Test-suites-analysis-in-terms-of-functional-testing-and-partition-testing"><a href="#Test-suites-analysis-in-terms-of-functional-testing-and-partition-testing" class="headerlink" title="Test suites analysis in terms of functional testing and partition testing"></a>Test suites analysis in terms of functional testing and partition testing</h2><p>As a type of black-box testing, functional testing derives test cases from the software’s specifications. The whole process involves identifying independently testable features, and then find relevant inputs based on such features. Finally, test cases specifications are formed. Since test writer doesn’t have to know any internal structure or implementation of the software, it could result in reduced developer bias.</p>
+<p>After specifications are broken into minimum testable features, the representative values and behaviors for a certain feature becomes clear. Failures are distributed unevenly in the whole possible inputs, so partitioning makes it easier to catch the failures by properly dividing the input space.</p>
+<p>There are numerous packages and modules in Netty. Among them, the most important packages are <code>buffer</code>, <code>handler</code>, <code>channel</code>. </p>
+<h3 id="Partition-example-reference-counting-feature"><a href="#Partition-example-reference-counting-feature" class="headerlink" title="Partition example: reference counting feature"></a>Partition example: reference counting feature</h3><p>Let’s take the byte buff reference count feature as an example. The life cycle of certain objects are managed by their reference counts, so that Netty can return them (or their shared resources) to an object pool as soon as it is not used anymore, improving the allocation and deallocation performance.</p>
+<p>It would be helpful to re-iterate the specification of this feature:</p>
+<ul>
+<li>the initial reference count of a reference-counted object is 1</li>
+<li>when <code>release()</code>, the reference count is decreased by 1</li>
+<li>when the reference count reaches 0, the reference-counted object is deallocated or returned to the object pool</li>
+<li>when the reference-counted object is deallocated, it cannot be accessed again</li>
+<li>buffers <em>derived</em> from a buffer share the reference count of that parent buffer</li>
+</ul>
+<p>My partition for it would be:</p>
+<ul>
+<li>newly created <code>bytebuf</code> object (reference count: 1)</li>
+<li><code>bytebuf</code> object that’s being used in several places (reference count &gt; 1)</li>
+<li><code>bytebuf</code> object whose reference count is 0</li>
+<li><code>bytebuf</code> object derived from newly created <code>bytebuf</code> </li>
+<li><code>bytebuf</code> object derived from object with reference count more than 1</li>
+<li>derive a <code>bytebuf</code> object from a deallocated <code>bytebuf</code></li>
+</ul>
+<h4 id="JUnit-cases-for-this-example"><a href="#JUnit-cases-for-this-example" class="headerlink" title="JUnit cases for this example"></a>JUnit cases for this example</h4><p>The test cases for above situations would be inside a new mode named swe261.</p>
+<h1 id="Netty-Test-Practice-Report-Chapter-2"><a href="#Netty-Test-Practice-Report-Chapter-2" class="headerlink" title="Netty Test Practice Report - Chapter 2"></a>Netty Test Practice Report - Chapter 2</h1><h2 id="Why-finite-model"><a href="#Why-finite-model" class="headerlink" title="Why finite model"></a>Why finite model</h2><p>In short, finite model is a representation of the software artifact being described. Due to its properties of being <em>compact</em> and <em>predictive</em>, it can first reiterate the specifications, facilitating better understanding of it[^1]. Secondly, by describing the essential possible executions and state transitions of the software, a finite model could shed light on the problem of “what to test”, and make edge cases more obvious. Finally, since a finite model depicts the transitions of software, it can serve as a visual aid of code coverage, and show the number of cases having been covered.</p>
+<h2 id="Functional-model-example-Netty’s-event-based-data-processing-components"><a href="#Functional-model-example-Netty’s-event-based-data-processing-components" class="headerlink" title="Functional model example: Netty’s event-based data processing components"></a>Functional model example: Netty’s event-based data processing components</h2><p>Network programming can be ideally modeled via event-driven architecture.</p>
+<blockquote>
+<p>With an event-driven system, the capture, communication, processing, and persistence of events are the core structure of the solution.[^2]</p>
+</blockquote>
+<p>This article chooses Netty’s event-based data processing components as an exemplar of finite model. The nature of events that occur during network communication suits the needs well. First of all, it would be useful to have some preliminary introduction of Netty’s event-based before diving into the testing of the events within it.</p>
+<p>Basically, the abstraction of such event model is based on three core classes, <code>Channel</code>, <code>ChannelPipeline</code>, and <code>ChannelHandler</code> [^3].  <code>ChannelPipeline</code> is the container of a set of <code>ChannelHandlers</code>, and a <code>ChannelPipeline</code> is permanently  bounded to only one <code>Channel</code> in its life time, and vice versa.</p>
+<p>![Relationship between the Three Classes](C:\Users\57364\Pictures\Saved Pictures\屏幕截图 2022-02-17 152004.png)</p>
+<p><code>Channel</code> could be roughly thought of as the <code>Socket</code> class in Java’s network programming interface, but with more simpler APIs. In Netty it defines four basic states: <code>ChannelUnregistered</code>, <code>ChannelRegistered</code>, <code>ChannelActive</code>, <code>ChannelInactive</code>. Its status model is as below:</p>
+<p><img src="/content/images/2022/image-20220217154452797.png" alt="Channel Status Model"></p>
+<p><code>ChannelHandler</code> is the main component of Netty, from an application developer’s point of view.[^3] It serves as  a container to store all application logics that are to be applied on the inbound and outbound data. Below are the inbound methods that will be called when status of the <code>Channel</code> instance it’s registered is changed.</p>
+<p><img src="/content/images/2022/image-20220217154953918.png" alt="ChannelHandler Events"></p>
+<p>Respectively, as its container, <code>ChannelPipeline</code>‘s API publishes events:</p>
+<p><img src="/content/images/2022/image-20220217155708587.png" alt="ChannelPipeline Events "></p>
+<p>In conclusion, as the network data flows, events can be triggered by OS (read and write complete, bind successful), or in special cases be fired manually. Events can be passed on to the next handler along the pipeline, or to all succeeding handlers.</p>
+<h3 id="Finite-state-machine-for-the-inbound-components"><a href="#Finite-state-machine-for-the-inbound-components" class="headerlink" title="Finite state machine for the inbound components"></a>Finite state machine for the inbound components</h3><p>Below is the illustration of the FSM. The high definition version of the illustration can be found in the GitHub repo with the name <code>finiste_state_machine.png</code>. To make the model more compact for understanding and practical uses, here we only look into the inbound components.</p>
+<p><img src="/content/images/2022/finiste_state_machine.png" alt="FSM for the components"></p>
+<p>Overall, flow of changes starts from <code>channel</code>, passes through <code>pipeline</code>, and ends at <code>handler</code>. There are two major kinds of events: state changes and data events. When a channel is (in)active, or when it’s registered to a <code>EventLoop</code>, it initiates state changes that will be forwarded to all handlers in the pipeline. Pipeline could also pragmatically fire such events. As the main component that application programmer will deal with, handler could have some code relating to such events for some preparation tasks like connecting to respective databases.</p>
+<p>Comparing to state changes, data events (blue lines in the illustration) also forward to all handlers added to the pipeline, but there’s a fundamental difference: the inbound <em>data</em>. The inbound data will be forwarded to all handlers, one by one, along with the data events (read&#x2F;write). Therefore, although all handlers receive data events, but subsequent handlers only get inbound data from the previous handlers, whether the data is modified or not by their precursors. In the end, the data flows to the end of pipeline, which signifies the end of processing for this data. Such flow of data makes it possible for processing the data in a organized and controllable way. For example, it enables easy implementation of self-defined encoders&#x2F;decoders and serializer &#x2F; deserializer. All the programmer has to do is writing them as normal handlers, but only putting them at the appropriate position, usually the start or end of the pipeline. Netty provides pre-defined boilerplate classes like <code>ByteToMessageDecoder</code> for such needs.</p>
+<p>While such data flow model seem to have addressed all possible problems for consuming inbound data, Netty also provides a finer-granite control: <code>ChannelHandlerContext</code>. A <code>ChannelHandlerContext</code> is created whenever a handler is added to a pipeline, and will stick to the handler during its life cycle. A context can have only one handler, but a handler can be added to multiple pipelines, and thus having multiple contexts. <code>ChannelHandlerContext</code> has many methods that also exist in <code>Channel</code> and <code>ChannelPipeline</code>, but when it triggers events, the event only propagate to the next handler that can handle the event. This mechanism has at least two advantages because it:</p>
+<ol>
+<li>eliminates the overhead of dealing with events (data) that a handler doesn’t need;</li>
+<li>avoids forwarding events to the wrong handlers.</li>
+</ol>
+<p><code>ChannelHandlerContext</code> represents the interaction between two handlers in a pipeline. That’s why in the illustration,  the arrows between contexts also end between contexts; while arrows from pipeline would dispatch the event to every handler and continue all the way to the end. In addition to receiving read &#x2F; read complete events from the respective context, handler could also fire such event, and forward it to the next handler through the use of context. Therefore the arrows are bidirectional.</p>
+<p>There is a third type of event: exception, as the red lines in the illustration shows. Exception could occur in any handler during execution. The exception event would propagate through the pipeline of handlers too, but only those the implements the <code>exceptionCaught</code> method could catch and end the exception propagation. The best practice is to always have at least one handler at the end of pipeline that implements the exception logic.</p>
+<h2 id="Test-suites-for-this-functional-model"><a href="#Test-suites-for-this-functional-model" class="headerlink" title="Test suites for this functional model"></a>Test suites for this functional model</h2><p>Basically there are three types of test suites to write, corresponding to the three types of events: channel events, handler events, and context events. Here we use <code>Spy</code> in Mockito to test if certain methods are called. The <code>ChannelPipeline</code> class cannot be spied, because it’s a final class.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/16-01-16-05-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-03-16%20011445.png"></p>
+<p>With Mockito’s <code>Spy</code> function, testing is made a lot easier. Simply several lines could prove that certain methods are called. Those methods could only be triggered due to state changes, so our functional model could be verified.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/16-01-20-20-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-03-16%20011632.png"></p>
+<p>In above code, channel events and handler events are tested. The pipeline event and context event is a little tricky, because it involves simulating real-world network communication. Luckily, Netty provides us with <code>EmbeddedChannel</code> class to conveniently set up unit tests.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/16-01-26-49-embedded_channel.png"></p>
+<p>The <code>writeInboud</code> method writes data into the channel directly.</p>
+<h2 id="References"><a href="#References" class="headerlink" title="References"></a>References</h2><p>[^1]: Mauro Pezze, Michal Young. Testing and Analysis, 2nd Edition<br>Red Hat. Event-Driven Architecture, <a target="_blank" rel="noopener" href="https://www.redhat.com/en/topics/integration/what-is-event-driven-architecture">https://www.redhat.com/en/topics/integration/what-is-event-driven-architecture</a><br>Norman Maurer, Marvin Allen Wolfthal. Netty in Action</p>
+<h1 id="Netty-Test-Practice-Report-Chapter-3"><a href="#Netty-Test-Practice-Report-Chapter-3" class="headerlink" title="Netty Test Practice Report - Chapter 3"></a>Netty Test Practice Report - Chapter 3</h1><h2 id="Why-structural-testing"><a href="#Why-structural-testing" class="headerlink" title="Why structural testing"></a>Why structural testing</h2><p>Structural testing, also known as white-box testing, is a way of software testing that mainly utilizes the information of a program’s internal structure to design and evaluate test cases. It judges test case thoroughness based on the structure of program itself. </p>
+<p>Comparing to specification-based testing, some faults can only be revealed by structural testing.  Such faults are often implementation-specific; they are implementation choices made by the programmer that are hardly described by the specifications, like what data structure to use, what SQL statement to execute.  Such faults could also be unintentional: memory leak, thread safety, etc.</p>
+<p>However, structural testing has drawbacks, too. Even if test cases are thorough from the view of structural testing, it couldn’t guarantee revealing all faults. Covering all control flow elements doesn’t ensure the covering of all possible buggy inputs.</p>
+<p>In addition to fault detection, structural testing serves as an indicator of  test case thoroughness. For example, the statement coverage criterion requires each statement<br>to be executed at least once[^1]. Although executing every control flow structure provides no guarantee, a statement never executed &#x2F; tested is definitely not acceptable.</p>
+<h2 id="Test-adequacy-report-on-netty-buffer-module"><a href="#Test-adequacy-report-on-netty-buffer-module" class="headerlink" title="Test adequacy report on netty-buffer module"></a>Test adequacy report on netty-buffer module</h2><p>As a large, well-developed multimodule project, Netty contains as many as tens of thousands of test cases. It would be practical and insightful to start analysis from a single module first.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/22-19-37-15-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-22%20193642.png" alt="The number of test cases in a single module"></p>
+<h3 id="Configuration-for-collecting-test-coverage-data"><a href="#Configuration-for-collecting-test-coverage-data" class="headerlink" title="Configuration for collecting test coverage data"></a>Configuration for collecting test coverage data</h3><p>Intellij Ultimate comes bundled with coverage plugin, but there’re several configurations needed. By default, it doesn’t collect branch level coverage, so we need to enable it by checking <em>use tracing</em> option. As with netty, there exist many micro-benchmarks for every module. These benchmarks have nothing to do with testing, and are extremely time-consuming, so a <em>pattern</em> is applied to exclude all tests with a name ending with “benchmark”: <code>^(?!.*Benchmark.*).*$</code>. Also it turns out that the <em>collect coverage in test folders</em> option is misleading, and would pollute the generated coverage report by collecting test adequacy data for test classes, which certainly would have zero coverage.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-04-57-14-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-23%20045702.png"></p>
+<h3 id="Test-coverage-statistics"><a href="#Test-coverage-statistics" class="headerlink" title="Test coverage statistics"></a>Test coverage statistics</h3><p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-05-00-05-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-23%20050000.png"><br>Overall, module <code>netty.buffer</code> is tested well with the majority (75%) of methods and lines being covered. </p>
+<h4 id="Line-and-branch-level-coverage"><a href="#Line-and-branch-level-coverage" class="headerlink" title="Line and branch level coverage"></a>Line and branch level coverage</h4><p>Among the 9128 lines of code, 6766 of them are covered. The uncovered lines often appear to be branches that are not covered; for example, exception statements, as shown below:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-05-19-22-%E5%B1%8F%E5%B9%95%E6%88%AA%E5%9B%BE%202022-02-23%20051716.png"><br>Or just simply untested edge cases:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-17-21-uncovered%20branches.png"></p>
+<p>in addition to the common if-else statements, another type of untested branch is <code>switch</code> syntax:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-32-04-branch_switch%20statement.png"></p>
+<p>Except for the above reasons, there’re also rare cases, like <code>@Deprecated</code> APIs that are to some degree intentionally not thoroughly tested :</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-03-00-deprecated.png"></p>
+<p>Or untested field of <code>interface</code>:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-13-01-2022-02-23-06-11-17-image.png"></p>
+<h4 id="Method-level-coverage"><a href="#Method-level-coverage" class="headerlink" title="Method level coverage"></a>Method level coverage</h4><p>But some uncovered lines have no special reasons: they are just not tested as a whole. This should be categorized as method level coverage.</p>
+<p>One of the most common properties of the untested methods are <code>protected</code> modifier.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-05-40-08-uncovered%20lines_protected%20methods.png"></p>
+<p>In the above screenshot, class <code>AbstractUnpooledSlicedByteBuf</code> is an abstract class that also extends from another abstract class. We can see that many of its overridden protected methods that are inherited from the upper abstract class are not tested. Such lack of method coverage is somehow reasonable, since those APIs are not supposed to be exposed, as long as their <code>public</code> counterparts are tested, they are guaranteed to work.</p>
+<p>But some uncovered lines have no special reasons: they are just not tested due to lack of resource.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/23-06-19-49-uncovered%20method.png"></p>
+<h2 id="Improving-test-coverage-of-netty-buffer"><a href="#Improving-test-coverage-of-netty-buffer" class="headerlink" title="Improving test coverage of netty-buffer"></a>Improving test coverage of netty-buffer</h2><ul>
+<li><p>Document the coverage before and after</p>
+</li>
+<li><p>describe the code being covered; describe the functionality being tested&#x2F;covered</p>
+</li>
+</ul>
+<p>Thanks to analysis above, it becomes obvious what test cases should be written in order to increase coverage. Some test cases I designed would:</p>
+<ol>
+<li><p>cover exception handling like in <code>UnpooledDirectByteBuf</code>:79;</p>
+</li>
+<li><p>visit uncovered branches like the <code>switch</code> in the array function of <code>FixedCompositeByteBuf</code>, and in <code>Unpooled</code>:907;</p>
+</li>
+<li><p>cover <code>Unpooled#copiedBuffer</code> method, line 633.</p>
+</li>
+<li><p>cover the <code>readBytes</code> and <code>setBytes</code> method for different channels.</p>
+</li>
+</ol>
+<h3 id="Added-test-cases"><a href="#Added-test-cases" class="headerlink" title="Added test cases"></a>Added test cases</h3><p>In <code>UnpooledByteBufAllocatorTest</code>, different constructor arguments are tested, especially the illegal ones, to ensure that the exception handling for them is working.</p>
+<p>On a broader scale, test cases of the <code>readBytes</code> and <code>setBytes</code>  methods using <code>ScatteringByteChannel</code> and <code>GatheringByteChannel</code> are added, for all subclasses of <code>AbstractByteBuf</code> class. This could be achieved thanks to Netty’s well-structured class hierarchy of test cases. Adding a test case in the <code>AbstractByteBufTest</code> would result in all its child test classes reusing the case.</p>
+<h3 id="Outcomes-of-newly-added-test-cases"><a href="#Outcomes-of-newly-added-test-cases" class="headerlink" title="Outcomes of newly added test cases"></a>Outcomes of newly added test cases</h3><p>Before adding new test cases, the code coverage at line level for <code>netty.buffer</code> is 6766&#x2F;9128, meaning that among the 9128 lines of code, 6766 of them were covered. 687 branches are tested, out of all the 1270 branches.</p>
+<p>After adding all the new cases, line coverage increases to 6818 lines, and 10 more branches are covered.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/24-06-37-45-coverage_after.png"></p>
+<h2 id="References-1"><a href="#References-1" class="headerlink" title="References"></a>References</h2><p>[^1]: Mauro Pezze, Michal Young. Testing and Analysis, 2nd Edition</p>
+<h2 id="Address-of-the-repo"><a href="#Address-of-the-repo" class="headerlink" title="Address of the repo"></a>Address of the repo</h2><p><a target="_blank" rel="noopener" href="https://github.com/rustberry/netty">GitHub - rustberry&#x2F;netty: Netty project - an event-driven asynchronous network application framework</a></p>
+<h1 id="Netty-Test-Practice-Report-Chapter-4"><a href="#Netty-Test-Practice-Report-Chapter-4" class="headerlink" title="Netty Test Practice Report - Chapter 4"></a>Netty Test Practice Report - Chapter 4</h1><h2 id="What-is-Continuous-Integration-and-Why-Use-it"><a href="#What-is-Continuous-Integration-and-Why-Use-it" class="headerlink" title="What is Continuous Integration and Why Use it"></a>What is Continuous Integration and Why Use it</h2><blockquote>
+<p><strong>Continuous integration</strong> is a DevOps software development practice where developers regularly merge their code changes into a central repository, after which automated builds and tests are run.[^1]</p>
+</blockquote>
+<p>The core of continuous integration is lies in two practices: merging minor code changes to the code bases, and automated test and deployment.  Usually, programmers commit code at least daily. After that, the whole program will be built automatically to incorporate the changes. If building is passed,  the program will be automatically tested to ensure that no regressions are added. In the end, the new program artifact is published and deployed, marking the end of a round of integration.</p>
+<p>There’re many benefits of practicing  continuous integration. From a developer’s point of view, it first frees developers from the time-consuming task of manual testing and deployment. Secondly, bugs are detected at an early stage so that they could be easier to fix. Since continuous integration merges mainline frequently,  project managers are able to make better prediction of development time based on the daily progress so far. Product managers could evolve their business strategy more accurately, thanks to getting feedback more quickly from the customers. Finally, users of the product get new features more often.</p>
+<h3 id="Why-open-source-project-also-needs-continuous-integration"><a href="#Why-open-source-project-also-needs-continuous-integration" class="headerlink" title="Why open source project also needs continuous integration"></a>Why open source project also needs continuous integration</h3><p>Open source projects often have loose organizational structure, comparing to business entities. Therefore, they are unlikely to have the need to deliver features so frequently, nor do they need to stick tight to the roadmap. They also don’t need to rapidly adapt their business strategy  – some may not even have one. Then why is continuous integration good for them?</p>
+<p>In my opinion, continuous integration is beneficial at least in terms of development. With automated build and test, maintainers of the project save a lot of time from it. Automated build and test are also quick feedback to guide the commiter who made the code change: he or she could tell immediately if the code change is useful, or if not, what needs to be fixed. That’s why we could often see a project to have a build bot to deal some work of pull requests.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/27-22-28-28-netty-bot.png"></p>
+<h2 id="Netty’s-Continuous-Integration-Practice"><a href="#Netty’s-Continuous-Integration-Practice" class="headerlink" title="Netty’s Continuous Integration Practice"></a>Netty’s Continuous Integration Practice</h2><p>Netty used to have a self-hosted Jenkins installation that uses docker to run the continuous integration jobs[^2].In December 2020, they switch to using GitHub Actions, which spares them from maintaining a specific host machine. GitHub Actions has large <a target="_blank" rel="noopener" href="https://docs.github.com/en/actions/learn-github-actions/usage-limits-billing-and-administration#usage-limits">usage limits</a>. Except for better readability of YAML-based configuration (comparing to Jenkins), GitHub Actions also make it more maintainable as the developers could add building configuration files to source control.</p>
+<p> As a framework that utilizes operating system specific features, Netty has the need to get testing on different platforms, and that’s where docker comes in handy. Those docker files are still useful in GitHub Actions workflow. The workflow file can be viewed as an environment setup file; the major work is done in docker compose YAML files. All we need to do is invoke docker commands in the <code>run</code> statement of workflow files, like this:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-02-28-26-workflow_run.png"></p>
+<p>What it truly does is a docker command, in which <code>mvn clean install</code> is executed with various arguments.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-02-38-48-docker_build.png"></p>
+<p>Above is the core command in the workflow file. Others define properties of this workflow, environment variables, and so on. Let me explain in detail of the YAML file.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">name:</span> <span class="string">Build</span> <span class="string">project</span></span><br><span class="line"></span><br><span class="line"><span class="attr">on:</span></span><br><span class="line">  <span class="attr">push:</span></span><br><span class="line">    <span class="attr">branches:</span> [ <span class="string">&quot;main&quot;</span>, <span class="string">&quot;gh-test&quot;</span>]</span><br><span class="line"></span><br><span class="line">  <span class="attr">schedule:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">cron:</span> <span class="string">&#x27;30 1 * * 1&#x27;</span>  <span class="comment"># At 01:30 on Monday, every Monday.</span></span><br></pre></td></tr></table></figure>
+
+<p>These lines are at the beginning of the file, defining the name of this workflow, and the trigger to this. <code>On</code> every push to <code>branches</code> <code>main</code> and <code>gh-test</code> (my testing branch), this workflow would be triggered to run. In addition, this workflow is scheduled to run chronologically every week.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">env:</span></span><br><span class="line">  <span class="attr">MAVEN_OPTS:</span> <span class="string">-Dhttp.keepAlive=false</span> <span class="string">-Dmaven.wagon.http.pool=false</span> <span class="string">-Dmaven.wagon.http.retryhandler.count=5</span> <span class="string">-Dmaven.wagon.httpconnectionManager.ttlSeconds=240</span></span><br></pre></td></tr></table></figure>
+
+<p>The <code>env</code> entry defines some necessary environment variables to be used during testing.</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">jobs:</span></span><br><span class="line">  <span class="attr">build:</span></span><br><span class="line">    <span class="attr">runs-on:</span> <span class="string">ubuntu-latest</span></span><br><span class="line">    <span class="attr">strategy:</span></span><br><span class="line">      <span class="attr">matrix:</span></span><br><span class="line">        <span class="attr">include:</span></span><br><span class="line">          <span class="bullet">-</span> <span class="attr">setup:</span> <span class="string">linux-x86_64-java11</span></span><br><span class="line">            <span class="attr">docker-compose-build:</span> <span class="string">&quot;-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml build&quot;</span></span><br><span class="line">            <span class="attr">docker-compose-run:</span> <span class="string">&quot;-f docker/docker-compose.yaml -f docker/docker-compose.centos-6.111.yaml run build&quot;</span></span><br></pre></td></tr></table></figure>
+
+<p>The <code>jobs</code> entry is the major entry that does the real job. <code>runs-on: ubuntu-late</code> defines that the job runs on <a target="_blank" rel="noopener" href="https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on">GitHub-hosted runners</a>, which is free of charge.</p>
+<p>Finally, in <code>steps</code> entry, previously written actions can be imported and reused. Or user can define their own actions with <code>name</code> and <code>run</code> keywords.</p>
+<h3 id="Obstacles-while-practices-GitHub-Actions"><a href="#Obstacles-while-practices-GitHub-Actions" class="headerlink" title="Obstacles while practices GitHub Actions"></a>Obstacles while practices GitHub Actions</h3><p>The biggest problem I came across is that Netty project is a big code base, and it takes a lot of time just to run all the tests. Moreover, as a performance framework, it has many benchmarks to run. In average I have to wait for more than one hour for a single workflow run to finish, and then correct any errors detected. </p>
+<p>Running maven goals locally doesn’t help since Maven’s <code>CheckStyle</code> plugin seems to have problem with Windows locales. At the start of the report I have been making workarounds to avoid executing its goal on Windows.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-03-06-44-Avoid_checkstyle.png"></p>
+<p>The most frequent errors I encountered are CheckStyle errors. Netty project has its own CheckStyle configurations and <a target="_blank" rel="noopener" href="https://netty.io/wiki/setting-up-development-environment.html">code styles</a>; both of them will be checked against during the building process. The newly merged code must strictly conform to the code conventions, not a single space is allowed.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/02/28-03-11-20-gha_error1.png"></p>
+<h2 id="Commit-address-of-new-changes"><a href="#Commit-address-of-new-changes" class="headerlink" title="Commit address of new changes"></a>Commit address of new changes</h2><p>The addresses of the new changes: <a target="_blank" rel="noopener" href="https://github.com/rustberry/netty/commit/c77c6c577a229e7ee45a4066c8935668b026b46c">Merge pull request #1 from rustberry&#x2F;gh-test · rustberry&#x2F;netty@c77c6c5 · GitHub</a></p>
+<p>The workflow file being discussed: <a target="_blank" rel="noopener" href="https://github.com/rustberry/netty/blob/4.1/.github/workflows/ci-build.yml">netty&#x2F;ci-build.yml at 4.1 · rustberry&#x2F;netty · GitHub</a></p>
+<h2 id="References-2"><a href="#References-2" class="headerlink" title="References"></a>References</h2><p>[^1]: <a target="_blank" rel="noopener" href="https://aws.amazon.com/devops/continuous-integration/#:~:text=Continuous%20integration%20is%20a%20DevOps,builds%20and%20tests%20are%20run.">What is Continuous Integration?</a>, Amazon Web Services</p>
+<p>[^2]: <a target="_blank" rel="noopener" href="https://github.com/netty/netty/issues/10088#issuecomment-599402650">GSoC 2020 Proposal · Issue #10088 · netty&#x2F;netty · GitHub</a></p>
+<h1 id="Netty-Test-Practice-Report-Chapter-5-Testable-Design-and-Mocking"><a href="#Netty-Test-Practice-Report-Chapter-5-Testable-Design-and-Mocking" class="headerlink" title="Netty Test Practice Report - Chapter 5: Testable Design and Mocking"></a>Netty Test Practice Report - Chapter 5: Testable Design and Mocking</h1><h2 id="Definition-of-testable-design-and-its-goals"><a href="#Definition-of-testable-design-and-its-goals" class="headerlink" title="Definition of testable design and its goals"></a>Definition of testable design and its goals</h2><p>In its essence, testable design is making it easier for code to be tested against. In <em>Effective Unit Testing</em>, author concludes:</p>
+<blockquote>
+<p>More specifically, testable design makes it easy to instantiate classes, substitute implementations, simulate different scenarios, and invoke particular execution paths from our test code.[^1]</p>
+</blockquote>
+<p>Or in short, testability means:</p>
+<blockquote>
+<p>a given piece of code should be easy and quick to write a unit test against.[^2]</p>
+</blockquote>
+<p>In my opinion, a testable design is also a maintainable design; testable software would also be well modularized. Only modularity could guarantee easy instantiation, easy stubbing and mocking. Therefore, sticking to testable principles is actually something natural when writing code. One may not even need to intentionally make his code testable: as long as one wants to keep the code readable and maintainable, then he&#x2F;she will naturally write code in a testable way.</p>
+<p>There are several principles to conform to. All of them are aimed to solve those testability issues: </p>
+<ul>
+<li><p>instantiate a class;</p>
+</li>
+<li><p>invoke (test) a method;</p>
+</li>
+<li><p>observe the outcome at a specific point;</p>
+</li>
+<li><p>substitute the dependency that the class relies on (so that we could do mocking on it);</p>
+</li>
+<li><p>override a method (so that method could be mocked, or be delegated to observe its outcome)</p>
+</li>
+</ul>
+<p>Some of the best practices to solve the above issues are:</p>
+<ul>
+<li><p>favor composition over inheritance; avoid complex constructor logic</p>
+<ul>
+<li><p>so that it is easier to instantiate the needed class. It is also good to adapt design patterns like builder and&#x2F;or factor method if it is really complicated (and necessary) to instantiate.</p>
+</li>
+<li><p>composition also makes it possible to switch different scenarios for testing by providing different objects for composition.</p>
+</li>
+</ul>
+</li>
+<li><p>avoid complex private methods;</p>
+<ul>
+<li>private methods are literally not accessible from the outside of the class, therefore not possible to test.</li>
+</ul>
+</li>
+<li><p>single-responsibility principle;</p>
+<ul>
+<li>ideally, each function&#x2F;method should only address one issue. This makes it convenient to observe the outcome, since the data being processed won’t go through complicated changes in such functions.</li>
+</ul>
+</li>
+</ul>
+<h2 id="Testability-in-some-of-Netty’s-current-code"><a href="#Testability-in-some-of-Netty’s-current-code" class="headerlink" title="Testability in some of Netty’s current code"></a>Testability in some of Netty’s current code</h2><p>In <code>io.netty.handler.codec.mqtt</code> package, there is a class called <code>MqttEncoder</code> that extends the abstract class <code>MessageToMessageEncoder</code> and only overrides one method: <code>encode</code>. <code>encode</code> is intended to be used to transform the inbound message into another form of message, e.g. from ordinary string to base64 encoded strings. However, this method relies on a set of <em>private static</em> methods to do the actual encoding, as shown below. </p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/03-15-16-45-private%20static.png"></p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/03-15-18-28-the_private.png"></p>
+<p>This has several drawbacks. First of all, as a private method it’s impossible to write unit test against each of those small private methods to make sure they function well. Secondly, as static methods, they operate on the class rather, than the object, leaving space for possible pollution of data when called by multiple instances. </p>
+<p>My way to fix it is to firstly change the modifier to <code>public</code>, and then make sure that any references to variables out side of the scope of this method is thread-safe.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/03-15-25-01-only_var.png"></p>
+<p>Luckily the only field that might be shared across methods is declared as final. And by checking its usage, it turns out that it is not used inside the class at all, but rather acts as a handler exposed to the outside world for calling. In that case, I think it’s appropriate to keep the methods <code>static</code>, because after all this class is a utility class that is meant to encode &#x2F; decode messages, and have no internal states.</p>
+<h2 id="Mocking-and-its-usage-in-Netty"><a href="#Mocking-and-its-usage-in-Netty" class="headerlink" title="Mocking and its usage in Netty"></a>Mocking and its usage in Netty</h2><p>Mocking is about generating fake objects that imitate the behavior of the targeted object. The use cases for mocking is when you’re dealing with a complex object (very possibly a third-party object that has little documentation or has complex internal logics) and want to test your own objects’ <strong>interaction</strong> with it. <em>Interaction testing</em> is different from the more common way of testing: <em>state testing</em>.</p>
+<blockquote>
+<p>Interaction testing is testing how an object sends messages (calls<br>methods) to other objects. You use interaction testing when calling another<br>object is the end result of a specific unit of work.[^3]</p>
+</blockquote>
+<p>Basically, interaction testing only checks if certain interactions between objects happened, and does not care about the internal state changes. As the book advises,</p>
+<blockquote>
+<p>Always choose to use interaction testing only as the last option.[^3]</p>
+</blockquote>
+<p>It is often more straightforward to check against values and states, but sometimes only interaction testing is useful. As stated before, when the other objects involved has little documentation and complex internal logic, it is best to leave them intact, and mock a new one to replace them. With mocking, it is even possible to make that third-party object to only have behaviors that are useful for testing.</p>
+<h3 id="A-mocking-example-in-Netty"><a href="#A-mocking-example-in-Netty" class="headerlink" title="A mocking example in Netty"></a>A mocking example in Netty</h3><p>Network communication is often hard to set up for testing. For that reason, Netty has already had a convenient class for unit testing: <code>EmbeddedChannel</code>. It can send or receive network messages as the programmer withes. But if one only wants to test their handlers’ interaction with the channel is correct, then mocking is even more convenient.</p>
+<p>In fact, the existing test cases for <code>EmbeddedChannel</code> doesn’t use the power of mocking so far. As a <code>Channel</code>, <code>EmbeddedChannel</code> interacts with various complex objects like <code>EventLoop</code>, <code>ChannelPipeline</code>, and <code>ChannelHandlerContext</code>. If our intention is only to make sure that <code>EmbeddedChannel</code> makes correct calls and signals to other instances, then those objects should all be mocked. First of all,  this eliminates all the possible “unexpected exception” not originated from our own class itself. For example, <code>EventLoop</code> could become unavailable to assign new threads due to system overhead during testing. More importantly, mocking them helps test designers focus on the purposes of the test cases: test the interaction of <code>EmbeddedChannel</code>. One of <code>EmbeddedChannel</code>‘s responsibility is firing different types of events to different objects to notify them. This is an essential part of Netty’s event-driven flow of data. Therefore, mocking other objects to test <code>EmbeddedChannel</code> is meaningful.</p>
+<h2 id="References-3"><a href="#References-3" class="headerlink" title="References"></a>References</h2><p>[^1]: Lasse Koskela. <em>Effective Unit Testing</em>, Manning Publications</p>
+<p>[^2]: <em>The Art of Unit Testing with Examples in .NET</em>, Manning Publications, 2009</p>
+<p>[^3]: <em>The Art of unit Testing, 2nd edition</em></p>
+<h1 id="Netty-Test-Practice-Report-Chapter-6"><a href="#Netty-Test-Practice-Report-Chapter-6" class="headerlink" title="Netty Test Practice Report - Chapter 6"></a>Netty Test Practice Report - Chapter 6</h1><p>In this chapter, we’ll analyze the code base of Netty <em>automatically</em>, that is, using static analysis tools.</p>
+<h2 id="Static-analysis-tools-and-their-benefits"><a href="#Static-analysis-tools-and-their-benefits" class="headerlink" title="Static analysis tools and their benefits"></a>Static analysis tools and their benefits</h2><p>Static analysis is “a software verification activity that analyzes source code for quality, reliability, and security without executing the code”[^1].  It could also be carried out on the compiled code. Actually we may have all used static analysis before: when we write code in static typing language in an IDE, we could often see intelligent hints like “variable defined but not used”, or “variable written but never read”. Sometimes there could be code branch analysis like “the else statement can never be reached”. Such hints are the results of static analysis; specifically, they are the results of <em>dataflow analysis</em> and <em>control flow analysis</em>. Static analyzers, as the name suggest, are the tools that carry out static analysis on the code.</p>
+<p>Comparing to dynamic analysis, static analyzers don’t require actually running the program. Also since it requires no human interference, static analyzers could be an economical way of analyzing a big code base.</p>
+<h2 id="Code-analysis-tools-in-current-Netty-project"><a href="#Code-analysis-tools-in-current-Netty-project" class="headerlink" title="Code analysis tools in current Netty project"></a>Code analysis tools in current Netty project</h2><h3 id="Dynamic-analysis"><a href="#Dynamic-analysis" class="headerlink" title="Dynamic analysis"></a>Dynamic analysis</h3><p>Netty provides a built-in dynamic analysis feature, leak detection, via class <code>ResourceLeakDetector</code>[^2]. In its essence, <code>ResourceLeakDetector</code> uses JDK’s <code>PhantomReference&lt;T&gt;</code> to track the unreleased buffers in the 1% sample of one’s application’s memory usage, which is a small overhead. A typical example report of memory leak is like following:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-28-44-netty_dynamic_ana.png"></p>
+<h3 id="Static-analysis"><a href="#Static-analysis" class="headerlink" title="Static analysis"></a>Static analysis</h3><p>Netty project has its own <a target="_blank" rel="noopener" href="https://netty.io/files/IntelliJ%20IDEA%20Code%20Style.zip">code style configuration</a> and incorporates CheckStyle as a maven plugin. CheckStyle analysis has been set as part of the <code>goals</code> to be executed during  maven building process. It is also part of the continuous integration checks. Commits that doesn’t pass style check would fail during the triggered GitHub Action. Next we’ll see examples of CheckStyle reports on failed runs.</p>
+<p>Here’s an example of XML formatting error.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-44-25-CheckStyle1.png"></p>
+<p>Depending on the configuration file specified, minor errors such as indentation will also be checked. When maven detects a build failure, it would cease all the remaining building tasks for other module and output a brief repot like this:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-47-04-checkstyle1_2.png"> </p>
+<p>Another example of report on coding style:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-50-23-checkstyle_code1.png"></p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-53-35-checkstyle_code1_1.png"></p>
+<p>And the summary are as follow:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-12-51-20-checkstyle_code2.png"></p>
+<p>Breaches of coding conventions are detected according to different coding style ruleset. The total number of errors in a module would be counted.</p>
+<h2 id="Code-analysis-using-SpotBugs-and-PMD"><a href="#Code-analysis-using-SpotBugs-and-PMD" class="headerlink" title="Code analysis using SpotBugs and PMD"></a>Code analysis using SpotBugs and PMD</h2><p>SpotBugs comes handy as a well-developed Intellij plugin, while PMD has different behaviors in terms of the Intellij plugin and the binary version. Since Netty as a multi-module project is too big, we only inspect the <code>buffer</code> module.</p>
+<h3 id="Overview-of-the-results"><a href="#Overview-of-the-results" class="headerlink" title="Overview of the results"></a>Overview of the results</h3><p>Here let’s look into the aggregated overall results first.</p>
+<p>For SpotBugs, it claims to find 21 bug items in 131 classes, excluding the test files.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-14-05-06-spotbugs.png"></p>
+<p>It generally falls into two categories: Malicious code vulnerability (relating to security) and Dodgy code (relating to coding style).</p>
+<p>With PMD, things are little trickier. The standard binary PMD command-line by default outputs ascii text to standard output like below. </p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-19-07-43-pmd_cmd.png"></p>
+<p>For a better format and for a summary of the report, use this command:</p>
+<figure class="highlight powershell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">.\pmd.bat <span class="literal">--short-names</span> <span class="literal">-d</span> ..\..\netty\buffer\src\main\java\io\netty\buffer\ <span class="literal">-R</span> category/java/errorprone.xml <span class="operator">-f</span> summaryhtml <span class="literal">--report-file</span> report.html <span class="literal">--property</span> linkPrefix=https://github.com/rustberry/netty/blob/<span class="number">4.1</span>/ <span class="literal">--property</span> linePrefix=L</span><br></pre></td></tr></table></figure>
+
+<p>The summary of binary PMD excluding test files is:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-19-04-42-pmd_sum.png"></p>
+<p>PMD uses a XML form of ruleset that could be customized to analyze the code. The ruleset I chose is <code>errorprone.xml</code>. Altogether it claims to have finds 561 bugs in this module.</p>
+<p>However, the Intellij plugin finds different bugs. I suppose there might be difference on the ruleset they use.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-19-11-16-pmd_plugin.png"></p>
+<p>The plugin version claims to find more bugs: altogether 852 violations. PMD Intellij plugin has no way to configure target directory to exclude test files, so for the purpose of contrast, I ran the binary version on all files in <code>buffer</code> module. Altogether the binary version finds 791 errors.</p>
+<p>All of these three versions of static analyzers don’t show the severity of bugs they find.</p>
+<h3 id="Detailed-analysis-of-some-important-warnings"><a href="#Detailed-analysis-of-some-important-warnings" class="headerlink" title="Detailed analysis of some important warnings"></a>Detailed analysis of some important warnings</h3><h4 id="Findings-of-PMD"><a href="#Findings-of-PMD" class="headerlink" title="Findings of PMD"></a>Findings of PMD</h4><p>Some of PMD’s findings are not actual problems in the code. Take the <code>CloseResource</code> problem for example. It claims to find unclosed resource in following lines:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">writeUTF</span><span class="params">(String s)</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="type">DataOutputStream</span> <span class="variable">out</span> <span class="operator">=</span> utf8out;  <span class="comment">// THIS LINE!</span></span><br><span class="line">    <span class="keyword">if</span> (out == <span class="literal">null</span>) &#123;</span><br><span class="line">        <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IOException</span>(<span class="string">&quot;The stream is closed&quot;</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Suppress a warning since the stream is closed in the close() method</span></span><br><span class="line">        utf8out = out = <span class="keyword">new</span> <span class="title class_">DataOutputStream</span>(<span class="built_in">this</span>); <span class="comment">// lgtm[java/output-resource-leak]</span></span><br><span class="line">    &#125;</span><br><span class="line">    out.writeUTF(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>In fact, <code>utf8out</code> is a private field of the class, and has a specific method that takes care of the closing of it:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">close</span><span class="params">()</span> <span class="keyword">throws</span> IOException &#123;</span><br><span class="line">    <span class="keyword">if</span> (closed) &#123;</span><br><span class="line">        <span class="keyword">return</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    closed = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="built_in">super</span>.close();</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (utf8out != <span class="literal">null</span>) &#123;</span><br><span class="line">            utf8out.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The plugin version of PMD are more paranoid then binary version. For the <code>CloseResource</code> problem, it not only finds “bugs” that binary version finds, but also reports bugs from <code>abstract</code> classes. That should be an unnecessary behavior, because abstract class methods are meant to be overloaded and subject to change.</p>
+<p><code>AvoidDuplicateLiterals</code> is another error that is more an indication than a bug declare. It will report duplicates in annotations:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SuppressWarnings(&#123; &quot;unchecked&quot;, &quot;rawtypes&quot; &#125;)</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">boolean</span> <span class="title function_">allocate</span><span class="params">(MemoryRegionCache&lt;?&gt; cache, PooledByteBuf buf, <span class="type">int</span> reqCapacity)</span> &#123;</span><br><span class="line">    <span class="comment">/** */</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>Or strings in constructors of exceptions:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (isOutOfBounds(start, length, capacity)) &#123;</span><br><span class="line">    <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IndexOutOfBoundsException</span>(<span class="string">&quot;expected: &quot;</span> + <span class="string">&quot;0 &lt;= start(&quot;</span> + start + <span class="string">&quot;) &lt;= start + length(&quot;</span> + length</span><br><span class="line">            + <span class="string">&quot;) &lt;= &quot;</span> + <span class="string">&quot;buf.capacity(&quot;</span> + capacity + <span class="string">&#x27;)&#x27;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p><code>AvoidCatchingThrowable</code> is a good advice, since the scope of <code>Throwable</code> is very broad. Luckily,  all the occurrences of such errors in this module are intended, and are located in static initializers of the class; this makes it possible to catch all possible errors during initialization.</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">try</span> &#123;</span><br><span class="line">    validateAndCalculateChunkSize(DEFAULT_PAGE_SIZE, defaultMaxOrder);</span><br><span class="line">&#125; <span class="keyword">catch</span> (Throwable t) &#123;</span><br><span class="line">    maxOrderFallbackCause = t;</span><br><span class="line">    defaultMaxOrder = <span class="number">11</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The most useful one I found so far is the <code>ConstructorCallsOverridableMethod</code> warning.  Explanation from the PMD website:</p>
+<blockquote>
+<p>Calling overridable methods during construction poses a risk of invoking methods on an incompletely constructed object and can be difficult to debug.[^3]</p>
+</blockquote>
+<p>This rule is also mentioned in <em>Effective Java</em>‘s 18th item: <em>Design and document for inheritance, or else prohibit it</em>:</p>
+<blockquote>
+<p>There are a few more restrictions that a class must obey to allow inheritance. <strong>Constructors must not invoke overridable methods</strong>, directly or indirectly. If you violate this rule, program failure will result. The superclass constructor runs before the subclass constructor, so the overriding method in the subclass will be invoked before the subclass constructor has run.[^4]</p>
+</blockquote>
+<p>The code that violates this rule:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="title function_">CompositeByteBuf</span><span class="params">(</span></span><br><span class="line"><span class="params">        ByteBufAllocator alloc, <span class="type">boolean</span> direct, <span class="type">int</span> maxNumComponents, Iterable&lt;ByteBuf&gt; buffers)</span> &#123;</span><br><span class="line">    <span class="built_in">this</span>(alloc, direct, maxNumComponents,</span><br><span class="line">            buffers <span class="keyword">instanceof</span> Collection ? ((Collection&lt;ByteBuf&gt;) buffers).size() : <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">    addComponents(<span class="literal">false</span>, <span class="number">0</span>, buffers);</span><br><span class="line">    setIndex(<span class="number">0</span>, capacity());  <span class="comment">// THE OVERRIDABLE METHOD</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>class <code>CompositeByteBuf</code> uses the overridable method <code>setIndex</code> in its constructor. Although in its super class’s constructor <code>setIndex</code> is not called, <code>CompositeByteBuf</code> has a sub class that also overrides <code>setIndex</code>, in <code>WrappedCompositeByteBuf</code> class:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> CompositeByteBuf <span class="title function_">setIndex</span><span class="params">(<span class="type">int</span> readerIndex, <span class="type">int</span> writerIndex)</span> &#123;</span><br><span class="line">    wrapped.setIndex(readerIndex, writerIndex);</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>So when <code>WrappedCompositeByteBuf</code> initializes, there might be chances that its uninitialized <code>setIndex</code> method is called by <code>CompositeByteBuf</code>.</p>
+<h4 id="Findings-of-SpotBugs"><a href="#Findings-of-SpotBugs" class="headerlink" title="Findings of SpotBugs"></a>Findings of SpotBugs</h4><p>Comparing to PMD, SpotBugs have better IDE integration. The first category of warnings is <code>Malicious code vulnerability</code>, and contains two types: </p>
+<ul>
+<li><p>May expose internal representation by returning reference to mutable object, and </p>
+</li>
+<li><p>May expose internal representation by incorporating reference to mutable object</p>
+</li>
+</ul>
+<p>The first one is very insightful. For example in this code, it exposes the private field that could be mutated of the class:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-20-38-15-spot1.png"></p>
+<p>There are other behavior that is intended, like this:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ByteBuf <span class="title function_">heapBuffer</span><span class="params">(<span class="type">int</span> initialCapacity, <span class="type">int</span> maxCapacity)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (initialCapacity == <span class="number">0</span> &amp;&amp; maxCapacity == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">return</span> emptyBuf;  <span class="comment">// THIS LINE</span></span><br><span class="line">    &#125;</span><br><span class="line">    validate(initialCapacity, maxCapacity);</span><br><span class="line">    <span class="keyword">return</span> newHeapBuffer(initialCapacity, maxCapacity);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>The <code>emptyBuf</code> returned here is thought to be <em>safe</em>. But this variable could be altered and returned again and again to other clients.</p>
+<p>Although Netty is a software framework, and that perhaps the only ones having access to those variables are programmers themselves, there still exists the possibility of getting user input from outside world. If one malicious user successfully injects malicious content into the instance of the framework running in application server, there could be server security risk.</p>
+<p>“May expose internal representation by incorporating reference to mutable object” is also about misuse of <code>private</code> fields, like this, assigning <code>private Bytebuf buffer</code> a mutable value:</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-20-47-38-spot2.png"></p>
+<p>The second category is about general coding style, and therefore is more subjective.</p>
+<p><em>Return value of method without side effect is ignored</em> is often a bad smell of code. If a method with return value is constantly called without using the return value, then there’s high chance that this method violates the single responsibility rule. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ByteBuf <span class="title function_">setIndex</span><span class="params">(<span class="type">int</span> readerIndex, <span class="type">int</span> writerIndex)</span> &#123;</span><br><span class="line">    checkIndex(readerIndex);  <span class="comment">// THIS METHOD HAS RETURN VALUE</span></span><br><span class="line">    checkIndex(writerIndex);  <span class="comment">// THIS METHOD HAS RETURN VALUE</span></span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>But the website of SpotBugs admits that this rule may result in many false positives, and this example is one of them. Actually, <code>checkIndex</code> contains exception-throwing logic:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> ByteBuf <span class="title function_">checkIndex</span><span class="params">(<span class="type">int</span> index)</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (index != <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">IndexOutOfBoundsException</span>();  <span class="comment">// INTENDED TO THROW</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>So it does have side effects.</p>
+<p><em>Potentially dangerous use of non-short-circuit logic</em> (e.g. <code>|</code> or <code>&amp;</code>). This rule also indicates a bad smell. In Netty, situations are different, as the case in some of the JDK code: the <em>non-short-circuit logic</em> is used with care in order to gain optimum performance.</p>
+<p><img src="https://raw.githubusercontent.com/rustberry/img_archive/main/2022/03/10-21-02-52-performance.png"></p>
+<p>This branch is “a hot path” that are executed very often, so Netty chooses to optimize it. </p>
+<h3 id="Conclusion-and-comparison"><a href="#Conclusion-and-comparison" class="headerlink" title="Conclusion and comparison"></a>Conclusion and comparison</h3><p>To sum up, both PDM and SpotBugs reports code style warnings that are useful in most cases. One tool often identifies warnings that are different from the other. For example, the overriding of <code>equals</code> is mentioned by SpotBugs but not by PMD; while PMD finds problems of unclosed resources and suspicious comparisons not using <code>equals</code>. So it could be a good choice to use different static analyzers to get a more complete report.</p>
+<p>In terms of code vulnerability, SpotBugs seems to do a better job than PMD both in terms of warning classification and the number of warnings reported. But SpotBugs doesn’t notice the problem of invoking overridable methods from a constructor, even though it does <a target="_blank" rel="noopener" href="https://spotbugs.readthedocs.io/en/latest/bugDescriptions.html#RV_RETURN_VALUE_IGNORED_NO_SIDE_EFFECT">have a rule for it</a>.</p>
+<p>As maybe common for static analyzers, the chance of reporting  false positive cases are not low. So static analysis is not a silver bullet for code quality check: special care still  must be taken by humans.</p>
+<h2 id="References-4"><a href="#References-4" class="headerlink" title="References"></a>References</h2><p>[^1]: <a target="_blank" rel="noopener" href="https://www.mathworks.com/discovery/static-code-analysis.html">What Is Static Code Analysis? – MATLAB and Simulink - MATLAB &amp; Simulink</a></p>
+<p>[^2]: Norman Maurer, Marvin Allen Wolfthal. Netty in Action</p>
+<p>[^3]: <a target="_blank" rel="noopener" href="https://pmd.github.io/pmd-6.43.0/pmd_rules_java_errorprone.html#constructorcallsoverridablemethod">Error Prone | PMD Source Code Analyzer</a></p>
+<p>[^4]: Effective Java, 3rd Edition</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2019/06/20/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8Bbug%E4%B9%8B%E6%BA%90%EF%BC%9A%E6%AD%BB%E9%94%81%E6%88%90%E5%9B%A0%E4%B8%8E%E9%87%8D%E6%8E%92%E5%BA%8F/" rel="prev" title="并发编程bug之源：死锁成因与重排序">
+                  <i class="fa fa-chevron-left"></i> 并发编程bug之源：死锁成因与重排序
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/10/tiny-spring%20%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" rel="next" title="tiny-spring 踩坑记录（一）可变长泛型参数与堆污染">
+                  tiny-spring 踩坑记录（一）可变长泛型参数与堆污染 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimmy Xu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

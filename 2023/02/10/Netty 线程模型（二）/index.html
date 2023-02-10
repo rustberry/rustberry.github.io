@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Netty（二）线程模型与 BytebufServerBootStrap 中的 EventLoopGroupServerBootStrap 实际上内部是两个 group，解释：  Most of the times using the same group for accepting and handling the accepted connections is working out quit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Netty（二）线程模型与 Bytebuf">
+<meta property="og:url" content="http://yoursite.com/2023/02/10/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/index.html">
+<meta property="og:site_name" content="Rust Shrugged">
+<meta property="og:description" content="Netty（二）线程模型与 BytebufServerBootStrap 中的 EventLoopGroupServerBootStrap 实际上内部是两个 group，解释：  Most of the times using the same group for accepting and handling the accepted connections is working out quit">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-02-10T05:13:07.167Z">
+<meta property="article:modified_time" content="2023-02-10T05:13:07.167Z">
+<meta property="article:author" content="Jimmy Xu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2023/02/10/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2023/02/10/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/","path":"2023/02/10/Netty 线程模型（二）/","title":"Netty（二）线程模型与 Bytebuf"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Netty（二）线程模型与 Bytebuf | Rust Shrugged</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Rust Shrugged</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Programming and a free mind</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Netty%EF%BC%88%E4%BA%8C%EF%BC%89%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%E4%B8%8E-Bytebuf"><span class="nav-number">1.</span> <span class="nav-text">Netty（二）线程模型与 Bytebuf</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ServerBootStrap-%E4%B8%AD%E7%9A%84-EventLoopGroup"><span class="nav-number">1.1.</span> <span class="nav-text">ServerBootStrap 中的 EventLoopGroup</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#EventLoopGroup-%E9%BB%98%E8%AE%A4%E7%BA%BF%E7%A8%8B%E6%95%B0"><span class="nav-number">1.1.1.</span> <span class="nav-text">EventLoopGroup 默认线程数</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ChannelHandler-%E4%B8%8E-EventLoopGroup-%E4%B8%AD%E7%9A%84%E7%BA%BF%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">ChannelHandler 与 EventLoopGroup 中的线程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Netty-3-%E4%B8%AD%E7%9A%84%E4%B8%8D%E5%92%8C%E8%B0%90"><span class="nav-number">1.2.1.</span> <span class="nav-text">Netty 3 中的不和谐</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Bytebuf-%E6%BA%90%E7%A0%81"><span class="nav-number">1.3.</span> <span class="nav-text">Bytebuf 源码</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimmy Xu</p>
+  <div class="site-description" itemprop="description">Tu ne cede malis, sed contra audentior ito</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/10/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="Netty（二）线程模型与 Bytebuf | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Netty（二）线程模型与 Bytebuf
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2023-02-10 05:13:07" itemprop="dateCreated datePublished" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="Netty（二）线程模型与-Bytebuf"><a href="#Netty（二）线程模型与-Bytebuf" class="headerlink" title="Netty（二）线程模型与 Bytebuf"></a>Netty（二）线程模型与 Bytebuf</h1><h2 id="ServerBootStrap-中的-EventLoopGroup"><a href="#ServerBootStrap-中的-EventLoopGroup" class="headerlink" title="ServerBootStrap 中的 EventLoopGroup"></a>ServerBootStrap 中的 EventLoopGroup</h2><p>ServerBootStrap 实际上内部是两个 group，解释：</p>
+<blockquote>
+<p>Most of the times using the same group for accepting and handling the accepted connections is working out quite well and so allows you to save some threads. The only time when you may not want to do this is if the handling logic of the accepted connections will keep the EventLoops so busy that you are not able to accept fast enough. </p>
+<p>– <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/28342821/8144090">Norman SO answer</a></p>
+</blockquote>
+<p>Vert.x 是一个基于 Netty 的框架，但是其初始化是将一个线程组（EventLoopGroup）同时用于 boss 与 worker。Norman回答到，这种方法大多数时候都挺不错，并且节省了一些线程。我认为这里说的节省了的线程是 boss 线程，在没有新的连接进来的时候可以参与到 handler 的任务中。然而，当 handler 要处理的任务消耗太多 CPU 时间时，EventLoopGroup 中的所有 EventLoop，也就是线程，会全都忙于处理任务，不能很快地、甚至无法 accept 新进来的连接。</p>
+<p>对于 boss EventLoopGroup，什么情况下使用超过一个线程？</p>
+<p>在构造函数中可以选择线程数：<code>NioEventLoopGroup(threadsAmount)</code>。但是，既然 boss group 的职责只是接受 accept 新连接并且分发，按照 Proactor 的模型，一个线程足矣。当一个 EventLoopGroup 被多个 ServerBoostrap 分享，则按需增加线程。</p>
+<h3 id="EventLoopGroup-默认线程数"><a href="#EventLoopGroup-默认线程数" class="headerlink" title="EventLoopGroup 默认线程数"></a>EventLoopGroup 默认线程数</h3><p>如果在 EventLoopGroup 初始化时没有指定线程数，则由以下的静态初始块设置默认线程数。代码出自<a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/9621a5b98120f9596b5d2a337330339dda199bde/transport/src/main/java/io/netty/channel/MultithreadEventLoopGroup.java#L40">MultithreadEventLoopGroup.java</a> 第 40 行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">	DEFAULT_EVENT_LOOP_THREADS = Math.max(<span class="number">1</span>, SystemPropertyUtil.getInt(</span><br><span class="line">    	<span class="string">&quot;io.netty.eventLoopThreads&quot;</span>, NettyRuntime.availableProcessors() * <span class="number">2</span>));</span><br><span class="line"><span class="comment">// 在本人的双核机器上，有四个逻辑处理器，乘以二之后 DEFAULT_EVENT_LOOP_THREADS 为 8</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ChannelHandler-与-EventLoopGroup-中的线程"><a href="#ChannelHandler-与-EventLoopGroup-中的线程" class="headerlink" title="ChannelHandler 与 EventLoopGroup 中的线程"></a>ChannelHandler 与 EventLoopGroup 中的线程</h2><p>用自己语言更具体解释一下“Netty 4中的Handler处理在IO线程中，如果Handler处理中有耗时的操作（如数据库相关），会让IO线程等待，影响性能。”</p>
+<blockquote>
+<p>我们之前已经阐明了不要阻塞当前 I&#x2F;O 线程的重要性。我们再以另一种方式重申一次：“永远不要将一个长时间运行的任务放入到执行队列中，因为它将阻塞需要在同一线程执行的任何其他任务。” 如果必须要进行阻塞调用或者执行长时间运行的任务，我们建议使用一个专门的 EventExecutor。（见 6.2.1 节的“ChannelHandler 的执行和阻塞”）。</p>
+<p>– 摘自 Netty in Action P96</p>
+</blockquote>
+<p>![EventLoop 执行逻辑](&#x2F;content&#x2F;images&#x2F;2019&#x2F;EventLoop 执行逻辑.png)</p>
+<p>总结一下，EventLoop 中的线程又被称为 I&#x2F;O 线程，一个 Channel 中的所有事件（出站&#x2F;入站）都只会被其所绑定的这个 I&#x2F;O 线程处理。一个 Channel 永远一个 EventLoop I&#x2F;O 线程绑定，而一个 I&#x2F;O 线程则可能被分配给多个 Channel。如果这个 I&#x2F;O 线程陷入执行一个 CPU 时间耗时长的任务，所有与之关联的 Channel 中的任务都会被搁置。</p>
+<p>源码如下，来自 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/00a9a25f29cf07728794089affdd735af29209de/transport/src/main/java/io/netty/channel/AbstractChannelHandlerContext.java#L787">AbstractChannelHandlerContext.java</a>#write()。在执行写任务时，先判断了执行线程是否是该 Channel 绑定的线程，如果是则交由执行，如果不是则新增一个 <code>WriteTask</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">EventExecutor</span> <span class="variable">executor</span> <span class="operator">=</span> next.executor();</span><br><span class="line"><span class="keyword">if</span> (executor.inEventLoop()) &#123;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		next.invokeWriteAndFlush(m, promise);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		next.invokeWrite(m, promise);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">final</span> AbstractWriteTask task;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		task = WriteAndFlushTask.newInstance(next, m, promise);</span><br><span class="line">	&#125;  <span class="keyword">else</span> &#123;</span><br><span class="line">		task = WriteTask.newInstance(next, m, promise);</span><br><span class="line">		...</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Netty-3-中的不和谐"><a href="#Netty-3-中的不和谐" class="headerlink" title="Netty 3 中的不和谐"></a>Netty 3 中的不和谐</h3><p>这里需要注意一下，某个给定的 EventLoop 中的所有<em>事件</em>，都是由同一个线程处理。这是 Netty 4 对 Netty 3 的改进。在 Netty 3 中，出站事件可以由 I&#x2F;O 线程执行，也可以由调用线程执行，这就使得 Race Condition 成为可能，比如一个 Channel 上的 <code>Channel.write()</code> 被同时调用时。</p>
+<p>官方 Wiki 上有一个 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/wiki/Thread-model">Thread model 的页面</a>是针对 Netty 3 的过期信息，可以看看当时开发者对这个问题的考量。</p>
+<h2 id="Bytebuf-源码"><a href="#Bytebuf-源码" class="headerlink" title="Bytebuf 源码"></a>Bytebuf 源码</h2><p><code>UnpooledHeapByteBuf</code> 基于 JVM 堆内存进行内存分配，每次使用，都从头创建一个新的 实例。性能：相比堆外内存的分配和释放，成本仍然更低一些。</p>
+<p><code>UnpooledHeapByteBuf</code> 拥有三个成员变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ByteBufAllocator alloc;  <span class="comment">// 用于分配内存</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">byte</span>[] array;  <span class="comment">// 以数组作为缓冲区</span></span><br><span class="line"><span class="keyword">private</span> ByteBuffer tmpNioBuf;  <span class="comment">// ByteBuf 与 ByteBuffer 转换时使用</span></span><br></pre></td></tr></table></figure>
+
+<p>注意这里为了<strong>提升性能与位操作</strong>，Netty 并没有直接使用原生的 ByteBuffer，而是使用数组作为缓存。</p>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/02/10/Zookeeper/" rel="prev" title="ZooKeeper：分布式过程协同技术详解 -- 读书笔记">
+                  <i class="fa fa-chevron-left"></i> ZooKeeper：分布式过程协同技术详解 -- 读书笔记
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2023/02/10/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/" rel="next" title="Netty 基础组件与线程模型--概述">
+                  Netty 基础组件与线程模型--概述 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimmy Xu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
+<meta property="og:type" content="article">
+<meta property="og:title" content="二叉堆与堆排序要点">
+<meta property="og:url" content="http://yoursite.com/2019/04/05/%E4%BA%8C%E5%8F%89%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%E8%A6%81%E7%82%B9/index.html">
+<meta property="og:site_name" content="Rust Shrugged">
+<meta property="og:description" content="二叉堆，堆排序，与优先队列要点今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为logn的原地排序算法，堆排序。 要点：  二叉堆定义（用数组表示时的细节） 插入（尾端叶子节点）与删除（根节点）的过程 建堆方式 + sink">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://yoursite.com/content/images/2019/HeapRepresentations.png">
+<meta property="article:published_time" content="2019-04-05T00:00:00.000Z">
+<meta property="article:modified_time" content="2019-04-05T00:00:00.000Z">
+<meta property="article:author" content="Jimmy Xu">
+<meta property="article:tag" content="sort">
+<meta property="article:tag" content="binary heap">
+<meta property="article:tag" content="priority queue">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/content/images/2019/HeapRepresentations.png">
+
+
+<link rel="canonical" href="http://yoursite.com/2019/04/05/%E4%BA%8C%E5%8F%89%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%E8%A6%81%E7%82%B9/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2019/04/05/%E4%BA%8C%E5%8F%89%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%E8%A6%81%E7%82%B9/","path":"2019/04/05/二叉堆与堆排序要点/","title":"二叉堆与堆排序要点"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>二叉堆与堆排序要点 | Rust Shrugged</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Rust Shrugged</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Programming and a free mind</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E5%A0%86%EF%BC%8C%E5%A0%86%E6%8E%92%E5%BA%8F%EF%BC%8C%E4%B8%8E%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E8%A6%81%E7%82%B9"><span class="nav-number">1.</span> <span class="nav-text">二叉堆，堆排序，与优先队列要点</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E5%A0%86%E5%AE%9A%E4%B9%89%E4%B8%8E%E6%95%B0%E7%BB%84%E8%A1%A8%E7%A4%BA"><span class="nav-number">1.1.</span> <span class="nav-text">二叉堆定义与数组表示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E5%8F%89%E5%A0%86%E5%88%A0%E9%99%A4%E6%9C%80%E5%A4%A7%E8%8A%82%E7%82%B9%E4%B8%8E%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">二叉堆删除最大节点与插入数据过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8A%E6%B5%AE%E3%80%81%E4%B8%8B%E6%B2%89%E6%93%8D%E4%BD%9C"><span class="nav-number">1.2.1.</span> <span class="nav-text">上浮、下沉操作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A0%E9%99%A4%E6%9C%80%E5%A4%A7-x2F-%E6%A0%B9%E8%8A%82%E7%82%B9"><span class="nav-number">1.2.2.</span> <span class="nav-text">删除最大&#x2F;根节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8F%92%E5%85%A5%E6%95%B0%E6%8D%AE"><span class="nav-number">1.2.3.</span> <span class="nav-text">插入数据</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A0%86%E6%8E%92%E5%BA%8F%E5%AF%B9%E6%95%B0%E6%8D%AE%E7%9A%84%E5%88%9D%E5%A7%8B%E5%8C%96%EF%BC%9A%E5%BB%BA%E5%A0%86"><span class="nav-number">1.3.</span> <span class="nav-text">堆排序对数据的初始化：建堆</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BC%98%E5%85%88%E9%98%9F%E5%88%97%E5%AE%9E%E7%8E%B0%E6%B3%A8%E6%84%8F%E5%B0%8F%E7%BB%86%E8%8A%82"><span class="nav-number">1.4.</span> <span class="nav-text">优先队列实现注意小细节</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimmy Xu</p>
+  <div class="site-description" itemprop="description">Tu ne cede malis, sed contra audentior ito</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/04/05/%E4%BA%8C%E5%8F%89%E5%A0%86%E4%B8%8E%E5%A0%86%E6%8E%92%E5%BA%8F%E8%A6%81%E7%82%B9/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="二叉堆与堆排序要点 | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          二叉堆与堆排序要点
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-04-05 00:00:00" itemprop="dateCreated datePublished" datetime="2019-04-05T00:00:00+00:00">2019-04-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Algorithm/" itemprop="url" rel="index"><span itemprop="name">Algorithm</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="二叉堆，堆排序，与优先队列要点"><a href="#二叉堆，堆排序，与优先队列要点" class="headerlink" title="二叉堆，堆排序，与优先队列要点"></a>二叉堆，堆排序，与优先队列要点</h1><p>今天看完了红皮《算法》第二章的优先队列那一节。二叉堆，堆排序，优先队列，这些都是难舍难分密切相关的几个概念。一句话来说，优先队列作为一种高效的数据结构，其实现依赖于二叉堆这么一种数据结构。借助于优先队列，能实现一种时间复杂度为<code>logn</code>的<strong>原地</strong>排序算法，堆排序。</p>
+<p>要点：</p>
+<ol>
+<li>二叉堆定义（用数组表示时的细节）</li>
+<li><strong>插入</strong>（尾端叶子节点）与<strong>删除</strong>（根节点）的过程</li>
+<li>建堆方式 + sink 下沉操作 &#x3D; 堆排序——堆排序的过程</li>
+<li>堆排序的优点与缺点<ol>
+<li><strong>优点</strong>：内存使用，原地排序</li>
+<li><strong>缺点</strong>：CPU cache 缓存命中，非稳定排序，比较次数大于快排</li>
+</ol>
+</li>
+<li>复杂度得出过程</li>
+</ol>
+<p>[TOC]</p>
+<h2 id="二叉堆定义与数组表示"><a href="#二叉堆定义与数组表示" class="headerlink" title="二叉堆定义与数组表示"></a>二叉堆定义与数组表示</h2><p>根节点大于<strong>等于</strong>左右两个子节点。当储存为数组时，根节点放在索引 1 的位置，为了计算便利数组的索引零不存储数据。位置为 k 的节点的父节点位置是 p &lt;&#x3D; k&#x2F;2，子节点在数组中的位置是 2k 和 2k+1。如图：</p>
+<p><img src="/content/images/2019/HeapRepresentations.png" alt="Heap Representations"></p>
+<p>另外，二叉堆<strong>属于</strong>完全二叉树。</p>
+<h2 id="二叉堆删除最大节点与插入数据过程"><a href="#二叉堆删除最大节点与插入数据过程" class="headerlink" title="二叉堆删除最大节点与插入数据过程"></a>二叉堆删除最大节点与插入数据过程</h2><h3 id="上浮、下沉操作"><a href="#上浮、下沉操作" class="headerlink" title="上浮、下沉操作"></a>上浮、下沉操作</h3><p>这两个操作是插入、删除 API 的基础操作。</p>
+<p><strong>上浮 swim</strong> 是指当某节点的子节点大于其父节点，破坏了堆的有序性，则将这个过大的子节点与它的父节点交换。如果交换之后，该子节点仍然大于交换位置之后的父节点，继续交换。这个过程就被形象化称为上浮。最终，节点上浮到正确的位置，它的父节点大于它，所有子节点小于它。每上浮一次需要 <code>1</code> 次比较。</p>
+<p><strong>下沉 sink</strong> 是相反的操作，由上至下比较。如果某节点小于它的子节点，则发生交换。每次下沉需要两次比较。首先比较找出两个子节点中较大的那个，然后比较较大子节点与父节点，如果父节点小于则交换。</p>
+<h3 id="删除最大-x2F-根节点"><a href="#删除最大-x2F-根节点" class="headerlink" title="删除最大&#x2F;根节点"></a>删除最大&#x2F;根节点</h3><p>在大端二叉堆中，根节点就是堆中最大元素。将根节点删除&#x2F;取出之后，把堆中最末尾的元素（也就是树中最大一层最右边的叶子节点）放在根节点的位置，然后对这个节点进行<code>下沉</code>操作。</p>
+<p>每次删除操作，需要的时间复杂度最坏为 $\log n$，也就是从根节点一直比较、交换到叶子节点。假设树高度为 h，最坏情况下需要 h 次交换，2h 次比较。与此同时，作为一颗完全二叉树，二叉堆的高度 h 始终小于等于 $\log$<del>2</del>$n$，也就是 $\logn$ 复杂度。</p>
+<h3 id="插入数据"><a href="#插入数据" class="headerlink" title="插入数据"></a>插入数据</h3><p>插入的数据将被放在最末端&#x2F;最右端的叶子节点，然后对其使用上浮操作。最坏情况下需要 h 次比较，h 次交换，所以复杂度也为 $\log n$。</p>
+<h2 id="堆排序对数据的初始化：建堆"><a href="#堆排序对数据的初始化：建堆" class="headerlink" title="堆排序对数据的初始化：建堆"></a>堆排序对数据的初始化：建堆</h2><h2 id="优先队列实现注意小细节"><a href="#优先队列实现注意小细节" class="headerlink" title="优先队列实现注意小细节"></a>优先队列实现注意小细节</h2><ol>
+<li><p><code>sink</code> 的调用条件是当前被下沉节点的子节点索引<strong>小于等于</strong>优先队列元素数量。否则，在边界条件时，就会导致有元素没有被下沉。举个例子，当队列还有三个元素，<code>star, was, worst</code>， 删除顶端元素之后在顶端插入末尾元素 <code>worst</code>，此时 <code>worst</code> 子节点为 <code>was</code>，索引为 <code>1*2 = 2</code>，大于等于优先队列的元素总数量，<code>sink</code> 操作没有调用，<code>worst</code> 元素先于 <code>was</code> 被取出队列。</p>
+</li>
+<li><p>在下沉 <code>sink</code> 操作时，在将当前节点与子节点比较之前，应该先比较两个子节点。如果是大顶堆，则选出更大的节点来与父节点比较，小顶堆则选出两者中更小的节点。</p>
+</li>
+<li><p>在比较两子节点时，也要注意子节点索引不能越界。同样在只有两个元素时进行 <code>sink</code> 操作的情况下，只有一个子节点，试图寻找此子节点的下一个子节点将会超越数组边界。例子：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">sink</span><span class="params">(<span class="type">int</span> k)</span> &#123;</span><br><span class="line">    <span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">2</span> * k;</span><br><span class="line">    <span class="keyword">while</span> (j &lt;= N) &#123;</span><br><span class="line">        <span class="keyword">if</span> (j+<span class="number">1</span> &lt;= N &amp;&amp; less((j + <span class="number">1</span>), j)) &#123;</span><br><span class="line">            j++;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (less(j, k)) &#123;</span><br><span class="line">            exch(j, k);</span><br><span class="line">            k = j;</span><br><span class="line">            j *= <span class="number">2</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/sort/" rel="tag"># sort</a>
+              <a href="/tags/binary-heap/" rel="tag"># binary heap</a>
+              <a href="/tags/priority-queue/" rel="tag"># priority queue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/08/09/Flask%20Web%20Development%20Notes/" rel="prev" title="Flask Web Development Notes">
+                  <i class="fa fa-chevron-left"></i> Flask Web Development Notes
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2019/05/22/%E7%A8%8B%E5%BA%8F%E5%91%98%E5%BF%85%E7%9F%A5%E7%9A%84%E5%86%85%E5%AD%98%E7%9F%A5%E8%AF%86/" rel="next" title="程序员必知的内存知识">
+                  程序员必知的内存知识 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimmy Xu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

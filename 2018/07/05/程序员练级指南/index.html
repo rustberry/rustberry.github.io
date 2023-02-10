@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="终于在极客时间上剁手了这篇是耗子叔的那几篇入门指导的浓缩  [TOC] 入门篇零基础启蒙两份入门教程（Python &amp; JS）都是从零开始  与孩子一起学编程，六、二十章为 GUI MDN Web 开发入门，教程带你建立一个网站  Python 与 JavaScript 入门语言Python 书籍 Python 编程快速上手，控制鼠标、破解 PDF Python 编程：从入门到实践，“有">
+<meta property="og:type" content="article">
+<meta property="og:title" content="程序员练级指南">
+<meta property="og:url" content="http://yoursite.com/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Rust Shrugged">
+<meta property="og:description" content="终于在极客时间上剁手了这篇是耗子叔的那几篇入门指导的浓缩  [TOC] 入门篇零基础启蒙两份入门教程（Python &amp; JS）都是从零开始  与孩子一起学编程，六、二十章为 GUI MDN Web 开发入门，教程带你建立一个网站  Python 与 JavaScript 入门语言Python 书籍 Python 编程快速上手，控制鼠标、破解 PDF Python 编程：从入门到实践，“有">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2018-07-05T23:31:00.000Z">
+<meta property="article:modified_time" content="2018-07-05T23:31:00.000Z">
+<meta property="article:author" content="Jimmy Xu">
+<meta property="article:tag" content="read">
+<meta property="article:tag" content="极客时间">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://yoursite.com/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/","path":"2018/07/05/程序员练级指南/","title":"程序员练级指南"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>程序员练级指南 | Rust Shrugged</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Rust Shrugged</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Programming and a free mind</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%A5%E9%97%A8%E7%AF%87"><span class="nav-number">1.</span> <span class="nav-text">入门篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%9B%B6%E5%9F%BA%E7%A1%80%E5%90%AF%E8%92%99"><span class="nav-number">1.1.</span> <span class="nav-text">零基础启蒙</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%A4%E4%BB%BD%E5%85%A5%E9%97%A8%E6%95%99%E7%A8%8B%EF%BC%88Python-amp-JS%EF%BC%89"><span class="nav-number">1.1.1.</span> <span class="nav-text">两份入门教程（Python &amp; JS）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Python-%E4%B8%8E-JavaScript-%E5%85%A5%E9%97%A8%E8%AF%AD%E8%A8%80"><span class="nav-number">1.1.2.</span> <span class="nav-text">Python 与 JavaScript 入门语言</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Python-%E4%B9%A6%E7%B1%8D"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">Python 书籍</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JavaScript-%E5%9C%A8%E7%BA%BF%E6%95%99%E7%A8%8B"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">JavaScript 在线教程</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%85%A5%E9%97%A8-Linux"><span class="nav-number">1.1.3.</span> <span class="nav-text">操作系统入门 Linux</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Microsoft-Visual-Studio-Code"><span class="nav-number">1.1.4.</span> <span class="nav-text">(Microsoft) Visual Studio Code</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Web-%E7%BC%96%E7%A8%8B%E5%85%A5%E9%97%A8"><span class="nav-number">1.1.5.</span> <span class="nav-text">Web 编程入门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80"><span class="nav-number">1.1.5.1.</span> <span class="nav-text">前端基础</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF%EF%BC%88PHP%EF%BC%89"><span class="nav-number">1.1.5.2.</span> <span class="nav-text">后端（PHP）</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E9%A1%B9%E7%9B%AE"><span class="nav-number">1.1.6.</span> <span class="nav-text">实践项目</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%AD%A3%E5%BC%8F%E5%85%A5%E9%97%A8"><span class="nav-number">1.2.</span> <span class="nav-text">正式入门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E6%8A%80%E8%83%BD"><span class="nav-number">1.2.1.</span> <span class="nav-text">编程技能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E5%B7%A5%E5%85%B7"><span class="nav-number">1.2.2.</span> <span class="nav-text">编程工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E9%A1%B9%E7%9B%AE-1"><span class="nav-number">1.2.3.</span> <span class="nav-text">实践项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%A5%E9%97%A8%E7%AF%87%E5%B0%8F%E7%BB%93"><span class="nav-number">1.2.4.</span> <span class="nav-text">入门篇小结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%BF%AE%E5%85%BB%E7%AF%87"><span class="nav-number">2.</span> <span class="nav-text">修养篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E5%91%98%E4%BF%AE%E5%85%BB"><span class="nav-number">2.1.</span> <span class="nav-text">程序员修养</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%99%84%E5%BD%95%EF%BC%9A%E7%BC%96%E7%A8%8B%E8%A7%84%E8%8C%83"><span class="nav-number">2.1.1.</span> <span class="nav-text">附录：编程规范</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E4%B8%93%E4%B8%9A%E5%9F%BA%E7%A1%80%E7%AF%87"><span class="nav-number">3.</span> <span class="nav-text">专业基础篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BC%96%E7%A8%8B%E8%AF%AD%E8%A8%80"><span class="nav-number">3.1.</span> <span class="nav-text">编程语言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%90%86%E8%AE%BA%E5%AD%A6%E7%A7%91"><span class="nav-number">3.2.</span> <span class="nav-text">理论学科</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><span class="nav-number">3.2.1.</span> <span class="nav-text">数据结构与算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86"><span class="nav-number">3.3.</span> <span class="nav-text">系统知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E7%9F%A5%E8%AF%86%E5%B0%8F%E7%A8%8B%E5%BA%8F"><span class="nav-number">3.3.1.</span> <span class="nav-text">系统知识小程序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E8%B7%B5%E9%A1%B9%E7%9B%AE-2"><span class="nav-number">3.3.2.</span> <span class="nav-text">实践项目</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%BB%93"><span class="nav-number">3.3.3.</span> <span class="nav-text">小结</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1%E7%AF%87"><span class="nav-number">4.</span> <span class="nav-text">软件设计篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BD%AF%E4%BB%B6%E8%AE%BE%E8%AE%A1"><span class="nav-number">4.1.</span> <span class="nav-text">软件设计</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%AB%98%E6%89%8B%E6%88%90%E9%95%BF%E7%AF%87"><span class="nav-number">5.</span> <span class="nav-text">高手成长篇</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%B3%BB%E7%BB%9F%E5%BA%95%E5%B1%82%E7%9F%A5%E8%AF%86"><span class="nav-number">5.1.</span> <span class="nav-text">系统底层知识</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimmy Xu</p>
+  <div class="site-description" itemprop="description">Tu ne cede malis, sed contra audentior ito</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="程序员练级指南 | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          程序员练级指南
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-07-05 23:31:00" itemprop="dateCreated datePublished" datetime="2018-07-05T23:31:00+00:00">2018-07-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <blockquote>
+<p>终于在极客时间上剁手了<br>这篇是耗子叔的那几篇入门指导的浓缩</p>
+</blockquote>
+<p>[TOC]</p>
+<h1 id="入门篇"><a href="#入门篇" class="headerlink" title="入门篇"></a>入门篇</h1><h2 id="零基础启蒙"><a href="#零基础启蒙" class="headerlink" title="零基础启蒙"></a>零基础启蒙</h2><h3 id="两份入门教程（Python-amp-JS）"><a href="#两份入门教程（Python-amp-JS）" class="headerlink" title="两份入门教程（Python &amp; JS）"></a>两份入门教程（Python &amp; JS）</h3><p>都是从零开始</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/5338024/">与孩子一起学编程</a>，六、二十章为 GUI</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web">MDN Web 开发入门</a>，教程带你建立一个网站</li>
+</ul>
+<h3 id="Python-与-JavaScript-入门语言"><a href="#Python-与-JavaScript-入门语言" class="headerlink" title="Python 与 JavaScript 入门语言"></a>Python 与 JavaScript 入门语言</h3><h4 id="Python-书籍"><a href="#Python-书籍" class="headerlink" title="Python 书籍"></a>Python 书籍</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26836700/">Python 编程快速上手</a>，控制鼠标、破解 PDF</li>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26829016/">Python 编程：从入门到实践</a>，“有 Web 项目、代码部署内容”，Django 学习笔记网站，Heroku 部署，若时间有限，这一本</li>
+</ul>
+<h4 id="JavaScript-在线教程"><a href="#JavaScript-在线教程" class="headerlink" title="JavaScript 在线教程"></a>JavaScript 在线教程</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript">MDN JS 教程</a>，“从初级到中级再到高级，十分全面”</li>
+<li><a target="_blank" rel="noopener" href="http://www.w3school.com.cn/js/">W3School JS 教程，</a>偏 Web 方向</li>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000">廖雪峰 JS 全栈教程</a>，偏应用偏 Web，包括 Node.js</li>
+</ul>
+<h3 id="操作系统入门-Linux"><a href="#操作系统入门-Linux" class="headerlink" title="操作系统入门 Linux"></a>操作系统入门 Linux</h3><p><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/linux/">W3CSchool Linux 教程</a></p>
+<h3 id="Microsoft-Visual-Studio-Code"><a href="#Microsoft-Visual-Studio-Code" class="headerlink" title="(Microsoft) Visual Studio Code"></a>(Microsoft) Visual Studio Code</h3><p><a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/jeasonstudio/vscode-cn-doc/details">中文手册</a>，不一定非要。吸引我：在终端工具内打印 Debug 信息</p>
+<h3 id="Web-编程入门"><a href="#Web-编程入门" class="headerlink" title="Web 编程入门"></a>Web 编程入门</h3><h4 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h4><ul>
+<li>MDN CSS 文档 与 HTML 文档，参考而不是记忆</li>
+<li>JS DOM 与动态网页 <a target="_blank" rel="noopener" href="https://www.w3schools.com/js/js_htmldom.asp">W3Schools 的 JavaScript HTML DOM 教程</a></li>
+<li>要点：<ul>
+<li>HTML 基本语法</li>
+<li>CSS 如何选中 HTML 元素，应用一些基本样式</li>
+<li>用 Firefox + Firebug 或 Chrome 查看炫酷网页结构</li>
+</ul>
+</li>
+</ul>
+<h4 id="后端（PHP）"><a href="#后端（PHP）" class="headerlink" title="后端（PHP）"></a>后端（PHP）</h4><h3 id="实践项目"><a href="#实践项目" class="headerlink" title="实践项目"></a>实践项目</h3><p>极简 Blog 系统，或是 BBS 系统，支持如下功能：</p>
+<ul>
+<li>用户登录和注册，无密码找回</li>
+<li>用户发帖，仅支持纯文本</li>
+<li>评论，纯文本</li>
+</ul>
+<p>从前端到后端，从 HTML&#x2F;CSS&#x2F;JS 到 Python，再到数据库</p>
+<p>注意的技术点：</p>
+<ul>
+<li>用户登录密码不保存为明文</li>
+<li>用户登录后，可对自己帖子 “重新编辑”、”删除“，但无权修改其它用户</li>
+<li>数据库设计。三张表：用户表，文章表，评论表，<strong>他们之间的关联</strong></li>
+</ul>
+<h2 id="正式入门"><a href="#正式入门" class="headerlink" title="正式入门"></a>正式入门</h2><h3 id="编程技能"><a href="#编程技能" class="headerlink" title="编程技能"></a>编程技能</h3><p><a target="_blank" rel="noopener" href="http://blog.thefirehoseproject.com/posts/learn-to-code-and-be-self-reliant/">The Key to Accelerating Your Coding Skills</a>，文章</p>
+<ul>
+<li>编程技巧：Code Complete</li>
+<li>编程语言：学习 Java</li>
+<li>操作系统：鸟哥的 Linux 私房菜</li>
+<li>网络协议：系统了解 HTTP 协议，<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP">MDN HTTP 文档</a>，关键点：<ul>
+<li>HTTP 头、HTTP 请求方法、HTTP 返回码</li>
+<li>Cookie，缓存，会话，连接管理</li>
+</ul>
+</li>
+<li>数据库设计：慕课网在线课程；推荐学习 MySQL</li>
+<li>前端：jQuery，Bootstrap；Ajax 请求后端 API 接口方式；JS Promise 模式，阮一峰教程</li>
+<li>字符编码</li>
+</ul>
+<h3 id="编程工具"><a href="#编程工具" class="headerlink" title="编程工具"></a>编程工具</h3><ul>
+<li><strong>IDE</strong>：Eclipse，<a target="_blank" rel="noopener" href="https://www.imooc.com/learn/924">Intellij IDEA</a>，VS Code</li>
+<li><strong>版本管理工具</strong>：Git 使用资料</li>
+<li><strong>调试前端</strong>：用 Chrome 调试，资料</li>
+<li><strong>数据库设计工具</strong>：MySQL WorkBench，资料</li>
+</ul>
+<h3 id="实践项目-1"><a href="#实践项目-1" class="headerlink" title="实践项目"></a>实践项目</h3><p>投票系统</p>
+<p>业务需求：技术需求：</p>
+<h3 id="入门篇小结"><a href="#入门篇小结" class="headerlink" title="入门篇小结"></a>入门篇小结</h3><ul>
+<li>1 - 2 年时间</li>
+<li>不用精通，能独立做出实践项目即是真正入门（耗子叔对入门的定义）</li>
+<li>年薪 20万</li>
+</ul>
+<h1 id="修养篇"><a href="#修养篇" class="headerlink" title="修养篇"></a>修养篇</h1><h2 id="程序员修养"><a href="#程序员修养" class="headerlink" title="程序员修养"></a>程序员修养</h2><p>Quora 帖子</p>
+<h3 id="附录：编程规范"><a href="#附录：编程规范" class="headerlink" title="附录：编程规范"></a>附录：编程规范</h3><h1 id="专业基础篇"><a href="#专业基础篇" class="headerlink" title="专业基础篇"></a>专业基础篇</h1><h2 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h2><ul>
+<li>C 坑</li>
+<li>C ++</li>
+<li>Java<ul>
+<li>C –&gt; C ++ –&gt; Java</li>
+</ul>
+</li>
+<li>Go</li>
+</ul>
+<h2 id="理论学科"><a href="#理论学科" class="headerlink" title="理论学科"></a>理论学科</h2><p>”计算机学科最精华的知识，人类智慧的精华“</p>
+<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><ul>
+<li>三本书推荐，先后顺序</li>
+<li>LeetCode 使用</li>
+<li>“如果想要有科班生理论基础”：<ul>
+<li>数据结构与算法分析</li>
+</ul>
+</li>
+<li>小结</li>
+</ul>
+<h2 id="系统知识"><a href="#系统知识" class="headerlink" title="系统知识"></a>系统知识</h2><p>Wireshark 数据包分析实战</p>
+<h3 id="系统知识小程序"><a href="#系统知识小程序" class="headerlink" title="系统知识小程序"></a>系统知识小程序</h3><h3 id="实践项目-2"><a href="#实践项目-2" class="headerlink" title="实践项目"></a>实践项目</h3><ul>
+<li>实现一个 telnet 版本的聊天服务器<ul>
+<li><code>telnet ip:port</code>的方式连接服务器</li>
+<li><strong>新连接</strong>需要用户名和密码登录，无则注册</li>
+<li><em>然后</em>可以选择一个聊天室加入聊天</li>
+<li><strong>管理员</strong>有权创建删除聊天室，<strong>普通人员</strong>只有 加入、退出、查询、聊天室</li>
+<li>聊天室人数限制；每个人发出来的其他人都能看到</li>
+</ul>
+</li>
+<li>简单的 HTTP 服务器<ul>
+<li>解释浏览器传来的 HTTP 协议，只处理 URL path</li>
+<li><em>然后</em>列出所代理的目录</li>
+<li>浏览器上可以浏览目录里的文件，和下级目录</li>
+<li><em>点击文件</em>，则文件传给浏览器（浏览器可自动显示图片、PDF、等）</li>
+<li><em>点击子目录</em>，则进入子目录，并列出文件</li>
+</ul>
+</li>
+<li>生产者 &#x2F; 消费者消息队列服务</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>还有热情与成就感：恭喜，超过了绝大多数人；50 万</li>
+<li>术业有专攻，建议的方向</li>
+</ul>
+<h1 id="软件设计篇"><a href="#软件设计篇" class="headerlink" title="软件设计篇"></a>软件设计篇</h1><h2 id="软件设计"><a href="#软件设计" class="headerlink" title="软件设计"></a>软件设计</h2><h1 id="高手成长篇"><a href="#高手成长篇" class="headerlink" title="高手成长篇"></a>高手成长篇</h1><h2 id="系统底层知识"><a href="#系统底层知识" class="headerlink" title="系统底层知识"></a>系统底层知识</h2>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/read/" rel="tag"># read</a>
+              <a href="/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4/" rel="tag"># 极客时间</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2018/06/24/Unicode,%20UTF-8,%20%E4%BB%A5%E5%8F%8A%20UTF-16/" rel="prev" title="Unicode, UTF-8, 以及 UTF-16">
+                  <i class="fa fa-chevron-left"></i> Unicode, UTF-8, 以及 UTF-16
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2018/07/21/VimCheatsheet/" rel="next" title="Vim Cheat Sheet">
+                  Vim Cheat Sheet <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimmy Xu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
