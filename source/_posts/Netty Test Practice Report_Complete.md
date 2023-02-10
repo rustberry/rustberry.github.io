@@ -17,7 +17,7 @@ Netty is a high-performance network application framework with asynchronous even
 ### Netty vs java.net: async and event-driven
 
 By leveraging callbacks, Netty implements a event model for network communication. User can register listeners to events and operations, and get async notification of the completion status of those registered handlers.
-
+<!-- more -->
 Also, Netty eliminates the need for tedious synchronization by allowing only one thread to handle all the I/O operations and events within a `EventLoop`.
 
 Those coming from other programming languages like JavaScript would find this practice very similar to async frameworks like Koa: accessing a global `ctx` from self-defined callbacks, and then easily attach them to different places.
