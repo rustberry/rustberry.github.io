@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
 
-<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
 
     <meta name="description" content="Tu ne cede malis, sed contra audentior ito">
 <meta property="og:type" content="website">
@@ -150,594 +150,6 @@
     </div>
 
     <div class="main-inner index posts-expand">
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/10/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jimmy Xu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rust Shrugged">
-      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Rust Shrugged">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/10/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">Netty 基础组件与线程模型--概述</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-10 05:13:07" itemprop="dateCreated datePublished" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Netty-基础组件与线程模型–概述"><a href="#Netty-基础组件与线程模型–概述" class="headerlink" title="Netty 基础组件与线程模型–概述"></a>Netty 基础组件与线程模型–概述</h1><p>即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 <em>Netty in Action</em> 总结一下。</p>
-<h2 id="Netty-想要解决什么问题"><a href="#Netty-想要解决什么问题" class="headerlink" title="Netty 想要解决什么问题"></a>Netty 想要解决什么问题</h2><p>一项新技术&#x2F;开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。</p>
-<p>以我目前的水平回答，是为了弥补 Java 标准库在 I&#x2F;O 上的不足。这种不足我现在看来有两部分：性能与易用性。</p>
-<p>性能方面，作为标准库，API 稳定、统一的需求更重要，从而无法在提升性能上下狠功夫。Netty 则在各种角落实行了优化。最明显的是对垃圾回收与内存分配的修改，使得 ByteBuf 一定程度由使用者手动管理；以及针对不同平台提供与底层实现紧密相关的优化，比如针对 Linux 的 EpollEventLoopGroup，从而能提供边缘触发，而非 Java NIO 默认的水平触发。另外，据 Norman Maurer <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/36058105/8144090">自己所说</a>，还有更低的 GC。其它细节包括使用 OpenSSL 替换 Java 标准库，等等。</p>
-<p>另一方面，NIO 在使用上不够直观。仅仅 <code>flip</code> 这个方法的设计就很迷惑——像 Netty 一样为读和写单独设置两个指针多方便。</p>
-<h2 id="Netty-自测问题"><a href="#Netty-自测问题" class="headerlink" title="Netty 自测问题"></a>Netty 自测问题</h2><p>看完 Netty in Action 之后我反问自己都了解到了些什么，想到了如下的问题：</p>
-<p><code>EventLoop</code>  与 <code>EventLoopGroup</code> 的区别，之间的关系是什么？EventLoopGroup 拥有几个线程？EventLoop 呢？</p>
-<p>EventLoop 与 Channel 是什么关系？</p>
-<p>ChannelHandler 与 ChannelPipeline 是什么关系？</p>
-<p>ChannelHandlerAdapter 对 ChannelHandler 区别是什么，有何改进？</p>
-<p>Channel、ChannelHandler 生命周期？</p>
-<p>我发现很多问题自己居然都给不出回答，然后立刻回去看书的三、六、七章，有一种开窍的感觉。之前看第一遍时无感，并且不知道重点的内容，这一次都变成了问题的答案，看的过程也津津有味起来。</p>
-<h2 id="简单梳理"><a href="#简单梳理" class="headerlink" title="简单梳理"></a>简单梳理</h2><p>简单梳理一下基础的概念，下图来自《Netty in Action》，侵删：</p>
-<p>![Channel EventLoop and EventLoopGroup](&#x2F;content&#x2F;images&#x2F;2019&#x2F;Channel EventLoop and EventLoopGroup.png)</p>
-<ul>
-<li>Channel 就是一种“传输（transport）”，一个 Socket 就属于 Channel，所以最简单可以理解为，Channel 就是一个 Socket；</li>
-<li>一个 Channel 在它的生命周期内只注册于一个 EventLoop；</li>
-<li>一个 EventLoop 在它的生命周期中只与一个 Thread 绑定。实际上，最常用的实现 NioEventLoop 扩展自 SingleThreadEventLoop；</li>
-<li>一个 EventLoop 可能会被分配给一个或多个 Channel（这样一来，不必每个 Socket 连接就分配一个线程，用有限的线程支撑更多的连接）；</li>
-</ul>
-<p>这种设计消除了同步（synchronization）的需求，因为一个 Channel 的所有 I&#x2F;O 操作都是由同一个线程（异步地）完成的。</p>
-<ul>
-<li>ChannelPipeline 提供了 ChannelHandler 链的容器</li>
-</ul>
-<h2 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h2><h3 id="Reactor-pattern-amp-Proactor-pattern"><a href="#Reactor-pattern-amp-Proactor-pattern" class="headerlink" title="Reactor pattern &amp; Proactor pattern"></a>Reactor pattern &amp; Proactor pattern</h3><p>在学习阅读 Netty 的时候，我意识到书的作者以及文档作者都假定了，读者对于所谓的 Proactor 模式、Reactor 模式有所了解。所以我认为有必要先简要了解一下这两种模式。</p>
-<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reactor_pattern">Reactor pattern</a> 有<strong>一个</strong>主线程，从多个 input 读取服务请求，然后把这些请求<strong>同步地</strong>分发给对应的服务处理线程。通常主线程使用同步的 <code>select</code> 来监听多个文件描述符，当一个阻塞操作，比如 <code>read()</code> 准备完毕，<code>select</code> 获得通知，就将其转发给服务处理线程。</p>
-<p>关于 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proactor_pattern">Proactor pattern</a>：</p>
-<blockquote>
-<p>The proactor pattern can be considered to be an <a target="_blank" rel="noopener" href="https://en.wiktionary.org/wiki/asynchronous">asynchronous</a> variant of the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Synchronization_(computer_science)">synchronous</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reactor_pattern">reactor pattern</a>.</p>
-<p>– Wikipedia</p>
-</blockquote>
-<p>Proactor 模式可以视作 Reactor 模式的异步形式。耗时长的任务异步地完成，在结束时发送通知。</p>
-<h3 id="Netty-的-Boss-Worker-EventLoopGroup"><a href="#Netty-的-Boss-Worker-EventLoopGroup" class="headerlink" title="Netty 的 Boss-Worker EventLoopGroup"></a>Netty 的 Boss-Worker EventLoopGroup</h3><p>了解了有这种主-从线程池的区分之后，就能理解，为什么很多 Netty 示例程序中 Server 的 <code>ServerBootStrap#group(EventLoopGroup, EventLoopGroup)</code> 会有绑定两个 EventLoopGroup。即使某些简单的 demo 实现中只绑定了一个，如： <code>group(EventLoopGroup)</code>，这一方法其实只是绑定主从 EventLoopGroup 的重载方法，源码如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ServerBootstrap <span class="title function_">group</span><span class="params">(EventLoopGroup group)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> group(group, group);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>官方 <a target="_blank" rel="noopener" href="https://netty.io/wiki/user-guide-for-4.x.html">User Guide</a> 的解释如下：</p>
-<blockquote>
-<p>The first one, often called ‘boss’, accepts an incoming connection. The second one, often called ‘worker’, handles the traffic of the accepted connection once the boss accepts the connection and registers the accepted connection to the worker. </p>
-</blockquote>
-<p>第一个是被称为 boss 的 EventLoopGroup，负责接受连接，第二个则被称为 worker，负责处理由 boss 分配给它的已接受的连接。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/10/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jimmy Xu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rust Shrugged">
-      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Rust Shrugged">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/10/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">Netty（二）线程模型与 Bytebuf</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-10 05:13:07" itemprop="dateCreated datePublished" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Netty（二）线程模型与-Bytebuf"><a href="#Netty（二）线程模型与-Bytebuf" class="headerlink" title="Netty（二）线程模型与 Bytebuf"></a>Netty（二）线程模型与 Bytebuf</h1><h2 id="ServerBootStrap-中的-EventLoopGroup"><a href="#ServerBootStrap-中的-EventLoopGroup" class="headerlink" title="ServerBootStrap 中的 EventLoopGroup"></a>ServerBootStrap 中的 EventLoopGroup</h2><p>ServerBootStrap 实际上内部是两个 group，解释：</p>
-<blockquote>
-<p>Most of the times using the same group for accepting and handling the accepted connections is working out quite well and so allows you to save some threads. The only time when you may not want to do this is if the handling logic of the accepted connections will keep the EventLoops so busy that you are not able to accept fast enough. </p>
-<p>– <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/28342821/8144090">Norman SO answer</a></p>
-</blockquote>
-<p>Vert.x 是一个基于 Netty 的框架，但是其初始化是将一个线程组（EventLoopGroup）同时用于 boss 与 worker。Norman回答到，这种方法大多数时候都挺不错，并且节省了一些线程。我认为这里说的节省了的线程是 boss 线程，在没有新的连接进来的时候可以参与到 handler 的任务中。然而，当 handler 要处理的任务消耗太多 CPU 时间时，EventLoopGroup 中的所有 EventLoop，也就是线程，会全都忙于处理任务，不能很快地、甚至无法 accept 新进来的连接。</p>
-<p>对于 boss EventLoopGroup，什么情况下使用超过一个线程？</p>
-<p>在构造函数中可以选择线程数：<code>NioEventLoopGroup(threadsAmount)</code>。但是，既然 boss group 的职责只是接受 accept 新连接并且分发，按照 Proactor 的模型，一个线程足矣。当一个 EventLoopGroup 被多个 ServerBoostrap 分享，则按需增加线程。</p>
-<h3 id="EventLoopGroup-默认线程数"><a href="#EventLoopGroup-默认线程数" class="headerlink" title="EventLoopGroup 默认线程数"></a>EventLoopGroup 默认线程数</h3><p>如果在 EventLoopGroup 初始化时没有指定线程数，则由以下的静态初始块设置默认线程数。代码出自<a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/9621a5b98120f9596b5d2a337330339dda199bde/transport/src/main/java/io/netty/channel/MultithreadEventLoopGroup.java#L40">MultithreadEventLoopGroup.java</a> 第 40 行。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">	DEFAULT_EVENT_LOOP_THREADS = Math.max(<span class="number">1</span>, SystemPropertyUtil.getInt(</span><br><span class="line">    	<span class="string">&quot;io.netty.eventLoopThreads&quot;</span>, NettyRuntime.availableProcessors() * <span class="number">2</span>));</span><br><span class="line"><span class="comment">// 在本人的双核机器上，有四个逻辑处理器，乘以二之后 DEFAULT_EVENT_LOOP_THREADS 为 8</span></span><br></pre></td></tr></table></figure>
-
-<h2 id="ChannelHandler-与-EventLoopGroup-中的线程"><a href="#ChannelHandler-与-EventLoopGroup-中的线程" class="headerlink" title="ChannelHandler 与 EventLoopGroup 中的线程"></a>ChannelHandler 与 EventLoopGroup 中的线程</h2><p>用自己语言更具体解释一下“Netty 4中的Handler处理在IO线程中，如果Handler处理中有耗时的操作（如数据库相关），会让IO线程等待，影响性能。”</p>
-<blockquote>
-<p>我们之前已经阐明了不要阻塞当前 I&#x2F;O 线程的重要性。我们再以另一种方式重申一次：“永远不要将一个长时间运行的任务放入到执行队列中，因为它将阻塞需要在同一线程执行的任何其他任务。” 如果必须要进行阻塞调用或者执行长时间运行的任务，我们建议使用一个专门的 EventExecutor。（见 6.2.1 节的“ChannelHandler 的执行和阻塞”）。</p>
-<p>– 摘自 Netty in Action P96</p>
-</blockquote>
-<p>![EventLoop 执行逻辑](&#x2F;content&#x2F;images&#x2F;2019&#x2F;EventLoop 执行逻辑.png)</p>
-<p>总结一下，EventLoop 中的线程又被称为 I&#x2F;O 线程，一个 Channel 中的所有事件（出站&#x2F;入站）都只会被其所绑定的这个 I&#x2F;O 线程处理。一个 Channel 永远一个 EventLoop I&#x2F;O 线程绑定，而一个 I&#x2F;O 线程则可能被分配给多个 Channel。如果这个 I&#x2F;O 线程陷入执行一个 CPU 时间耗时长的任务，所有与之关联的 Channel 中的任务都会被搁置。</p>
-<p>源码如下，来自 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/00a9a25f29cf07728794089affdd735af29209de/transport/src/main/java/io/netty/channel/AbstractChannelHandlerContext.java#L787">AbstractChannelHandlerContext.java</a>#write()。在执行写任务时，先判断了执行线程是否是该 Channel 绑定的线程，如果是则交由执行，如果不是则新增一个 <code>WriteTask</code>。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">EventExecutor</span> <span class="variable">executor</span> <span class="operator">=</span> next.executor();</span><br><span class="line"><span class="keyword">if</span> (executor.inEventLoop()) &#123;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		next.invokeWriteAndFlush(m, promise);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		next.invokeWrite(m, promise);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">final</span> AbstractWriteTask task;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		task = WriteAndFlushTask.newInstance(next, m, promise);</span><br><span class="line">	&#125;  <span class="keyword">else</span> &#123;</span><br><span class="line">		task = WriteTask.newInstance(next, m, promise);</span><br><span class="line">		...</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="Netty-3-中的不和谐"><a href="#Netty-3-中的不和谐" class="headerlink" title="Netty 3 中的不和谐"></a>Netty 3 中的不和谐</h3><p>这里需要注意一下，某个给定的 EventLoop 中的所有<em>事件</em>，都是由同一个线程处理。这是 Netty 4 对 Netty 3 的改进。在 Netty 3 中，出站事件可以由 I&#x2F;O 线程执行，也可以由调用线程执行，这就使得 Race Condition 成为可能，比如一个 Channel 上的 <code>Channel.write()</code> 被同时调用时。</p>
-<p>官方 Wiki 上有一个 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/wiki/Thread-model">Thread model 的页面</a>是针对 Netty 3 的过期信息，可以看看当时开发者对这个问题的考量。</p>
-<h2 id="Bytebuf-源码"><a href="#Bytebuf-源码" class="headerlink" title="Bytebuf 源码"></a>Bytebuf 源码</h2><p><code>UnpooledHeapByteBuf</code> 基于 JVM 堆内存进行内存分配，每次使用，都从头创建一个新的 实例。性能：相比堆外内存的分配和释放，成本仍然更低一些。</p>
-<p><code>UnpooledHeapByteBuf</code> 拥有三个成员变量：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ByteBufAllocator alloc;  <span class="comment">// 用于分配内存</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">byte</span>[] array;  <span class="comment">// 以数组作为缓冲区</span></span><br><span class="line"><span class="keyword">private</span> ByteBuffer tmpNioBuf;  <span class="comment">// ByteBuf 与 ByteBuffer 转换时使用</span></span><br></pre></td></tr></table></figure>
-
-<p>注意这里为了<strong>提升性能与位操作</strong>，Netty 并没有直接使用原生的 ByteBuffer，而是使用数组作为缓存。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/10/Zookeeper/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jimmy Xu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rust Shrugged">
-      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Rust Shrugged">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/10/Zookeeper/" class="post-title-link" itemprop="url">ZooKeeper：分布式过程协同技术详解 -- 读书笔记</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-10 05:13:07" itemprop="dateCreated datePublished" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/ZooKeeper/" itemprop="url" rel="index"><span itemprop="name">ZooKeeper</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="ZooKeeper：分布式过程协同技术详解-–-读书笔记"><a href="#ZooKeeper：分布式过程协同技术详解-–-读书笔记" class="headerlink" title="ZooKeeper：分布式过程协同技术详解 – 读书笔记"></a>ZooKeeper：分布式过程协同技术详解 – 读书笔记</h1><blockquote>
-<p>要点：第九章 Zab 协议、ZK 对写事务日志的优化。</p>
-</blockquote>
-<h2 id="Installation-amp-configuration"><a href="#Installation-amp-configuration" class="headerlink" title="Installation &amp; configuration"></a>Installation &amp; configuration</h2><p>Todo: <code>/tmp/zookeeper</code> –&gt; <code>/var/lib/zookeeper</code></p>
-<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><h4 id="chapter-2"><a href="#chapter-2" class="headerlink" title="chapter 2"></a>chapter 2</h4><p>types of <code>znode</code>:</p>
-<ul>
-<li>persistent, ephemeral, persistent_sequential, ephemeral_sequential；</li>
-<li>持久节点、临时节点、持久有序节点、临时有序节点；</li>
-<li>被创建为有序的节点被分配一个递增的整数，总而，形成了一个全局唯一的名字；</li>
-<li>节点除了拥有名字（父节点名字 + 自身名字），还可以像文件夹一样，存有数据；</li>
-</ul>
-<p>通知</p>
-<p>Zookeeper 中可以在节点上注册事件，而不需要轮询。事件可以包括 znode 数据的变化、子节点的变化、znode 的创建删除。</p>
-<p>会话 session</p>
-<p>客户端通过 TCP 与服务端通信。当此前会话无法继续（掉线，超过延迟时限），客户端的会话会被透明地转移到下一个服务器。</p>
-<p>Zookeeper 保证，在同一个会话中的请求是以 FIFO 的顺序执行。但是如果客户端拥有多个并发的会话，则不保证。</p>
-<p>会话状态</p>
-<p>NOT_CONNECTED –&gt; CONNECTING &lt;&#x3D;&#x3D;&gt; CONNECTED –&gt; CLOSED</p>
-<p>客户端不能声明自己的会话到期（timedout），但是可以显示关闭会话。</p>
-<p>进阶：事务标识符 zkid 在客户端连接中的使用。</p>
-<h5 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h5><p>Zookeeper 可以配置三种 TCP 端口。前两种是关于服务端的，第三种在 <code>zoo.cfg</code> 中称为  <code>clientPort</code>。一个仲裁模式（quorum）的配置示例如下：</p>
-<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tickTime</span>=<span class="string">2000</span></span><br><span class="line"><span class="attr">initLimit</span>=<span class="string">10</span></span><br><span class="line"><span class="attr">syncLimit</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">dataDir</span>=<span class="string">./data</span></span><br><span class="line"><span class="attr">clientPort</span>=<span class="string">2181</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server.1</span>=<span class="string">127.0.0.1:2222:2223</span></span><br><span class="line"><span class="attr">server.2</span>=<span class="string">127.0.0.1:3333:3334</span></span><br><span class="line"><span class="attr">server.3</span>=<span class="string">127.0.0.1:4444:4445</span></span><br></pre></td></tr></table></figure>
-
-<p>在对服务器的配置 <code>server.1=127.0.0.1:2222:2223</code> 中，第一个端口 <code>2222</code> 是<em>仲裁通信</em>，follower 通过这个端口来接受 leader 传达的更新指令；第二个端口用于 leader 选举。</p>
-<h4 id="connectString"><a href="#connectString" class="headerlink" title="connectString"></a>connectString</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zookeeper/bin/zkCli.sh -server 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</span><br></pre></td></tr></table></figure>
-
-<p>上面的 <code>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</code> 就是所谓连接字符串（connectString）。不仅在命令行的 <code>zkCli</code> 中使用，API 库也是同样的道理。连接字符串列出了本客户端可以连接的所有服务器。其中的端口，就是在各个 Zookeeper 服务器的 <code>zoo.cfg</code> 配置文件中的 <code>clientPort</code>。</p>
-<h4 id="chap-3-使用-Zookeeper-API-库"><a href="#chap-3-使用-Zookeeper-API-库" class="headerlink" title="chap 3 使用 Zookeeper API 库"></a>chap 3 使用 Zookeeper API 库</h4><p>创建 Zookeeper 句柄（handle）；实现 Watcher、认识 Zookeeper 自动管理与服务端的断连；同步地创建节点 <code>zk.create(...)</code>；同步地获取 znode 中的数据 <code>byte[] getData(...)</code>、处理 <code>ConnectionLossException</code> ；异步创建节点、实践：异步创建元数据 path；<code>StatCallback</code>；</p>
-<p>关于回调的注意：回调函数中的 <code>Object ctx</code> 在需要在回调中再次调用自身的场景中被使用到，如处理返回码为 <code>ConnectionLossException</code> 时，再次调用自身这个回调函数。</p>
-<p>chap 4 Dealing with State Change</p>
-<p>当一个监视点（watch）被一个事件（event）触发，就会产生一个通知（notification）。</p>
-<p>在某些 ZooKeeper 的封装库（wrapper ）中，对 ConnectionLoss 的处理就是自动重新发送相应指令。某些情况这会带来大问题，比如通过 <code>create</code> 创建 <code>/master</code> 节点来获取领导权。如果客户端在 <code>create</code> 成功之后丢失连接，此时 wrapper 库自动重发指令，就会收到创建失败的响应，因为节点之前已经被创建好了。但是如果不知道这一细节，应用就会认为是其它节点已经创建了 master 节点获得了领导权。</p>
-<h4 id="chap-9-原理"><a href="#chap-9-原理" class="headerlink" title="chap 9 原理"></a>chap 9 原理</h4><p>ZK 要求，新的 Quorum 数量的服务器中，必须有一台以上的机器是属于上一个群首的 Quorum。</p>
-<p>ZK 服务器的分类方式：分为 Leader 和 Follower，或者分为 Participant 和 Observer。Observer 和 Follower 可以统称为 Learner，因为它们“学习”群首的指示。</p>
-<p>对于 Follower 有两类广播：</p>
-<ul>
-<li><code>proposal</code>：包含有 transaction 的内容。</li>
-<li><code>commit</code>：只包含 zxid。</li>
-</ul>
-<p>对于 Observer 只有一类：</p>
-<ul>
-<li><code>INFORM</code>：已被 commit 了的 proposal 的内容。</li>
-</ul>
-<h5 id="ZAB-协议"><a href="#ZAB-协议" class="headerlink" title="ZAB 协议"></a>ZAB 协议</h5><ul>
-<li>两阶段提交：对于一个写请求操作，群首广播出一个 Proposal。对于这个 Proposal，追随者收到之后返回 ACK 消息，通知群首其已接收此 Proposal。在收到达到仲裁数量（群首自己也算在内）的服务器发送的 ACK 之后，群首发出 <code>commit</code> 的广播。</li>
-<li>Zab 提供的顺序保障：<ul>
-<li>如果群首按顺序广播了事务 <code>T1</code> 和 <code>T2</code>，那么每个服务器在 commit <code>T2</code> 之前保证 <code>T1</code> 已经被提交；</li>
-<li>如果某个服务器按照 <code>T1</code> 、<code>T2</code> 的顺序提交事务，那么其它服务器也保证是按这个顺序提交的。</li>
-</ul>
-</li>
-<li>epoch 时间戳：每次群首选举中递增 <code>1</code></li>
-<li>Zab 提供的脑裂保障：<ul>
-<li>新群首必须要确保所有之前的时间戳内需要提交的事务被全部提交完，然后才开始新的广播；</li>
-<li>在任何时间点，都不会同时出现两个被仲裁数量支持的群首。</li>
-</ul>
-</li>
-</ul>
-<p>由于在选举群首时，选举上的是 <code>zxid</code> 最大的服务器，我们就不需要将最新状态从跟随服务器更新到群首服务器，因为群首就是代表最新状态；我们所需要的，就是直接发送更新到追随者。</p>
-<h5 id="ZK-有效写入事务日志"><a href="#ZK-有效写入事务日志" class="headerlink" title="ZK 有效写入事务日志"></a>ZK 有效写入事务日志</h5><p>ZK 如何有效写入事务日志：写事务日志是写请求操作的关键，ZK 用了两种方式来优化：1）组团提交 2）预先填充（padding）。</p>
-<p>实际上，对于组团提交，就是在需要 flush 到磁盘（来保证事务已被持久化）时，把所有队列中的事务都<em>顺带</em> flush 到磁盘。注意，ZK 服务器只有在事务已经写入日志之后才会确认对应的 Proposal，也就是在确认事务之前，该事务已经被持久化到磁盘了。为了保证在 <code>commit</code> 方法返回后写入的数据已经存在于磁盘（而不是操作系统的写缓冲区），磁盘写缓存必须被关闭。</p>
-<p><strong>预先填充（padding）</strong>是指预先为日志文件分配多余的磁盘块。在 Linux 系统中，一个文件中的数据储存在一个个分配给它的块（block）中。当向文件中写入时，如果当前分配的磁盘块用尽了，就要花时间请求分配新的磁盘块。这种请求需要修改该文件所对应的元数据，因此预先分配就会减少这一次磁盘寻道。</p>
-<h5 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h5><p>Standalone 模式下的单独服务器与仲裁模式（Quorum）下的群首服务器负责跟踪<em>所有会话</em>。追随者只是将客户端的会话信息转发给群首。</p>
-<h5 id="监视点"><a href="#监视点" class="headerlink" title="监视点"></a>监视点</h5><p>服务端不会持久化监视点，因此监视点的数据在<em>客户端</em>保存。在掉线重连之后，客户端将监视点的信息同步到服务端</p>
-<h3 id="机翻问题。。"><a href="#机翻问题。。" class="headerlink" title="机翻问题。。"></a>机翻问题。。</h3><p>机翻</p>
-<p>P58：</p>
-<p>异步方法调用会简单化队列对 Zookeeper 服务器的请求，并在另一个线程中传输请求。</p>
-<p>当接收到响应信息，这些请求就会在一个专用回调线程中被处理。</p>
-<p>为了保持顺序，只会有一个单独的线程按照接收顺序处理响应包</p>
-<p>原文：</p>
-<p>The asynchronous method simply queues the request to the ZooKeeper server. Transmission happens on another thread. When responses are received, they are processed on a dedicated callback thread. To preserve order, there is a single callback thread and responses are processed in the order they are received.</p>
-<p>我认为好的翻译：</p>
-<p>这个异步方法只是简单地把请求加入 ZooKeeper 服务器的请求队列中。传输请求的任务由另一个线程完成。</p>
-<p>收到响应之后，<strong>响应</strong>由一个专门的回调线程处理。</p>
-<p>为了保证顺序，只会有一个单独的回调线程，按照接收到的顺序处理响应。</p>
-<p>Returns the result of the call：返回调用的结构。</p>
-<h3 id="关于-InterruptedException"><a href="#关于-InterruptedException" class="headerlink" title="关于 InterruptedException"></a>关于 <code>InterruptedException</code></h3><p>使用 ZK 的 API 库时会遇到不少的方法，抛出 <code>InterruptedException</code>。作者在书中也表示很无奈，没有一劳永逸的解决办法，还是要取决于具体状况，来决定是让这个异常沿着调用栈上浮，还是其它办法：</p>
-<blockquote>
-<p>In our example, we simply pass the InterruptedException to the caller and thus let it bubble up. Unfortunately, in Java there aren’t clear guidelines for how to deal with thread interruption, or even what it means. Sometimes the interruptions are used to signal threads that things are being shut down and they need to clean up. In other cases, an interruption is used to get control of a thread, but execution of the application continues.<br>Our handling of InterruptedException depends on our context. If the InterruptedException will bubble up and eventually close our zk handle, we can let it go up the stack and everything will get cleaned up when the handle is closed. If the zk handle is not closed, we need to figure out if we are the master before rethrowing the exception or asynchronously continuing the operation. This latter case is particularly tricky and requires careful design to handle properly.</p>
-</blockquote>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/10/java.io%20%E6%A2%B3%E7%90%86%E4%B8%8E%E5%85%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jimmy Xu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rust Shrugged">
-      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Rust Shrugged">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/10/java.io%20%E6%A2%B3%E7%90%86%E4%B8%8E%E5%85%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">java.io 梳理与其中的三种设计模式</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-10 05:13:07" itemprop="dateCreated datePublished" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Design-Patterns/" itemprop="url" rel="index"><span itemprop="name">Design Patterns</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="java-io-梳理与其中的三种设计模式"><a href="#java-io-梳理与其中的三种设计模式" class="headerlink" title="java.io 梳理与其中的三种设计模式"></a>java.io 梳理与其中的三种设计模式</h1><p>以 <code>Reader</code> 抽象类下的类为例。它们的主要构造函数如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FilterReader(Reader)</span><br><span class="line">BufferedReader(Reader)</span><br><span class="line"></span><br><span class="line">FileReader(File)</span><br><span class="line">StringReader(String)</span><br><span class="line">InputStreamReader(InputStream [, Charset])</span><br></pre></td></tr></table></figure>
-
-<p><img src="/content/images/2019/ReaderUML.png" alt="Reader UML"></p>
-<p>大致上，<code>java.io</code> 可以分为：</p>
-<ol>
-<li>字节流操作：<code>InputStream</code>、<code>OutputStream</code></li>
-<li>字符操作：<code>Reader</code>、<code>Writer</code></li>
-<li>针对磁盘操作：<code>File</code></li>
-</ol>
-<h2 id="适配器模式-Adapter-pattern"><a href="#适配器模式-Adapter-pattern" class="headerlink" title="适配器模式 Adapter pattern"></a>适配器模式 Adapter pattern</h2><p><code>InputStreamReader</code> 是字节流与字符流之间的桥梁，它的实现使用了适配器模式。适配器模式通过聚合将某个接口适配成为另一个接口来方便使用，类图如下：</p>
-<p><img src="/content/images/2019/InputStreamReaderAdapterPattern.png" alt="InputStreamReader Adapter Pattern"></p>
-<p>在开头的代码可以看到，<code>InputStreamReader</code> 的构造器需要传入一个字节流 <code>InputSream</code>，以及可选的字符集。如果没有传入字符集就会使用默认的。通过持有一个 <code>InputStream</code>，<code>InputStreamReader</code> 拥有了该接口的功能。同时，<code>InputStreamReader</code> 还是一个实现了 <code>Reader</code> 类，这样一来它就把 <code>InputStream</code> 适配成了一个 <code>Reader</code> 类。</p>
-<h2 id="装饰器模式-Decorator-pattern"><a href="#装饰器模式-Decorator-pattern" class="headerlink" title="装饰器模式 Decorator pattern"></a>装饰器模式 Decorator pattern</h2><p>这个应该是 <code>java.io</code> 更为人熟知的，装饰器模式与适配器模式都可以看作包装模式 Wrapper。通过对类的层层包裹，装饰器模式增强了目标类的功能。类图示意如下：</p>
-<p><img src="/content/images/2019/IODecoratorPattern.png" alt="IO Decorator Pattern"></p>
-<p><code>Decorator</code> 是 <code>Component</code> 的实现类，但是其内部也持有一个 <code>Decorator</code> 类。不同的 <code>Decorator</code> 类下的 <code>ConcreteDecorator</code> 子类包含了需要增强的功能。</p>
-<p>在 <code>java.io</code> 中的典型使用：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FilterReader</span> <span class="variable">pbr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PushbackReader</span>(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(System.in)))</span><br></pre></td></tr></table></figure>
-
-<h3 id="二者的不同"><a href="#二者的不同" class="headerlink" title="二者的不同"></a>二者的不同</h3><p>装饰器模式更多的是对目标类的功能上的增强；适配器没有对功能进行增进，只是为了使目标类能适应调用方的接口，方便被调用。</p>
-<h2 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a>模板方法</h2><p>在模板方法模式中，大的算法框架在抽象父类中被定义好，某些业务相关的实现则延迟到子类。</p>
-<p>在 <code>Reader</code> 抽象类中，<code>read</code> 方法的默认实现都留给了被重载的 <code>read(char[], int, int)</code>，如下：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">read</span><span class="params">()</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">read</span><span class="params">(<span class="type">char</span>[] cbuf)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="type">int</span> <span class="title function_">read</span><span class="params">(<span class="type">char</span>[] cbuf, <span class="type">int</span> offset, <span class="type">int</span> len)</span></span><br></pre></td></tr></table></figure>
-
-<p>具体的 <code>read</code> 的实现留给子类。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2023/02/10/tiny-spring%20%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jimmy Xu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rust Shrugged">
-      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Rust Shrugged">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2023/02/10/tiny-spring%20%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">tiny-spring 踩坑记录（一）可变长泛型参数与堆污染</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2023-02-10 05:13:07" itemprop="dateCreated datePublished" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h2 id="可变长泛型参数与堆污染"><a href="#可变长泛型参数与堆污染" class="headerlink" title="可变长泛型参数与堆污染"></a>可变长泛型参数与堆污染</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
-<p>什么是堆污染</p>
-</blockquote>
-<p>一个类型为泛型 <code>T</code> 的变量被指向一个类型不是 <code>T</code> 的对象，这就是堆污染。典型的情况是</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;T&gt; listOfTs = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(t));</span><br><span class="line">List&lt;E&gt; listOfEs = (List&lt;E&gt;)(Object)listOfTs; <span class="comment">// 此时指向了含有 T 的 List, 但是不会抛出异常，只是在 Object -&gt; List&lt;E&gt; 的转型中抛出警告</span></span><br><span class="line"></span><br><span class="line"><span class="type">E</span> <span class="variable">e</span> <span class="operator">=</span> listOfEs.get(<span class="number">0</span>);  <span class="comment">// 运行时错误，java.lang.ClassCastException</span></span><br></pre></td></tr></table></figure>
-
-<p>之所以编译器无法在转型时检查出类型转换错误，是因为 Java 泛型是通过类型擦除实现的，在泛型代码内部无法获得任何有关泛型参数类型的信息。</p>
-<p>一个更好一点的关于可变长泛型参数和堆污染一起的例子，来自 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/generics/nonReifiableVarargsType.html">Oracle 官方文档</a>：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">faultyMethod</span><span class="params">(List&lt;String&gt;... l)</span> &#123;</span><br><span class="line">    Object[] objectArray = l;     <span class="comment">// Valid</span></span><br><span class="line">    objectArray[<span class="number">0</span>] = Arrays.asList(<span class="number">42</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> l[<span class="number">0</span>].get(<span class="number">0</span>);       <span class="comment">// ClassCastException thrown here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>关于泛型的<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html">几大限制</a>中，最明显的一个就是不能创造泛型数组，如</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt;[] arrayOfLists = <span class="keyword">new</span> <span class="title class_">List</span>&lt;Integer&gt;[<span class="number">2</span>];  <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
-
-<p>但是这一限制在可变长的泛型参数中被打破了。在可变长参数中，一个数组会在函数调用时建立（Effective Java，Item 53），每次调用都会引起一次数组分配和初始化。当可变长参数是泛型时，一个泛型数组就被创造出来了。</p>
-<h3 id="实操时的问题"><a href="#实操时的问题" class="headerlink" title="实操时的问题"></a>实操时的问题</h3><p>我在 tiny-spring 中写了一个方法，给定注解参数，获取所有带有该注解的类。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>这里就出现了一个可变长泛型参数的问题。另一个隐藏的问题是，这个方法并没有对传入的注解参数的数量检查参数为零的情况，而可变长参数允许传入零个参数。一个优美一点的解决方案是：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SafeVarargs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; firstCls, Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (c.isAnnotationPresent(firstCls)) &#123;</span><br><span class="line">            classSet.add(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这样既省去明显的检查参数数量，又能在调用处强制调用者传入至少一个参数，这也是这个方法的本意。</p>
-<h3 id="SafeVarargs-的使用标准"><a href="#SafeVarargs-的使用标准" class="headerlink" title="@SafeVarargs 的使用标准"></a>@SafeVarargs 的使用标准</h3><p>如上所见，可以将报警用 <code>@SafeVarargs</code> 注解掉。但是我们知道，这个注解仅仅是消除编译警告，完全不能保证消除这个错误。那么什么时候应该使用这个注解呢？</p>
-<p>在 StackOverflow 有一个票的<a target="_blank" rel="noopener" href="https://stackoverflow.com/a/14252221">回答</a>：</p>
-<p>If your method has an argument of type <code>T...</code> (where T is any type parameter), then:</p>
-<ul>
-<li>Safe: If your method only depends on the fact that the elements of the array are instances of <code>T</code></li>
-<li>Unsafe: If it depends on the fact that the array is an instance of <code>T[]</code></li>
-</ul>
-<p>Effective Java 也表示了类似的意思：如果你的方法使用可变长泛型参数的时候，只是用来一次传入多个参数，并且实际使用的时候只是把它们当作多个参数来看，那么就没有问题。如果你的方法体中把可变长参数当作数组来使用，那就会有问题，不要使用这个注解。</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
 
     
 
@@ -1154,6 +566,622 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/21/Zookeeper/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/09/21/Zookeeper/" class="post-title-link" itemprop="url">ZooKeeper：分布式过程协同技术详解 -- 读书笔记</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-21 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-21T00:00:00+00:00">2019-09-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 05:40:02" itemprop="dateModified" datetime="2023-02-10T05:40:02+00:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/ZooKeeper/" itemprop="url" rel="index"><span itemprop="name">ZooKeeper</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="ZooKeeper：分布式过程协同技术详解-–-读书笔记"><a href="#ZooKeeper：分布式过程协同技术详解-–-读书笔记" class="headerlink" title="ZooKeeper：分布式过程协同技术详解 – 读书笔记"></a>ZooKeeper：分布式过程协同技术详解 – 读书笔记</h1><blockquote>
+<p>要点：第九章 Zab 协议、ZK 对写事务日志的优化。</p>
+</blockquote>
+<h2 id="Installation-amp-configuration"><a href="#Installation-amp-configuration" class="headerlink" title="Installation &amp; configuration"></a>Installation &amp; configuration</h2><p>Todo: <code>/tmp/zookeeper</code> –&gt; <code>/var/lib/zookeeper</code></p>
+<h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><h4 id="chapter-2"><a href="#chapter-2" class="headerlink" title="chapter 2"></a>chapter 2</h4><p>types of <code>znode</code>:</p>
+<ul>
+<li>persistent, ephemeral, persistent_sequential, ephemeral_sequential；</li>
+<li>持久节点、临时节点、持久有序节点、临时有序节点；</li>
+<li>被创建为有序的节点被分配一个递增的整数，总而，形成了一个全局唯一的名字；</li>
+<li>节点除了拥有名字（父节点名字 + 自身名字），还可以像文件夹一样，存有数据；</li>
+</ul>
+<p>通知</p>
+<p>Zookeeper 中可以在节点上注册事件，而不需要轮询。事件可以包括 znode 数据的变化、子节点的变化、znode 的创建删除。</p>
+<p>会话 session</p>
+<p>客户端通过 TCP 与服务端通信。当此前会话无法继续（掉线，超过延迟时限），客户端的会话会被透明地转移到下一个服务器。</p>
+<p>Zookeeper 保证，在同一个会话中的请求是以 FIFO 的顺序执行。但是如果客户端拥有多个并发的会话，则不保证。</p>
+<p>会话状态</p>
+<p>NOT_CONNECTED –&gt; CONNECTING &lt;&#x3D;&#x3D;&gt; CONNECTED –&gt; CLOSED</p>
+<p>客户端不能声明自己的会话到期（timedout），但是可以显示关闭会话。</p>
+<p>进阶：事务标识符 zkid 在客户端连接中的使用。</p>
+<h5 id="端口"><a href="#端口" class="headerlink" title="端口"></a>端口</h5><p>Zookeeper 可以配置三种 TCP 端口。前两种是关于服务端的，第三种在 <code>zoo.cfg</code> 中称为  <code>clientPort</code>。一个仲裁模式（quorum）的配置示例如下：</p>
+<figure class="highlight properties"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">tickTime</span>=<span class="string">2000</span></span><br><span class="line"><span class="attr">initLimit</span>=<span class="string">10</span></span><br><span class="line"><span class="attr">syncLimit</span>=<span class="string">5</span></span><br><span class="line"><span class="attr">dataDir</span>=<span class="string">./data</span></span><br><span class="line"><span class="attr">clientPort</span>=<span class="string">2181</span></span><br><span class="line"></span><br><span class="line"><span class="attr">server.1</span>=<span class="string">127.0.0.1:2222:2223</span></span><br><span class="line"><span class="attr">server.2</span>=<span class="string">127.0.0.1:3333:3334</span></span><br><span class="line"><span class="attr">server.3</span>=<span class="string">127.0.0.1:4444:4445</span></span><br></pre></td></tr></table></figure>
+
+<p>在对服务器的配置 <code>server.1=127.0.0.1:2222:2223</code> 中，第一个端口 <code>2222</code> 是<em>仲裁通信</em>，follower 通过这个端口来接受 leader 传达的更新指令；第二个端口用于 leader 选举。</p>
+<h4 id="connectString"><a href="#connectString" class="headerlink" title="connectString"></a>connectString</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">zookeeper/bin/zkCli.sh -server 127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</span><br></pre></td></tr></table></figure>
+
+<p>上面的 <code>127.0.0.1:2181,127.0.0.1:2182,127.0.0.1:2183</code> 就是所谓连接字符串（connectString）。不仅在命令行的 <code>zkCli</code> 中使用，API 库也是同样的道理。连接字符串列出了本客户端可以连接的所有服务器。其中的端口，就是在各个 Zookeeper 服务器的 <code>zoo.cfg</code> 配置文件中的 <code>clientPort</code>。</p>
+<h4 id="chap-3-使用-Zookeeper-API-库"><a href="#chap-3-使用-Zookeeper-API-库" class="headerlink" title="chap 3 使用 Zookeeper API 库"></a>chap 3 使用 Zookeeper API 库</h4><p>创建 Zookeeper 句柄（handle）；实现 Watcher、认识 Zookeeper 自动管理与服务端的断连；同步地创建节点 <code>zk.create(...)</code>；同步地获取 znode 中的数据 <code>byte[] getData(...)</code>、处理 <code>ConnectionLossException</code> ；异步创建节点、实践：异步创建元数据 path；<code>StatCallback</code>；</p>
+<p>关于回调的注意：回调函数中的 <code>Object ctx</code> 在需要在回调中再次调用自身的场景中被使用到，如处理返回码为 <code>ConnectionLossException</code> 时，再次调用自身这个回调函数。</p>
+<p>chap 4 Dealing with State Change</p>
+<p>当一个监视点（watch）被一个事件（event）触发，就会产生一个通知（notification）。</p>
+<p>在某些 ZooKeeper 的封装库（wrapper ）中，对 ConnectionLoss 的处理就是自动重新发送相应指令。某些情况这会带来大问题，比如通过 <code>create</code> 创建 <code>/master</code> 节点来获取领导权。如果客户端在 <code>create</code> 成功之后丢失连接，此时 wrapper 库自动重发指令，就会收到创建失败的响应，因为节点之前已经被创建好了。但是如果不知道这一细节，应用就会认为是其它节点已经创建了 master 节点获得了领导权。</p>
+<h4 id="chap-9-原理"><a href="#chap-9-原理" class="headerlink" title="chap 9 原理"></a>chap 9 原理</h4><p>ZK 要求，新的 Quorum 数量的服务器中，必须有一台以上的机器是属于上一个群首的 Quorum。</p>
+<p>ZK 服务器的分类方式：分为 Leader 和 Follower，或者分为 Participant 和 Observer。Observer 和 Follower 可以统称为 Learner，因为它们“学习”群首的指示。</p>
+<p>对于 Follower 有两类广播：</p>
+<ul>
+<li><code>proposal</code>：包含有 transaction 的内容。</li>
+<li><code>commit</code>：只包含 zxid。</li>
+</ul>
+<p>对于 Observer 只有一类：</p>
+<ul>
+<li><code>INFORM</code>：已被 commit 了的 proposal 的内容。</li>
+</ul>
+<h5 id="ZAB-协议"><a href="#ZAB-协议" class="headerlink" title="ZAB 协议"></a>ZAB 协议</h5><ul>
+<li>两阶段提交：对于一个写请求操作，群首广播出一个 Proposal。对于这个 Proposal，追随者收到之后返回 ACK 消息，通知群首其已接收此 Proposal。在收到达到仲裁数量（群首自己也算在内）的服务器发送的 ACK 之后，群首发出 <code>commit</code> 的广播。</li>
+<li>Zab 提供的顺序保障：<ul>
+<li>如果群首按顺序广播了事务 <code>T1</code> 和 <code>T2</code>，那么每个服务器在 commit <code>T2</code> 之前保证 <code>T1</code> 已经被提交；</li>
+<li>如果某个服务器按照 <code>T1</code> 、<code>T2</code> 的顺序提交事务，那么其它服务器也保证是按这个顺序提交的。</li>
+</ul>
+</li>
+<li>epoch 时间戳：每次群首选举中递增 <code>1</code></li>
+<li>Zab 提供的脑裂保障：<ul>
+<li>新群首必须要确保所有之前的时间戳内需要提交的事务被全部提交完，然后才开始新的广播；</li>
+<li>在任何时间点，都不会同时出现两个被仲裁数量支持的群首。</li>
+</ul>
+</li>
+</ul>
+<p>由于在选举群首时，选举上的是 <code>zxid</code> 最大的服务器，我们就不需要将最新状态从跟随服务器更新到群首服务器，因为群首就是代表最新状态；我们所需要的，就是直接发送更新到追随者。</p>
+<h5 id="ZK-有效写入事务日志"><a href="#ZK-有效写入事务日志" class="headerlink" title="ZK 有效写入事务日志"></a>ZK 有效写入事务日志</h5><p>ZK 如何有效写入事务日志：写事务日志是写请求操作的关键，ZK 用了两种方式来优化：1）组团提交 2）预先填充（padding）。</p>
+<p>实际上，对于组团提交，就是在需要 flush 到磁盘（来保证事务已被持久化）时，把所有队列中的事务都<em>顺带</em> flush 到磁盘。注意，ZK 服务器只有在事务已经写入日志之后才会确认对应的 Proposal，也就是在确认事务之前，该事务已经被持久化到磁盘了。为了保证在 <code>commit</code> 方法返回后写入的数据已经存在于磁盘（而不是操作系统的写缓冲区），磁盘写缓存必须被关闭。</p>
+<p><strong>预先填充（padding）</strong>是指预先为日志文件分配多余的磁盘块。在 Linux 系统中，一个文件中的数据储存在一个个分配给它的块（block）中。当向文件中写入时，如果当前分配的磁盘块用尽了，就要花时间请求分配新的磁盘块。这种请求需要修改该文件所对应的元数据，因此预先分配就会减少这一次磁盘寻道。</p>
+<h5 id="会话"><a href="#会话" class="headerlink" title="会话"></a>会话</h5><p>Standalone 模式下的单独服务器与仲裁模式（Quorum）下的群首服务器负责跟踪<em>所有会话</em>。追随者只是将客户端的会话信息转发给群首。</p>
+<h5 id="监视点"><a href="#监视点" class="headerlink" title="监视点"></a>监视点</h5><p>服务端不会持久化监视点，因此监视点的数据在<em>客户端</em>保存。在掉线重连之后，客户端将监视点的信息同步到服务端</p>
+<h3 id="机翻问题。。"><a href="#机翻问题。。" class="headerlink" title="机翻问题。。"></a>机翻问题。。</h3><p>机翻</p>
+<p>P58：</p>
+<p>异步方法调用会简单化队列对 Zookeeper 服务器的请求，并在另一个线程中传输请求。</p>
+<p>当接收到响应信息，这些请求就会在一个专用回调线程中被处理。</p>
+<p>为了保持顺序，只会有一个单独的线程按照接收顺序处理响应包</p>
+<p>原文：</p>
+<p>The asynchronous method simply queues the request to the ZooKeeper server. Transmission happens on another thread. When responses are received, they are processed on a dedicated callback thread. To preserve order, there is a single callback thread and responses are processed in the order they are received.</p>
+<p>我认为好的翻译：</p>
+<p>这个异步方法只是简单地把请求加入 ZooKeeper 服务器的请求队列中。传输请求的任务由另一个线程完成。</p>
+<p>收到响应之后，<strong>响应</strong>由一个专门的回调线程处理。</p>
+<p>为了保证顺序，只会有一个单独的回调线程，按照接收到的顺序处理响应。</p>
+<p>Returns the result of the call：返回调用的结构。</p>
+<h3 id="关于-InterruptedException"><a href="#关于-InterruptedException" class="headerlink" title="关于 InterruptedException"></a>关于 <code>InterruptedException</code></h3><p>使用 ZK 的 API 库时会遇到不少的方法，抛出 <code>InterruptedException</code>。作者在书中也表示很无奈，没有一劳永逸的解决办法，还是要取决于具体状况，来决定是让这个异常沿着调用栈上浮，还是其它办法：</p>
+<blockquote>
+<p>In our example, we simply pass the InterruptedException to the caller and thus let it bubble up. Unfortunately, in Java there aren’t clear guidelines for how to deal with thread interruption, or even what it means. Sometimes the interruptions are used to signal threads that things are being shut down and they need to clean up. In other cases, an interruption is used to get control of a thread, but execution of the application continues.<br>Our handling of InterruptedException depends on our context. If the InterruptedException will bubble up and eventually close our zk handle, we can let it go up the stack and everything will get cleaned up when the handle is closed. If the zk handle is not closed, we need to figure out if we are the master before rethrowing the exception or asynchronously continuing the operation. This latter case is particularly tricky and requires careful design to handle properly.</p>
+</blockquote>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/09/03/Netty%20%E5%9F%BA%E7%A1%80%E7%BB%84%E4%BB%B6%E4%B8%8E%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B--%E6%A6%82%E8%BF%B0/" class="post-title-link" itemprop="url">Netty 基础组件与线程模型--概述</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-03T00:00:00+00:00">2019-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Netty-基础组件与线程模型–概述"><a href="#Netty-基础组件与线程模型–概述" class="headerlink" title="Netty 基础组件与线程模型–概述"></a>Netty 基础组件与线程模型–概述</h1><p>即使仅仅谈论这两个话题：Netty 组件和 Netty 线程模型，也不是一两篇文章可以 cover 的。这里做一个小尝试，也对这几天看的 <em>Netty in Action</em> 总结一下。</p>
+<h2 id="Netty-想要解决什么问题"><a href="#Netty-想要解决什么问题" class="headerlink" title="Netty 想要解决什么问题"></a>Netty 想要解决什么问题</h2><p>一项新技术&#x2F;开源项目，问问自己，这个技术想要解决的是什么问题，是如何解决的。</p>
+<p>以我目前的水平回答，是为了弥补 Java 标准库在 I&#x2F;O 上的不足。这种不足我现在看来有两部分：性能与易用性。</p>
+<p>性能方面，作为标准库，API 稳定、统一的需求更重要，从而无法在提升性能上下狠功夫。Netty 则在各种角落实行了优化。最明显的是对垃圾回收与内存分配的修改，使得 ByteBuf 一定程度由使用者手动管理；以及针对不同平台提供与底层实现紧密相关的优化，比如针对 Linux 的 EpollEventLoopGroup，从而能提供边缘触发，而非 Java NIO 默认的水平触发。另外，据 Norman Maurer <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/36058105/8144090">自己所说</a>，还有更低的 GC。其它细节包括使用 OpenSSL 替换 Java 标准库，等等。</p>
+<p>另一方面，NIO 在使用上不够直观。仅仅 <code>flip</code> 这个方法的设计就很迷惑——像 Netty 一样为读和写单独设置两个指针多方便。</p>
+<h2 id="Netty-自测问题"><a href="#Netty-自测问题" class="headerlink" title="Netty 自测问题"></a>Netty 自测问题</h2><p>看完 Netty in Action 之后我反问自己都了解到了些什么，想到了如下的问题：</p>
+<p><code>EventLoop</code>  与 <code>EventLoopGroup</code> 的区别，之间的关系是什么？EventLoopGroup 拥有几个线程？EventLoop 呢？</p>
+<p>EventLoop 与 Channel 是什么关系？</p>
+<p>ChannelHandler 与 ChannelPipeline 是什么关系？</p>
+<p>ChannelHandlerAdapter 对 ChannelHandler 区别是什么，有何改进？</p>
+<p>Channel、ChannelHandler 生命周期？</p>
+<p>我发现很多问题自己居然都给不出回答，然后立刻回去看书的三、六、七章，有一种开窍的感觉。之前看第一遍时无感，并且不知道重点的内容，这一次都变成了问题的答案，看的过程也津津有味起来。</p>
+<h2 id="简单梳理"><a href="#简单梳理" class="headerlink" title="简单梳理"></a>简单梳理</h2><p>简单梳理一下基础的概念，下图来自《Netty in Action》，侵删：</p>
+<p>![Channel EventLoop and EventLoopGroup](&#x2F;content&#x2F;images&#x2F;2019&#x2F;Channel EventLoop and EventLoopGroup.png)</p>
+<ul>
+<li>Channel 就是一种“传输（transport）”，一个 Socket 就属于 Channel，所以最简单可以理解为，Channel 就是一个 Socket；</li>
+<li>一个 Channel 在它的生命周期内只注册于一个 EventLoop；</li>
+<li>一个 EventLoop 在它的生命周期中只与一个 Thread 绑定。实际上，最常用的实现 NioEventLoop 扩展自 SingleThreadEventLoop；</li>
+<li>一个 EventLoop 可能会被分配给一个或多个 Channel（这样一来，不必每个 Socket 连接就分配一个线程，用有限的线程支撑更多的连接）；</li>
+</ul>
+<p>这种设计消除了同步（synchronization）的需求，因为一个 Channel 的所有 I&#x2F;O 操作都是由同一个线程（异步地）完成的。</p>
+<ul>
+<li>ChannelPipeline 提供了 ChannelHandler 链的容器</li>
+</ul>
+<h2 id="线程模型"><a href="#线程模型" class="headerlink" title="线程模型"></a>线程模型</h2><h3 id="Reactor-pattern-amp-Proactor-pattern"><a href="#Reactor-pattern-amp-Proactor-pattern" class="headerlink" title="Reactor pattern &amp; Proactor pattern"></a>Reactor pattern &amp; Proactor pattern</h3><p>在学习阅读 Netty 的时候，我意识到书的作者以及文档作者都假定了，读者对于所谓的 Proactor 模式、Reactor 模式有所了解。所以我认为有必要先简要了解一下这两种模式。</p>
+<p><a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reactor_pattern">Reactor pattern</a> 有<strong>一个</strong>主线程，从多个 input 读取服务请求，然后把这些请求<strong>同步地</strong>分发给对应的服务处理线程。通常主线程使用同步的 <code>select</code> 来监听多个文件描述符，当一个阻塞操作，比如 <code>read()</code> 准备完毕，<code>select</code> 获得通知，就将其转发给服务处理线程。</p>
+<p>关于 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Proactor_pattern">Proactor pattern</a>：</p>
+<blockquote>
+<p>The proactor pattern can be considered to be an <a target="_blank" rel="noopener" href="https://en.wiktionary.org/wiki/asynchronous">asynchronous</a> variant of the <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Synchronization_(computer_science)">synchronous</a> <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Reactor_pattern">reactor pattern</a>.</p>
+<p>– Wikipedia</p>
+</blockquote>
+<p>Proactor 模式可以视作 Reactor 模式的异步形式。耗时长的任务异步地完成，在结束时发送通知。</p>
+<h3 id="Netty-的-Boss-Worker-EventLoopGroup"><a href="#Netty-的-Boss-Worker-EventLoopGroup" class="headerlink" title="Netty 的 Boss-Worker EventLoopGroup"></a>Netty 的 Boss-Worker EventLoopGroup</h3><p>了解了有这种主-从线程池的区分之后，就能理解，为什么很多 Netty 示例程序中 Server 的 <code>ServerBootStrap#group(EventLoopGroup, EventLoopGroup)</code> 会有绑定两个 EventLoopGroup。即使某些简单的 demo 实现中只绑定了一个，如： <code>group(EventLoopGroup)</code>，这一方法其实只是绑定主从 EventLoopGroup 的重载方法，源码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="keyword">public</span> ServerBootstrap <span class="title function_">group</span><span class="params">(EventLoopGroup group)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> group(group, group);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>官方 <a target="_blank" rel="noopener" href="https://netty.io/wiki/user-guide-for-4.x.html">User Guide</a> 的解释如下：</p>
+<blockquote>
+<p>The first one, often called ‘boss’, accepts an incoming connection. The second one, often called ‘worker’, handles the traffic of the accepted connection once the boss accepts the connection and registers the accepted connection to the worker. </p>
+</blockquote>
+<p>第一个是被称为 boss 的 EventLoopGroup，负责接受连接，第二个则被称为 worker，负责处理由 boss 分配给它的已接受的连接。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/09/03/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">Netty（二）线程模型与 Bytebuf</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-03T00:00:00+00:00">2019-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 05:40:02" itemprop="dateModified" datetime="2023-02-10T05:40:02+00:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Netty（二）线程模型与-Bytebuf"><a href="#Netty（二）线程模型与-Bytebuf" class="headerlink" title="Netty（二）线程模型与 Bytebuf"></a>Netty（二）线程模型与 Bytebuf</h1><h2 id="ServerBootStrap-中的-EventLoopGroup"><a href="#ServerBootStrap-中的-EventLoopGroup" class="headerlink" title="ServerBootStrap 中的 EventLoopGroup"></a>ServerBootStrap 中的 EventLoopGroup</h2><p>ServerBootStrap 实际上内部是两个 group，解释：</p>
+<blockquote>
+<p>Most of the times using the same group for accepting and handling the accepted connections is working out quite well and so allows you to save some threads. The only time when you may not want to do this is if the handling logic of the accepted connections will keep the EventLoops so busy that you are not able to accept fast enough. </p>
+<p>– <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/28342821/8144090">Norman SO answer</a></p>
+</blockquote>
+<p>Vert.x 是一个基于 Netty 的框架，但是其初始化是将一个线程组（EventLoopGroup）同时用于 boss 与 worker。Norman回答到，这种方法大多数时候都挺不错，并且节省了一些线程。我认为这里说的节省了的线程是 boss 线程，在没有新的连接进来的时候可以参与到 handler 的任务中。然而，当 handler 要处理的任务消耗太多 CPU 时间时，EventLoopGroup 中的所有 EventLoop，也就是线程，会全都忙于处理任务，不能很快地、甚至无法 accept 新进来的连接。</p>
+<p>对于 boss EventLoopGroup，什么情况下使用超过一个线程？</p>
+<p>在构造函数中可以选择线程数：<code>NioEventLoopGroup(threadsAmount)</code>。但是，既然 boss group 的职责只是接受 accept 新连接并且分发，按照 Proactor 的模型，一个线程足矣。当一个 EventLoopGroup 被多个 ServerBoostrap 分享，则按需增加线程。</p>
+<h3 id="EventLoopGroup-默认线程数"><a href="#EventLoopGroup-默认线程数" class="headerlink" title="EventLoopGroup 默认线程数"></a>EventLoopGroup 默认线程数</h3><p>如果在 EventLoopGroup 初始化时没有指定线程数，则由以下的静态初始块设置默认线程数。代码出自<a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/9621a5b98120f9596b5d2a337330339dda199bde/transport/src/main/java/io/netty/channel/MultithreadEventLoopGroup.java#L40">MultithreadEventLoopGroup.java</a> 第 40 行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">	DEFAULT_EVENT_LOOP_THREADS = Math.max(<span class="number">1</span>, SystemPropertyUtil.getInt(</span><br><span class="line">    	<span class="string">&quot;io.netty.eventLoopThreads&quot;</span>, NettyRuntime.availableProcessors() * <span class="number">2</span>));</span><br><span class="line"><span class="comment">// 在本人的双核机器上，有四个逻辑处理器，乘以二之后 DEFAULT_EVENT_LOOP_THREADS 为 8</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ChannelHandler-与-EventLoopGroup-中的线程"><a href="#ChannelHandler-与-EventLoopGroup-中的线程" class="headerlink" title="ChannelHandler 与 EventLoopGroup 中的线程"></a>ChannelHandler 与 EventLoopGroup 中的线程</h2><p>用自己语言更具体解释一下“Netty 4中的Handler处理在IO线程中，如果Handler处理中有耗时的操作（如数据库相关），会让IO线程等待，影响性能。”</p>
+<blockquote>
+<p>我们之前已经阐明了不要阻塞当前 I&#x2F;O 线程的重要性。我们再以另一种方式重申一次：“永远不要将一个长时间运行的任务放入到执行队列中，因为它将阻塞需要在同一线程执行的任何其他任务。” 如果必须要进行阻塞调用或者执行长时间运行的任务，我们建议使用一个专门的 EventExecutor。（见 6.2.1 节的“ChannelHandler 的执行和阻塞”）。</p>
+<p>– 摘自 Netty in Action P96</p>
+</blockquote>
+<p>![EventLoop 执行逻辑](&#x2F;content&#x2F;images&#x2F;2019&#x2F;EventLoop 执行逻辑.png)</p>
+<p>总结一下，EventLoop 中的线程又被称为 I&#x2F;O 线程，一个 Channel 中的所有事件（出站&#x2F;入站）都只会被其所绑定的这个 I&#x2F;O 线程处理。一个 Channel 永远一个 EventLoop I&#x2F;O 线程绑定，而一个 I&#x2F;O 线程则可能被分配给多个 Channel。如果这个 I&#x2F;O 线程陷入执行一个 CPU 时间耗时长的任务，所有与之关联的 Channel 中的任务都会被搁置。</p>
+<p>源码如下，来自 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/00a9a25f29cf07728794089affdd735af29209de/transport/src/main/java/io/netty/channel/AbstractChannelHandlerContext.java#L787">AbstractChannelHandlerContext.java</a>#write()。在执行写任务时，先判断了执行线程是否是该 Channel 绑定的线程，如果是则交由执行，如果不是则新增一个 <code>WriteTask</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">EventExecutor</span> <span class="variable">executor</span> <span class="operator">=</span> next.executor();</span><br><span class="line"><span class="keyword">if</span> (executor.inEventLoop()) &#123;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		next.invokeWriteAndFlush(m, promise);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		next.invokeWrite(m, promise);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">final</span> AbstractWriteTask task;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		task = WriteAndFlushTask.newInstance(next, m, promise);</span><br><span class="line">	&#125;  <span class="keyword">else</span> &#123;</span><br><span class="line">		task = WriteTask.newInstance(next, m, promise);</span><br><span class="line">		...</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Netty-3-中的不和谐"><a href="#Netty-3-中的不和谐" class="headerlink" title="Netty 3 中的不和谐"></a>Netty 3 中的不和谐</h3><p>这里需要注意一下，某个给定的 EventLoop 中的所有<em>事件</em>，都是由同一个线程处理。这是 Netty 4 对 Netty 3 的改进。在 Netty 3 中，出站事件可以由 I&#x2F;O 线程执行，也可以由调用线程执行，这就使得 Race Condition 成为可能，比如一个 Channel 上的 <code>Channel.write()</code> 被同时调用时。</p>
+<p>官方 Wiki 上有一个 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/wiki/Thread-model">Thread model 的页面</a>是针对 Netty 3 的过期信息，可以看看当时开发者对这个问题的考量。</p>
+<h2 id="Bytebuf-源码"><a href="#Bytebuf-源码" class="headerlink" title="Bytebuf 源码"></a>Bytebuf 源码</h2><p><code>UnpooledHeapByteBuf</code> 基于 JVM 堆内存进行内存分配，每次使用，都从头创建一个新的 实例。性能：相比堆外内存的分配和释放，成本仍然更低一些。</p>
+<p><code>UnpooledHeapByteBuf</code> 拥有三个成员变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ByteBufAllocator alloc;  <span class="comment">// 用于分配内存</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">byte</span>[] array;  <span class="comment">// 以数组作为缓冲区</span></span><br><span class="line"><span class="keyword">private</span> ByteBuffer tmpNioBuf;  <span class="comment">// ByteBuf 与 ByteBuffer 转换时使用</span></span><br></pre></td></tr></table></figure>
+
+<p>注意这里为了<strong>提升性能与位操作</strong>，Netty 并没有直接使用原生的 ByteBuffer，而是使用数组作为缓存。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/02/java.io%20%E6%A2%B3%E7%90%86%E4%B8%8E%E5%85%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/08/02/java.io%20%E6%A2%B3%E7%90%86%E4%B8%8E%E5%85%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">java.io 梳理与其中的三种设计模式</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-08-02 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-02T00:00:00+00:00">2019-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 05:40:02" itemprop="dateModified" datetime="2023-02-10T05:40:02+00:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Design-Patterns/" itemprop="url" rel="index"><span itemprop="name">Design Patterns</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="java-io-梳理与其中的三种设计模式"><a href="#java-io-梳理与其中的三种设计模式" class="headerlink" title="java.io 梳理与其中的三种设计模式"></a>java.io 梳理与其中的三种设计模式</h1><p>以 <code>Reader</code> 抽象类下的类为例。它们的主要构造函数如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FilterReader(Reader)</span><br><span class="line">BufferedReader(Reader)</span><br><span class="line"></span><br><span class="line">FileReader(File)</span><br><span class="line">StringReader(String)</span><br><span class="line">InputStreamReader(InputStream [, Charset])</span><br></pre></td></tr></table></figure>
+
+<p><img src="/content/images/2019/ReaderUML.png" alt="Reader UML"></p>
+<p>大致上，<code>java.io</code> 可以分为：</p>
+<ol>
+<li>字节流操作：<code>InputStream</code>、<code>OutputStream</code></li>
+<li>字符操作：<code>Reader</code>、<code>Writer</code></li>
+<li>针对磁盘操作：<code>File</code></li>
+</ol>
+<h2 id="适配器模式-Adapter-pattern"><a href="#适配器模式-Adapter-pattern" class="headerlink" title="适配器模式 Adapter pattern"></a>适配器模式 Adapter pattern</h2><p><code>InputStreamReader</code> 是字节流与字符流之间的桥梁，它的实现使用了适配器模式。适配器模式通过聚合将某个接口适配成为另一个接口来方便使用，类图如下：</p>
+<p><img src="/content/images/2019/InputStreamReaderAdapterPattern.png" alt="InputStreamReader Adapter Pattern"></p>
+<p>在开头的代码可以看到，<code>InputStreamReader</code> 的构造器需要传入一个字节流 <code>InputSream</code>，以及可选的字符集。如果没有传入字符集就会使用默认的。通过持有一个 <code>InputStream</code>，<code>InputStreamReader</code> 拥有了该接口的功能。同时，<code>InputStreamReader</code> 还是一个实现了 <code>Reader</code> 类，这样一来它就把 <code>InputStream</code> 适配成了一个 <code>Reader</code> 类。</p>
+<h2 id="装饰器模式-Decorator-pattern"><a href="#装饰器模式-Decorator-pattern" class="headerlink" title="装饰器模式 Decorator pattern"></a>装饰器模式 Decorator pattern</h2><p>这个应该是 <code>java.io</code> 更为人熟知的，装饰器模式与适配器模式都可以看作包装模式 Wrapper。通过对类的层层包裹，装饰器模式增强了目标类的功能。类图示意如下：</p>
+<p><img src="/content/images/2019/IODecoratorPattern.png" alt="IO Decorator Pattern"></p>
+<p><code>Decorator</code> 是 <code>Component</code> 的实现类，但是其内部也持有一个 <code>Decorator</code> 类。不同的 <code>Decorator</code> 类下的 <code>ConcreteDecorator</code> 子类包含了需要增强的功能。</p>
+<p>在 <code>java.io</code> 中的典型使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FilterReader</span> <span class="variable">pbr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PushbackReader</span>(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(System.in)))</span><br></pre></td></tr></table></figure>
+
+<h3 id="二者的不同"><a href="#二者的不同" class="headerlink" title="二者的不同"></a>二者的不同</h3><p>装饰器模式更多的是对目标类的功能上的增强；适配器没有对功能进行增进，只是为了使目标类能适应调用方的接口，方便被调用。</p>
+<h2 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a>模板方法</h2><p>在模板方法模式中，大的算法框架在抽象父类中被定义好，某些业务相关的实现则延迟到子类。</p>
+<p>在 <code>Reader</code> 抽象类中，<code>read</code> 方法的默认实现都留给了被重载的 <code>read(char[], int, int)</code>，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">read</span><span class="params">()</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">read</span><span class="params">(<span class="type">char</span>[] cbuf)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="type">int</span> <span class="title function_">read</span><span class="params">(<span class="type">char</span>[] cbuf, <span class="type">int</span> offset, <span class="type">int</span> len)</span></span><br></pre></td></tr></table></figure>
+
+<p>具体的 <code>read</code> 的实现留给子类。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/24/tiny-spring%20%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/07/24/tiny-spring%20%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">tiny-spring 踩坑记录（一）可变长泛型参数与堆污染</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-07-24 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-24T00:00:00+00:00">2019-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 05:40:02" itemprop="dateModified" datetime="2023-02-10T05:40:02+00:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="可变长泛型参数与堆污染"><a href="#可变长泛型参数与堆污染" class="headerlink" title="可变长泛型参数与堆污染"></a>可变长泛型参数与堆污染</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>什么是堆污染</p>
+</blockquote>
+<p>一个类型为泛型 <code>T</code> 的变量被指向一个类型不是 <code>T</code> 的对象，这就是堆污染。典型的情况是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;T&gt; listOfTs = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(t));</span><br><span class="line">List&lt;E&gt; listOfEs = (List&lt;E&gt;)(Object)listOfTs; <span class="comment">// 此时指向了含有 T 的 List, 但是不会抛出异常，只是在 Object -&gt; List&lt;E&gt; 的转型中抛出警告</span></span><br><span class="line"></span><br><span class="line"><span class="type">E</span> <span class="variable">e</span> <span class="operator">=</span> listOfEs.get(<span class="number">0</span>);  <span class="comment">// 运行时错误，java.lang.ClassCastException</span></span><br></pre></td></tr></table></figure>
+
+<p>之所以编译器无法在转型时检查出类型转换错误，是因为 Java 泛型是通过类型擦除实现的，在泛型代码内部无法获得任何有关泛型参数类型的信息。</p>
+<p>一个更好一点的关于可变长泛型参数和堆污染一起的例子，来自 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/generics/nonReifiableVarargsType.html">Oracle 官方文档</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">faultyMethod</span><span class="params">(List&lt;String&gt;... l)</span> &#123;</span><br><span class="line">    Object[] objectArray = l;     <span class="comment">// Valid</span></span><br><span class="line">    objectArray[<span class="number">0</span>] = Arrays.asList(<span class="number">42</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> l[<span class="number">0</span>].get(<span class="number">0</span>);       <span class="comment">// ClassCastException thrown here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关于泛型的<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html">几大限制</a>中，最明显的一个就是不能创造泛型数组，如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt;[] arrayOfLists = <span class="keyword">new</span> <span class="title class_">List</span>&lt;Integer&gt;[<span class="number">2</span>];  <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+
+<p>但是这一限制在可变长的泛型参数中被打破了。在可变长参数中，一个数组会在函数调用时建立（Effective Java，Item 53），每次调用都会引起一次数组分配和初始化。当可变长参数是泛型时，一个泛型数组就被创造出来了。</p>
+<h3 id="实操时的问题"><a href="#实操时的问题" class="headerlink" title="实操时的问题"></a>实操时的问题</h3><p>我在 tiny-spring 中写了一个方法，给定注解参数，获取所有带有该注解的类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里就出现了一个可变长泛型参数的问题。另一个隐藏的问题是，这个方法并没有对传入的注解参数的数量检查参数为零的情况，而可变长参数允许传入零个参数。一个优美一点的解决方案是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SafeVarargs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; firstCls, Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (c.isAnnotationPresent(firstCls)) &#123;</span><br><span class="line">            classSet.add(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样既省去明显的检查参数数量，又能在调用处强制调用者传入至少一个参数，这也是这个方法的本意。</p>
+<h3 id="SafeVarargs-的使用标准"><a href="#SafeVarargs-的使用标准" class="headerlink" title="@SafeVarargs 的使用标准"></a>@SafeVarargs 的使用标准</h3><p>如上所见，可以将报警用 <code>@SafeVarargs</code> 注解掉。但是我们知道，这个注解仅仅是消除编译警告，完全不能保证消除这个错误。那么什么时候应该使用这个注解呢？</p>
+<p>在 StackOverflow 有一个票的<a target="_blank" rel="noopener" href="https://stackoverflow.com/a/14252221">回答</a>：</p>
+<p>If your method has an argument of type <code>T...</code> (where T is any type parameter), then:</p>
+<ul>
+<li>Safe: If your method only depends on the fact that the elements of the array are instances of <code>T</code></li>
+<li>Unsafe: If it depends on the fact that the array is an instance of <code>T[]</code></li>
+</ul>
+<p>Effective Java 也表示了类似的意思：如果你的方法使用可变长泛型参数的时候，只是用来一次传入多个参数，并且实际使用的时候只是把它们当作多个参数来看，那么就没有问题。如果你的方法体中把可变长参数当作数组来使用，那就会有问题，不要使用这个注解。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/06/20/%E5%B9%B6%E5%8F%91%E7%BC%96%E7%A8%8Bbug%E4%B9%8B%E6%BA%90%EF%BC%9A%E6%AD%BB%E9%94%81%E6%88%90%E5%9B%A0%E4%B8%8E%E9%87%8D%E6%8E%92%E5%BA%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1190,7 +1218,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-02-10 05:13:07" itemprop="dateModified" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
+      <time title="Modified: 2023-02-10 05:40:02" itemprop="dateModified" datetime="2023-02-10T05:40:02+00:00">2023-02-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -1311,7 +1339,7 @@
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2023-02-10 05:13:07" itemprop="dateModified" datetime="2023-02-10T05:13:07+00:00">2023-02-10</time>
+      <time title="Modified: 2023-02-10 05:40:02" itemprop="dateModified" datetime="2023-02-10T05:40:02+00:00">2023-02-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
