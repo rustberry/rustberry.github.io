@@ -159,7 +159,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/VimCheatsheet/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/03/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -177,7 +177,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/07/21/VimCheatsheet/" class="post-title-link" itemprop="url">Vim Cheat Sheet</a>
+          <a href="/2019/09/03/Netty%20%E7%BA%BF%E7%A8%8B%E6%A8%A1%E5%9E%8B%EF%BC%88%E4%BA%8C%EF%BC%89/" class="post-title-link" itemprop="url">Netty（二）线程模型与 Bytebuf</a>
         </h2>
 
         <div class="post-meta-container">
@@ -188,7 +188,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-07-21 22:54:00" itemprop="dateCreated datePublished" datetime="2018-07-21T22:54:00+00:00">2018-07-21</time>
+      <time title="Created: 2019-09-03 00:00:00" itemprop="dateCreated datePublished" datetime="2019-09-03T00:00:00+00:00">2019-09-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 05:57:28" itemprop="dateModified" datetime="2023-02-10T05:57:28+00:00">2023-02-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -196,7 +203,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">技术笔记</span></a>
+          <a href="/categories/Netty/" itemprop="url" rel="index"><span itemprop="name">Netty</span></a>
         </span>
     </span>
 
@@ -210,60 +217,36 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>最近用上了 WSL，巨硬居然在 Win 上允许使用 Linux了<br>修改文件不可避免似乎就要学会 Vim 啊，后来才知道自带 nano</p>
+          <h1 id="Netty（二）线程模型与-Bytebuf"><a href="#Netty（二）线程模型与-Bytebuf" class="headerlink" title="Netty（二）线程模型与 Bytebuf"></a>Netty（二）线程模型与 Bytebuf</h1><h2 id="ServerBootStrap-中的-EventLoopGroup"><a href="#ServerBootStrap-中的-EventLoopGroup" class="headerlink" title="ServerBootStrap 中的 EventLoopGroup"></a>ServerBootStrap 中的 EventLoopGroup</h2><p>ServerBootStrap 实际上内部是两个 group，解释：</p>
+<blockquote>
+<p>Most of the times using the same group for accepting and handling the accepted connections is working out quite well and so allows you to save some threads. The only time when you may not want to do this is if the handling logic of the accepted connections will keep the EventLoops so busy that you are not able to accept fast enough. </p>
+<p>– <a target="_blank" rel="noopener" href="https://stackoverflow.com/a/28342821/8144090">Norman SO answer</a></p>
 </blockquote>
-<h2 id="Motion"><a href="#Motion" class="headerlink" title="Motion"></a>Motion</h2><p><code>h</code>, <code>l</code>: move left and right</p>
-<p><code>j</code>, <code>k</code>: move down and up</p>
-<p><code>w</code>: next <strong>beginning</strong> of word</p>
-<p><code>e</code>, <code>ge</code>: <strong>current, last</strong> <strong>end</strong> of word</p>
-<p><code>b</code>, <code>B</code>: <strong>previous beginning</strong> of word and <strong>WORD</strong></p>
-<p><code>0</code>, <code>^</code>: to the <strong>beginning of line</strong></p>
-<p><code>$</code>: to the <strong>end</strong> of line</p>
-<p><code>gg</code>, <code>G</code>: <strong>beginning</strong>, <strong>end</strong> of <strong>file</strong> </p>
-<p><code>nG</code>: line n; <code>:set nu</code> to turn on line num</p>
-<p><code>f&lt;char&gt;</code>, <code>F&lt;char&gt;</code>: <strong>search</strong> forward, backward</p>
-<h2 id="Edit"><a href="#Edit" class="headerlink" title="Edit"></a>Edit</h2><p><code>cw</code>: <strong>C</strong>hange current word that the cursor’s at</p>
-<p><code>cc</code>: <em>delete</em> the whole line and enter INSERT mode</p>
-<p><code>C</code>: delete till the <strong>end of line</strong>, enter INSERT mode</p>
-<p><code>r&lt;char&gt;</code>: <strong>R</strong>eplace cursor with &lt;char&gt;</p>
-<p><code>R</code>: replace successively, with each&lt;char&gt;  typed; <code>Esc</code> to exit</p>
-<p><code>un</code> <strong>U</strong>ndo for <strong>n</strong> times</p>
-<p><code>U</code> undo all changes in current <strong>line</strong></p>
-<p><code>Ctrl</code> + <code>r</code>: redo</p>
-<p><code>&gt;&gt;</code>, <code>&lt;&lt;</code>: tab in NORMAL mode</p>
-<p><code>:set shiftwidth?</code></p>
-<p><code>:ce</code> <strong>center</strong> the line</p>
-<p><code>:ri</code>, <code>:le</code>: to the <strong>right</strong>, <strong>left</strong></p>
-<h3 id="Search"><a href="#Search" class="headerlink" title="Search"></a>Search</h3><p><code>/</code>, <code>?</code>: search <strong>next</strong>, <strong>last</strong></p>
-<p><code>n</code>, <code>N</code>: <strong>next</strong>, <strong>last</strong> result</p>
-<h2 id="Insert"><a href="#Insert" class="headerlink" title="Insert"></a>Insert</h2><p><code>i</code>, <code>a</code>: insert <strong>at</strong> and <strong>append</strong> cursor position</p>
-<p><code>I</code>, <code>A</code>: insert at the <strong>beginning</strong> and the <strong>end</strong> of current line</p>
-<p><code>o</code>, <code>O</code>: <strong>O</strong>pen a new line <strong>after</strong> and <strong>before</strong> current line, and enter INSERT mode</p>
-<h2 id="Copy-Paste-and-Cut"><a href="#Copy-Paste-and-Cut" class="headerlink" title="Copy, Paste, and Cut"></a>Copy, Paste, and Cut</h2><p><code>yy</code>: <strong>Y</strong>ank(copy) <strong>whole line</strong></p>
-<p><code>yw</code>, <code>ynw</code>: copy one <strong>word</strong>, <strong>n</strong> words</p>
-<p><code>y^</code>, <code>y0</code>: copy till the <strong>beginning of line</strong>, current cursor <strong>not</strong> included</p>
-<p><code>y$</code>: copy till the <strong>end</strong>, char where the cursor’s at <strong>included</strong></p>
-<p><code>yG</code>, <code>y1G</code>: copy till <strong>end</strong>, <strong>beginning</strong> of <strong>file</strong></p>
-<p><code>p</code>: (lowercase) paste on <strong>next line</strong></p>
-<p><code>P</code>: (uppercase) paste <strong>last line</strong></p>
-<p><code>dd</code>: cut</p>
-<p><code>ddp</code>: <strong>swap</strong> this and <strong>next</strong> line</p>
-<h2 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h2><p><code>x</code>: <strong>D</strong>elete char <strong>under</strong> cursor</p>
-<p><code>X</code>: delete char <strong>before</strong> cursor</p>
-<p><code>dd</code>: delete the entire line</p>
-<p><code>dw</code>: delete word <em>after</em> cursor; <code>w</code> + <code>dw</code></p>
-<p><code>D</code>: delete till the end of <strong>line</strong></p>
-<p><code>d^</code>: delete till the beginning</p>
-<p><code>d1G</code>, <code>dG</code>: delete till the <strong>beginning</strong> and <strong>end</strong> of <strong>file</strong></p>
-<h2 id="Repeat"><a href="#Repeat" class="headerlink" title="Repeat"></a>Repeat</h2><p><code>.</code>: repeat last command (under NORMAL mode)</p>
-<p><code>N&lt;command&gt;</code>: e.g. 2dd, 10x</p>
-<p><code>dnw</code>: delete a word <strong>n</strong> times </p>
-<h2 id="Exit"><a href="#Exit" class="headerlink" title="Exit"></a>Exit</h2><p><code>:q</code>: quit</p>
-<p><code>:wq</code>, <code>:x</code>: save and exit</p>
-<p><code>:wq!</code>: <strong>force</strong> to save and quit</p>
-<p><code>:w</code>, <code>:saveas</code></p>
-<p><code>Shift</code> + <code>zz</code>: under NORMAL mode, save and exit</p>
+<p>Vert.x 是一个基于 Netty 的框架，但是其初始化是将一个线程组（EventLoopGroup）同时用于 boss 与 worker。Norman回答到，这种方法大多数时候都挺不错，并且节省了一些线程。我认为这里说的节省了的线程是 boss 线程，在没有新的连接进来的时候可以参与到 handler 的任务中。然而，当 handler 要处理的任务消耗太多 CPU 时间时，EventLoopGroup 中的所有 EventLoop，也就是线程，会全都忙于处理任务，不能很快地、甚至无法 accept 新进来的连接。</p>
+<p>对于 boss EventLoopGroup，什么情况下使用超过一个线程？</p>
+<p>在构造函数中可以选择线程数：<code>NioEventLoopGroup(threadsAmount)</code>。但是，既然 boss group 的职责只是接受 accept 新连接并且分发，按照 Proactor 的模型，一个线程足矣。当一个 EventLoopGroup 被多个 ServerBoostrap 分享，则按需增加线程。</p>
+<h3 id="EventLoopGroup-默认线程数"><a href="#EventLoopGroup-默认线程数" class="headerlink" title="EventLoopGroup 默认线程数"></a>EventLoopGroup 默认线程数</h3><p>如果在 EventLoopGroup 初始化时没有指定线程数，则由以下的静态初始块设置默认线程数。代码出自<a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/9621a5b98120f9596b5d2a337330339dda199bde/transport/src/main/java/io/netty/channel/MultithreadEventLoopGroup.java#L40">MultithreadEventLoopGroup.java</a> 第 40 行。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line">	DEFAULT_EVENT_LOOP_THREADS = Math.max(<span class="number">1</span>, SystemPropertyUtil.getInt(</span><br><span class="line">    	<span class="string">&quot;io.netty.eventLoopThreads&quot;</span>, NettyRuntime.availableProcessors() * <span class="number">2</span>));</span><br><span class="line"><span class="comment">// 在本人的双核机器上，有四个逻辑处理器，乘以二之后 DEFAULT_EVENT_LOOP_THREADS 为 8</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="ChannelHandler-与-EventLoopGroup-中的线程"><a href="#ChannelHandler-与-EventLoopGroup-中的线程" class="headerlink" title="ChannelHandler 与 EventLoopGroup 中的线程"></a>ChannelHandler 与 EventLoopGroup 中的线程</h2><p>用自己语言更具体解释一下“Netty 4中的Handler处理在IO线程中，如果Handler处理中有耗时的操作（如数据库相关），会让IO线程等待，影响性能。”</p>
+<blockquote>
+<p>我们之前已经阐明了不要阻塞当前 I&#x2F;O 线程的重要性。我们再以另一种方式重申一次：“永远不要将一个长时间运行的任务放入到执行队列中，因为它将阻塞需要在同一线程执行的任何其他任务。” 如果必须要进行阻塞调用或者执行长时间运行的任务，我们建议使用一个专门的 EventExecutor。（见 6.2.1 节的“ChannelHandler 的执行和阻塞”）。</p>
+<p>– 摘自 Netty in Action P96</p>
+</blockquote>
+<p>![EventLoop 执行逻辑](&#x2F;content&#x2F;images&#x2F;2019&#x2F;EventLoop 执行逻辑.png)</p>
+<p>总结一下，EventLoop 中的线程又被称为 I&#x2F;O 线程，一个 Channel 中的所有事件（出站&#x2F;入站）都只会被其所绑定的这个 I&#x2F;O 线程处理。一个 Channel 永远一个 EventLoop I&#x2F;O 线程绑定，而一个 I&#x2F;O 线程则可能被分配给多个 Channel。如果这个 I&#x2F;O 线程陷入执行一个 CPU 时间耗时长的任务，所有与之关联的 Channel 中的任务都会被搁置。</p>
+<p>源码如下，来自 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/blob/00a9a25f29cf07728794089affdd735af29209de/transport/src/main/java/io/netty/channel/AbstractChannelHandlerContext.java#L787">AbstractChannelHandlerContext.java</a>#write()。在执行写任务时，先判断了执行线程是否是该 Channel 绑定的线程，如果是则交由执行，如果不是则新增一个 <code>WriteTask</code>。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">EventExecutor</span> <span class="variable">executor</span> <span class="operator">=</span> next.executor();</span><br><span class="line"><span class="keyword">if</span> (executor.inEventLoop()) &#123;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		next.invokeWriteAndFlush(m, promise);</span><br><span class="line">	&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">		next.invokeWrite(m, promise);</span><br><span class="line">	&#125;</span><br><span class="line">&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">	<span class="keyword">final</span> AbstractWriteTask task;</span><br><span class="line">	<span class="keyword">if</span> (flush) &#123;</span><br><span class="line">		task = WriteAndFlushTask.newInstance(next, m, promise);</span><br><span class="line">	&#125;  <span class="keyword">else</span> &#123;</span><br><span class="line">		task = WriteTask.newInstance(next, m, promise);</span><br><span class="line">		...</span><br><span class="line">		...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Netty-3-中的不和谐"><a href="#Netty-3-中的不和谐" class="headerlink" title="Netty 3 中的不和谐"></a>Netty 3 中的不和谐</h3><p>这里需要注意一下，某个给定的 EventLoop 中的所有<em>事件</em>，都是由同一个线程处理。这是 Netty 4 对 Netty 3 的改进。在 Netty 3 中，出站事件可以由 I&#x2F;O 线程执行，也可以由调用线程执行，这就使得 Race Condition 成为可能，比如一个 Channel 上的 <code>Channel.write()</code> 被同时调用时。</p>
+<p>官方 Wiki 上有一个 <a target="_blank" rel="noopener" href="https://github.com/netty/netty/wiki/Thread-model">Thread model 的页面</a>是针对 Netty 3 的过期信息，可以看看当时开发者对这个问题的考量。</p>
+<h2 id="Bytebuf-源码"><a href="#Bytebuf-源码" class="headerlink" title="Bytebuf 源码"></a>Bytebuf 源码</h2><p><code>UnpooledHeapByteBuf</code> 基于 JVM 堆内存进行内存分配，每次使用，都从头创建一个新的 实例。性能：相比堆外内存的分配和释放，成本仍然更低一些。</p>
+<p><code>UnpooledHeapByteBuf</code> 拥有三个成员变量：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> ByteBufAllocator alloc;  <span class="comment">// 用于分配内存</span></span><br><span class="line"><span class="keyword">private</span> <span class="type">byte</span>[] array;  <span class="comment">// 以数组作为缓冲区</span></span><br><span class="line"><span class="keyword">private</span> ByteBuffer tmpNioBuf;  <span class="comment">// ByteBuf 与 ByteBuffer 转换时使用</span></span><br></pre></td></tr></table></figure>
+
+<p>注意这里为了<strong>提升性能与位操作</strong>，Netty 并没有直接使用原生的 ByteBuffer，而是使用数组作为缓存。</p>
 
       
     </div>
@@ -290,7 +273,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/08/02/java.io%20%E6%A2%B3%E7%90%86%E4%B8%8E%E5%85%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -308,7 +291,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">程序员练级指南</a>
+          <a href="/2019/08/02/java.io%20%E6%A2%B3%E7%90%86%E4%B8%8E%E5%85%B6%E4%B8%AD%E7%9A%84%E4%B8%89%E7%A7%8D%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/" class="post-title-link" itemprop="url">java.io 梳理与其中的三种设计模式</a>
         </h2>
 
         <div class="post-meta-container">
@@ -319,7 +302,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2018-07-05 23:31:00" itemprop="dateCreated datePublished" datetime="2018-07-05T23:31:00+00:00">2018-07-05</time>
+      <time title="Created: 2019-08-02 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-02T00:00:00+00:00">2019-08-02</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 05:57:28" itemprop="dateModified" datetime="2023-02-10T05:57:28+00:00">2023-02-10</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -327,7 +317,7 @@
       </span>
       <span class="post-meta-item-text">In</span>
         <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+          <a href="/categories/Design-Patterns/" itemprop="url" rel="index"><span itemprop="name">Design Patterns</span></a>
         </span>
     </span>
 
@@ -341,241 +331,145 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <blockquote>
-<p>终于在极客时间上剁手了<br>这篇是耗子叔的那几篇入门指导的浓缩</p>
-</blockquote>
-<p>[TOC]</p>
-<h1 id="入门篇"><a href="#入门篇" class="headerlink" title="入门篇"></a>入门篇</h1><h2 id="零基础启蒙"><a href="#零基础启蒙" class="headerlink" title="零基础启蒙"></a>零基础启蒙</h2><h3 id="两份入门教程（Python-amp-JS）"><a href="#两份入门教程（Python-amp-JS）" class="headerlink" title="两份入门教程（Python &amp; JS）"></a>两份入门教程（Python &amp; JS）</h3><p>都是从零开始</p>
-<ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/5338024/">与孩子一起学编程</a>，六、二十章为 GUI</li>
-<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web">MDN Web 开发入门</a>，教程带你建立一个网站</li>
-</ul>
-<h3 id="Python-与-JavaScript-入门语言"><a href="#Python-与-JavaScript-入门语言" class="headerlink" title="Python 与 JavaScript 入门语言"></a>Python 与 JavaScript 入门语言</h3><h4 id="Python-书籍"><a href="#Python-书籍" class="headerlink" title="Python 书籍"></a>Python 书籍</h4><ul>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26836700/">Python 编程快速上手</a>，控制鼠标、破解 PDF</li>
-<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26829016/">Python 编程：从入门到实践</a>，“有 Web 项目、代码部署内容”，Django 学习笔记网站，Heroku 部署，若时间有限，这一本</li>
-</ul>
-<h4 id="JavaScript-在线教程"><a href="#JavaScript-在线教程" class="headerlink" title="JavaScript 在线教程"></a>JavaScript 在线教程</h4><ul>
-<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript">MDN JS 教程</a>，“从初级到中级再到高级，十分全面”</li>
-<li><a target="_blank" rel="noopener" href="http://www.w3school.com.cn/js/">W3School JS 教程，</a>偏 Web 方向</li>
-<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000">廖雪峰 JS 全栈教程</a>，偏应用偏 Web，包括 Node.js</li>
-</ul>
-<h3 id="操作系统入门-Linux"><a href="#操作系统入门-Linux" class="headerlink" title="操作系统入门 Linux"></a>操作系统入门 Linux</h3><p><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/linux/">W3CSchool Linux 教程</a></p>
-<h3 id="Microsoft-Visual-Studio-Code"><a href="#Microsoft-Visual-Studio-Code" class="headerlink" title="(Microsoft) Visual Studio Code"></a>(Microsoft) Visual Studio Code</h3><p><a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/jeasonstudio/vscode-cn-doc/details">中文手册</a>，不一定非要。吸引我：在终端工具内打印 Debug 信息</p>
-<h3 id="Web-编程入门"><a href="#Web-编程入门" class="headerlink" title="Web 编程入门"></a>Web 编程入门</h3><h4 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h4><ul>
-<li>MDN CSS 文档 与 HTML 文档，参考而不是记忆</li>
-<li>JS DOM 与动态网页 <a target="_blank" rel="noopener" href="https://www.w3schools.com/js/js_htmldom.asp">W3Schools 的 JavaScript HTML DOM 教程</a></li>
-<li>要点：<ul>
-<li>HTML 基本语法</li>
-<li>CSS 如何选中 HTML 元素，应用一些基本样式</li>
-<li>用 Firefox + Firebug 或 Chrome 查看炫酷网页结构</li>
-</ul>
-</li>
-</ul>
-<h4 id="后端（PHP）"><a href="#后端（PHP）" class="headerlink" title="后端（PHP）"></a>后端（PHP）</h4><h3 id="实践项目"><a href="#实践项目" class="headerlink" title="实践项目"></a>实践项目</h3><p>极简 Blog 系统，或是 BBS 系统，支持如下功能：</p>
-<ul>
-<li>用户登录和注册，无密码找回</li>
-<li>用户发帖，仅支持纯文本</li>
-<li>评论，纯文本</li>
-</ul>
-<p>从前端到后端，从 HTML&#x2F;CSS&#x2F;JS 到 Python，再到数据库</p>
-<p>注意的技术点：</p>
-<ul>
-<li>用户登录密码不保存为明文</li>
-<li>用户登录后，可对自己帖子 “重新编辑”、”删除“，但无权修改其它用户</li>
-<li>数据库设计。三张表：用户表，文章表，评论表，<strong>他们之间的关联</strong></li>
-</ul>
-<h2 id="正式入门"><a href="#正式入门" class="headerlink" title="正式入门"></a>正式入门</h2><h3 id="编程技能"><a href="#编程技能" class="headerlink" title="编程技能"></a>编程技能</h3><p><a target="_blank" rel="noopener" href="http://blog.thefirehoseproject.com/posts/learn-to-code-and-be-self-reliant/">The Key to Accelerating Your Coding Skills</a>，文章</p>
-<ul>
-<li>编程技巧：Code Complete</li>
-<li>编程语言：学习 Java</li>
-<li>操作系统：鸟哥的 Linux 私房菜</li>
-<li>网络协议：系统了解 HTTP 协议，<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP">MDN HTTP 文档</a>，关键点：<ul>
-<li>HTTP 头、HTTP 请求方法、HTTP 返回码</li>
-<li>Cookie，缓存，会话，连接管理</li>
-</ul>
-</li>
-<li>数据库设计：慕课网在线课程；推荐学习 MySQL</li>
-<li>前端：jQuery，Bootstrap；Ajax 请求后端 API 接口方式；JS Promise 模式，阮一峰教程</li>
-<li>字符编码</li>
-</ul>
-<h3 id="编程工具"><a href="#编程工具" class="headerlink" title="编程工具"></a>编程工具</h3><ul>
-<li><strong>IDE</strong>：Eclipse，<a target="_blank" rel="noopener" href="https://www.imooc.com/learn/924">Intellij IDEA</a>，VS Code</li>
-<li><strong>版本管理工具</strong>：Git 使用资料</li>
-<li><strong>调试前端</strong>：用 Chrome 调试，资料</li>
-<li><strong>数据库设计工具</strong>：MySQL WorkBench，资料</li>
-</ul>
-<h3 id="实践项目-1"><a href="#实践项目-1" class="headerlink" title="实践项目"></a>实践项目</h3><p>投票系统</p>
-<p>业务需求：技术需求：</p>
-<h3 id="入门篇小结"><a href="#入门篇小结" class="headerlink" title="入门篇小结"></a>入门篇小结</h3><ul>
-<li>1 - 2 年时间</li>
-<li>不用精通，能独立做出实践项目即是真正入门（耗子叔对入门的定义）</li>
-<li>年薪 20万</li>
-</ul>
-<h1 id="修养篇"><a href="#修养篇" class="headerlink" title="修养篇"></a>修养篇</h1><h2 id="程序员修养"><a href="#程序员修养" class="headerlink" title="程序员修养"></a>程序员修养</h2><p>Quora 帖子</p>
-<h3 id="附录：编程规范"><a href="#附录：编程规范" class="headerlink" title="附录：编程规范"></a>附录：编程规范</h3><h1 id="专业基础篇"><a href="#专业基础篇" class="headerlink" title="专业基础篇"></a>专业基础篇</h1><h2 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h2><ul>
-<li>C 坑</li>
-<li>C ++</li>
-<li>Java<ul>
-<li>C –&gt; C ++ –&gt; Java</li>
-</ul>
-</li>
-<li>Go</li>
-</ul>
-<h2 id="理论学科"><a href="#理论学科" class="headerlink" title="理论学科"></a>理论学科</h2><p>”计算机学科最精华的知识，人类智慧的精华“</p>
-<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><ul>
-<li>三本书推荐，先后顺序</li>
-<li>LeetCode 使用</li>
-<li>“如果想要有科班生理论基础”：<ul>
-<li>数据结构与算法分析</li>
-</ul>
-</li>
-<li>小结</li>
-</ul>
-<h2 id="系统知识"><a href="#系统知识" class="headerlink" title="系统知识"></a>系统知识</h2><p>Wireshark 数据包分析实战</p>
-<h3 id="系统知识小程序"><a href="#系统知识小程序" class="headerlink" title="系统知识小程序"></a>系统知识小程序</h3><h3 id="实践项目-2"><a href="#实践项目-2" class="headerlink" title="实践项目"></a>实践项目</h3><ul>
-<li>实现一个 telnet 版本的聊天服务器<ul>
-<li><code>telnet ip:port</code>的方式连接服务器</li>
-<li><strong>新连接</strong>需要用户名和密码登录，无则注册</li>
-<li><em>然后</em>可以选择一个聊天室加入聊天</li>
-<li><strong>管理员</strong>有权创建删除聊天室，<strong>普通人员</strong>只有 加入、退出、查询、聊天室</li>
-<li>聊天室人数限制；每个人发出来的其他人都能看到</li>
-</ul>
-</li>
-<li>简单的 HTTP 服务器<ul>
-<li>解释浏览器传来的 HTTP 协议，只处理 URL path</li>
-<li><em>然后</em>列出所代理的目录</li>
-<li>浏览器上可以浏览目录里的文件，和下级目录</li>
-<li><em>点击文件</em>，则文件传给浏览器（浏览器可自动显示图片、PDF、等）</li>
-<li><em>点击子目录</em>，则进入子目录，并列出文件</li>
-</ul>
-</li>
-<li>生产者 &#x2F; 消费者消息队列服务</li>
-</ul>
-<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
-<li>还有热情与成就感：恭喜，超过了绝大多数人；50 万</li>
-<li>术业有专攻，建议的方向</li>
-</ul>
-<h1 id="软件设计篇"><a href="#软件设计篇" class="headerlink" title="软件设计篇"></a>软件设计篇</h1><h2 id="软件设计"><a href="#软件设计" class="headerlink" title="软件设计"></a>软件设计</h2><h1 id="高手成长篇"><a href="#高手成长篇" class="headerlink" title="高手成长篇"></a>高手成长篇</h1><h2 id="系统底层知识"><a href="#系统底层知识" class="headerlink" title="系统底层知识"></a>系统底层知识</h2>
-      
-    </div>
+          <h1 id="java-io-梳理与其中的三种设计模式"><a href="#java-io-梳理与其中的三种设计模式" class="headerlink" title="java.io 梳理与其中的三种设计模式"></a>java.io 梳理与其中的三种设计模式</h1><p>以 <code>Reader</code> 抽象类下的类为例。它们的主要构造函数如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">FilterReader(Reader)</span><br><span class="line">BufferedReader(Reader)</span><br><span class="line"></span><br><span class="line">FileReader(File)</span><br><span class="line">StringReader(String)</span><br><span class="line">InputStreamReader(InputStream [, Charset])</span><br></pre></td></tr></table></figure>
 
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/24/Unicode,%20UTF-8,%20%E4%BB%A5%E5%8F%8A%20UTF-16/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="Jimmy Xu">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Rust Shrugged">
-      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
-    </span>
-
-    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
-      <meta itemprop="name" content="undefined | Rust Shrugged">
-      <meta itemprop="description" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2018/06/24/Unicode,%20UTF-8,%20%E4%BB%A5%E5%8F%8A%20UTF-16/" class="post-title-link" itemprop="url">Unicode, UTF-8, 以及 UTF-16</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">Posted on</span>
-
-      <time title="Created: 2018-06-24 00:00:00" itemprop="dateCreated datePublished" datetime="2018-06-24T00:00:00+00:00">2018-06-24</time>
-    </span>
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-folder"></i>
-      </span>
-      <span class="post-meta-item-text">In</span>
-        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-          <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">技术笔记</span></a>
-        </span>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h1 id="Unicode-UTF-8-以及-UTF-16"><a href="#Unicode-UTF-8-以及-UTF-16" class="headerlink" title="Unicode, UTF-8, 以及 UTF-16"></a>Unicode, UTF-8, 以及 UTF-16</h1><p>对不起，但是必须要说，要想完全地搞懂 Unicode 编码，光看这篇文章是肯定不够的，你要自己去维基上看一系列文章。首推 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Character_encoding">Character encoding</a> 条目。</p>
-<h2 id="基本术语"><a href="#基本术语" class="headerlink" title="基本术语"></a>基本术语</h2><p>来自维基百科的 <a target="_blank" rel="noopener" href="https://en.wikipedia.org/wiki/Character_encoding">character encoding（字符编码）</a> 词条：</p>
-<p>Terminology related to code unit:</p>
-<ul>
-<li>A <em>character</em> is a minimal unit of text that has semantic value.</li>
-<li>A <em>character set</em> is a collection of characters that might be used by multiple languages.</li>
-</ul>
-<p><em>Example:</em> The Latin character set is used by English and most European languages, though the Greek character set is used only by the Greek language.</p>
-<ul>
-<li>A <em>coded character set</em> is a character set in which each character corresponds to a unique number.</li>
-<li>A <em>code point</em> of a coded character set is any allowed value in the character set.</li>
-<li>A <em>code unit</em> is a bit sequence used to encode each character of a repertoire within a given encoding form.</li>
-</ul>
-<p>几个关键术语对应的翻译：code point，码点；code unit，编码单元。所以，一个字符（character）是具有语义的最小文本单元，更多的是一个语言学的术语；一个<em>字符集</em>（character set）是可能被好几种语言使用的字符的集合，比如拉丁语字符集同时被英语和大多数欧洲语言使用。一个<em>编码字符集</em>（coded character set）是一个字符集，其中每一个字符都对应于一个唯一的数字。一个编码字符集的<em>码点</em>（code point）是指这个字符集中所有的数字值，每一个码点对应一个字符。一个<em>编码单元</em>是一个在给定的字符编码表下，给字符编码的字节序列。</p>
-<h2 id="Unicode-具体实现过程"><a href="#Unicode-具体实现过程" class="headerlink" title="Unicode 具体实现过程"></a>Unicode 具体实现过程</h2><h3 id="Unicode-四层模型"><a href="#Unicode-四层模型" class="headerlink" title="Unicode 四层模型"></a>Unicode 四层模型</h3><p>如果你能看到这，恭喜，接下来就会简单很多。Unicode 与传统的诸如 ASCII，摩斯电码用的一个重要不同在于，它们都是把字符（character）与字节序列直接对应。而对于 Unicode 来说，它会经过以下几个模型的处理：</p>
-<p><strong>character –(CCS)–&gt; code point –(CEF)–&gt; code unit –(CES)–&gt; byte stream</strong></p>
-<p>一个字符（character）经过编码字符集（CCS, coded character set）的映射，转化为码点（code point）。码点为<strong>十六进制</strong>，像这样：<code>U+20AC</code>，转化为字符是欧元的标志：<code>€</code>。</p>
-<p>码点经过<strong>字符编码表</strong>（CEF, character encoding form）的处理，转化为编码单元（code unit）。编码单元仍然是<strong>十六进制</strong>。举例来说，同一个字符<code>a</code>，它的编码单元在 UTF-32 中是<code>00000061 </code>，在 UTF-16中是 <code>0061</code>，在 UTF-8 中是 <code>61</code>。</p>
-<p>最后，编码单元被 <strong>CES</strong> (Character Encoding Scheme) 转化为在机器中储存的二进制字节。”CES“ 是什么呢，举例来说，我们平常说的 UTF-8，UTF-16 其实都是 CES。</p>
-<h3 id="从码点到-UTF-16"><a href="#从码点到-UTF-16" class="headerlink" title="从码点到 UTF-16"></a>从码点到 UTF-16</h3><p>从<code>U+0000</code>到<code>U+FFFF</code>为基本多语种平面（BMP），可以用两个字节表示。对于高于这个范围的，用 ”代理对“ 来间接表示。低代理项的范围为<code>U+D800</code>至 <code>U+DBFF </code>，高代理项为<code>U+DC00</code>至<code>U+DFFF </code>，一共是2048个位置。这些位置其实是位于 BMP 的保留范围。</p>
-<p>从码点到 UTF-16 编码单元的解码过程：</p>
+<p><img src="/content/images/2019/ReaderUML.png" alt="Reader UML"></p>
+<p>大致上，<code>java.io</code> 可以分为：</p>
 <ol>
-<li>把码点减去<code>0x10000</code></li>
-<li>对于高代理项（high surrogate）：<ol>
-<li>地板除，除以<code>0x400</code></li>
-<li>加上<code>0xD800 </code></li>
+<li>字节流操作：<code>InputStream</code>、<code>OutputStream</code></li>
+<li>字符操作：<code>Reader</code>、<code>Writer</code></li>
+<li>针对磁盘操作：<code>File</code></li>
 </ol>
-</li>
-<li>对于低代理项（low surrogate）：<ol>
-<li>取余数，取除以<code>0x400</code>后的余数</li>
-<li>加上<code>0xDC00</code></li>
-</ol>
-</li>
-</ol>
-<p>写成直观公式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">difference = codepoint - 0x10000</span><br><span class="line">H = difference // 0x400 + 0xD800</span><br><span class="line">L = difference % 0x400 + 0xDC00</span><br></pre></td></tr></table></figure>
+<h2 id="适配器模式-Adapter-pattern"><a href="#适配器模式-Adapter-pattern" class="headerlink" title="适配器模式 Adapter pattern"></a>适配器模式 Adapter pattern</h2><p><code>InputStreamReader</code> 是字节流与字符流之间的桥梁，它的实现使用了适配器模式。适配器模式通过聚合将某个接口适配成为另一个接口来方便使用，类图如下：</p>
+<p><img src="/content/images/2019/InputStreamReaderAdapterPattern.png" alt="InputStreamReader Adapter Pattern"></p>
+<p>在开头的代码可以看到，<code>InputStreamReader</code> 的构造器需要传入一个字节流 <code>InputSream</code>，以及可选的字符集。如果没有传入字符集就会使用默认的。通过持有一个 <code>InputStream</code>，<code>InputStreamReader</code> 拥有了该接口的功能。同时，<code>InputStreamReader</code> 还是一个实现了 <code>Reader</code> 类，这样一来它就把 <code>InputStream</code> 适配成了一个 <code>Reader</code> 类。</p>
+<h2 id="装饰器模式-Decorator-pattern"><a href="#装饰器模式-Decorator-pattern" class="headerlink" title="装饰器模式 Decorator pattern"></a>装饰器模式 Decorator pattern</h2><p>这个应该是 <code>java.io</code> 更为人熟知的，装饰器模式与适配器模式都可以看作包装模式 Wrapper。通过对类的层层包裹，装饰器模式增强了目标类的功能。类图示意如下：</p>
+<p><img src="/content/images/2019/IODecoratorPattern.png" alt="IO Decorator Pattern"></p>
+<p><code>Decorator</code> 是 <code>Component</code> 的实现类，但是其内部也持有一个 <code>Decorator</code> 类。不同的 <code>Decorator</code> 类下的 <code>ConcreteDecorator</code> 子类包含了需要增强的功能。</p>
+<p>在 <code>java.io</code> 中的典型使用：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">FilterReader</span> <span class="variable">pbr</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">PushbackReader</span>(</span><br><span class="line">        <span class="keyword">new</span> <span class="title class_">BufferedReader</span>(<span class="keyword">new</span> <span class="title class_">InputStreamReader</span>(System.in)))</span><br></pre></td></tr></table></figure>
 
-<p>从 UTF-16 编码单元到码点的编码可以反向推算。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">codepoint = difference + 0x10000</span><br><span class="line">difference = (H - 0xD800) * 0x400 + (L - 0xDC00)</span><br></pre></td></tr></table></figure>
+<h3 id="二者的不同"><a href="#二者的不同" class="headerlink" title="二者的不同"></a>二者的不同</h3><p>装饰器模式更多的是对目标类的功能上的增强；适配器没有对功能进行增进，只是为了使目标类能适应调用方的接口，方便被调用。</p>
+<h2 id="模板方法"><a href="#模板方法" class="headerlink" title="模板方法"></a>模板方法</h2><p>在模板方法模式中，大的算法框架在抽象父类中被定义好，某些业务相关的实现则延迟到子类。</p>
+<p>在 <code>Reader</code> 抽象类中，<code>read</code> 方法的默认实现都留给了被重载的 <code>read(char[], int, int)</code>，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">read</span><span class="params">()</span></span><br><span class="line"><span class="type">int</span> <span class="title function_">read</span><span class="params">(<span class="type">char</span>[] cbuf)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">abstract</span> <span class="type">int</span> <span class="title function_">read</span><span class="params">(<span class="type">char</span>[] cbuf, <span class="type">int</span> offset, <span class="type">int</span> len)</span></span><br></pre></td></tr></table></figure>
+
+<p>具体的 <code>read</code> 的实现留给子类。</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
 
 
 
-<h4 id="UTF-16-与-UCS-2-兼容问题"><a href="#UTF-16-与-UCS-2-兼容问题" class="headerlink" title="UTF-16 与 UCS-2 兼容问题"></a>UTF-16 与 UCS-2 兼容问题</h4><p>Unicode 标准规定了从<code>U+D800</code>到<code>U+DFFF</code>为 reserved range，保留位。UTF-16 就是利用这一保留区段来对基本平面 BMP 以外的辅助平面进行映射。需要注意的是，虽然标准规定了这一区段不可使用，但是实际使用中，在 UCS-2 的年代是用到了这一区段的。因此在许多编码解码的应用中，如果遇到保留区段的码点，会先对这个做检查，看该码点后是否能构成代理对，而不是直接按标准，把这个定义为编码错误。</p>
-<h3 id="从码点到-UTF-8"><a href="#从码点到-UTF-8" class="headerlink" title="从码点到 UTF-8"></a>从码点到 UTF-8</h3>
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/24/tiny-spring%20%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2019/07/24/tiny-spring%20%E8%B8%A9%E5%9D%91%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89/" class="post-title-link" itemprop="url">tiny-spring 踩坑记录（一）可变长泛型参数与堆污染</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2019-07-24 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-24T00:00:00+00:00">2019-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2023-02-10 05:57:28" itemprop="dateModified" datetime="2023-02-10T05:57:28+00:00">2023-02-10</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h2 id="可变长泛型参数与堆污染"><a href="#可变长泛型参数与堆污染" class="headerlink" title="可变长泛型参数与堆污染"></a>可变长泛型参数与堆污染</h2><h3 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h3><blockquote>
+<p>什么是堆污染</p>
+</blockquote>
+<p>一个类型为泛型 <code>T</code> 的变量被指向一个类型不是 <code>T</code> 的对象，这就是堆污染。典型的情况是</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">List&lt;T&gt; listOfTs = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;(Arrays.asList(t));</span><br><span class="line">List&lt;E&gt; listOfEs = (List&lt;E&gt;)(Object)listOfTs; <span class="comment">// 此时指向了含有 T 的 List, 但是不会抛出异常，只是在 Object -&gt; List&lt;E&gt; 的转型中抛出警告</span></span><br><span class="line"></span><br><span class="line"><span class="type">E</span> <span class="variable">e</span> <span class="operator">=</span> listOfEs.get(<span class="number">0</span>);  <span class="comment">// 运行时错误，java.lang.ClassCastException</span></span><br></pre></td></tr></table></figure>
+
+<p>之所以编译器无法在转型时检查出类型转换错误，是因为 Java 泛型是通过类型擦除实现的，在泛型代码内部无法获得任何有关泛型参数类型的信息。</p>
+<p>一个更好一点的关于可变长泛型参数和堆污染一起的例子，来自 <a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/generics/nonReifiableVarargsType.html">Oracle 官方文档</a>：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">faultyMethod</span><span class="params">(List&lt;String&gt;... l)</span> &#123;</span><br><span class="line">    Object[] objectArray = l;     <span class="comment">// Valid</span></span><br><span class="line">    objectArray[<span class="number">0</span>] = Arrays.asList(<span class="number">42</span>);</span><br><span class="line">    <span class="type">String</span> <span class="variable">s</span> <span class="operator">=</span> l[<span class="number">0</span>].get(<span class="number">0</span>);       <span class="comment">// ClassCastException thrown here</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>关于泛型的<a target="_blank" rel="noopener" href="https://docs.oracle.com/javase/tutorial/java/generics/restrictions.html">几大限制</a>中，最明显的一个就是不能创造泛型数组，如</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">List&lt;Integer&gt;[] arrayOfLists = <span class="keyword">new</span> <span class="title class_">List</span>&lt;Integer&gt;[<span class="number">2</span>];  <span class="comment">// compile-time error</span></span><br></pre></td></tr></table></figure>
+
+<p>但是这一限制在可变长的泛型参数中被打破了。在可变长参数中，一个数组会在函数调用时建立（Effective Java，Item 53），每次调用都会引起一次数组分配和初始化。当可变长参数是泛型时，一个泛型数组就被创造出来了。</p>
+<h3 id="实操时的问题"><a href="#实操时的问题" class="headerlink" title="实操时的问题"></a>实操时的问题</h3><p>我在 tiny-spring 中写了一个方法，给定注解参数，获取所有带有该注解的类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这里就出现了一个可变长泛型参数的问题。另一个隐藏的问题是，这个方法并没有对传入的注解参数的数量检查参数为零的情况，而可变长参数允许传入零个参数。一个优美一点的解决方案是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@SafeVarargs</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Set&lt;Class&lt;?&gt;&gt; getClassSetByAnnotation(Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; firstCls, Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt;... cls) &#123;</span><br><span class="line">    Set&lt;Class&lt;?&gt;&gt; classSet = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (Class&lt;?&gt; c : getClassSet(basePkg)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (c.isAnnotationPresent(firstCls)) &#123;</span><br><span class="line">            classSet.add(c);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Class&lt;? <span class="keyword">extends</span> <span class="title class_">Annotation</span>&gt; annotationCls : cls) &#123;</span><br><span class="line">            <span class="keyword">if</span> (c.isAnnotationPresent(annotationCls)) &#123;</span><br><span class="line">                classSet.add(c);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> classSet;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样既省去明显的检查参数数量，又能在调用处强制调用者传入至少一个参数，这也是这个方法的本意。</p>
+<h3 id="SafeVarargs-的使用标准"><a href="#SafeVarargs-的使用标准" class="headerlink" title="@SafeVarargs 的使用标准"></a>@SafeVarargs 的使用标准</h3><p>如上所见，可以将报警用 <code>@SafeVarargs</code> 注解掉。但是我们知道，这个注解仅仅是消除编译警告，完全不能保证消除这个错误。那么什么时候应该使用这个注解呢？</p>
+<p>在 StackOverflow 有一个票的<a target="_blank" rel="noopener" href="https://stackoverflow.com/a/14252221">回答</a>：</p>
+<p>If your method has an argument of type <code>T...</code> (where T is any type parameter), then:</p>
+<ul>
+<li>Safe: If your method only depends on the fact that the elements of the array are instances of <code>T</code></li>
+<li>Unsafe: If it depends on the fact that the array is an instance of <code>T[]</code></li>
+</ul>
+<p>Effective Java 也表示了类似的意思：如果你的方法使用可变长泛型参数的时候，只是用来一次传入多个参数，并且实际使用的时候只是把它们当作多个参数来看，那么就没有问题。如果你的方法体中把可变长参数当作数组来使用，那就会有问题，不要使用这个注解。</p>
+
       
     </div>
 
@@ -594,7 +488,7 @@
 
 
   <nav class="pagination">
-    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 </div>
@@ -623,6 +517,7 @@
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>

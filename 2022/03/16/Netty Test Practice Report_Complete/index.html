@@ -257,6 +257,7 @@
         <h1 id="Netty-Test-Practice-Report"><a href="#Netty-Test-Practice-Report" class="headerlink" title="Netty Test Practice Report"></a>Netty Test Practice Report</h1><p>[TOC]</p>
 <h2 id="Introduction-of-Netty"><a href="#Introduction-of-Netty" class="headerlink" title="Introduction of Netty"></a>Introduction of Netty</h2><p>Netty is a high-performance network application framework with asynchronous event-driven APIs that enables developers to focus on business logic, instead of low level details like synchronization, manual management of <code>ByteBuffer</code>. Simply put, Netty &gt; java.nio + java.net.</p>
 <h3 id="Netty-vs-java-net-async-and-event-driven"><a href="#Netty-vs-java-net-async-and-event-driven" class="headerlink" title="Netty vs java.net: async and event-driven"></a>Netty vs java.net: async and event-driven</h3><p>By leveraging callbacks, Netty implements a event model for network communication. User can register listeners to events and operations, and get async notification of the completion status of those registered handlers.</p>
+<span id="more"></span>
 <p>Also, Netty eliminates the need for tedious synchronization by allowing only one thread to handle all the I&#x2F;O operations and events within a <code>EventLoop</code>.</p>
 <p>Those coming from other programming languages like JavaScript would find this practice very similar to async frameworks like Koa: accessing a global <code>ctx</code> from self-defined callbacks, and then easily attach them to different places.</p>
 <h3 id="Netty-vs-java-nio-ByteBuffer-for-everyone"><a href="#Netty-vs-java-nio-ByteBuffer-for-everyone" class="headerlink" title="Netty vs java.nio: ByteBuffer for everyone"></a>Netty vs java.nio: ByteBuffer for everyone</h3><p>Comparing JDK’s <code>ByteBuffer</code> to Netty’s <code>Bytebuf</code>, Netty mainly improved two issues: API friendliness and performance.</p>
@@ -639,6 +640,7 @@
     <i class="fa fa-arrow-up fa-lg"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 <noscript>
   <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>

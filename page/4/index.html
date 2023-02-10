@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 6.3.0">
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha256-Z1K5uhUaJXA7Ll0XrZ/0JhX4lAtZFpT6jkKrEDT0drU=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"yoursite.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.14.2","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"menu_item":"fadeInDown","post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="Tu ne cede malis, sed contra audentior ito">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rust Shrugged">
+<meta property="og:url" content="http://yoursite.com/page/4/index.html">
+<meta property="og:site_name" content="Rust Shrugged">
+<meta property="og:description" content="Tu ne cede malis, sed contra audentior ito">
+<meta property="og:locale" content="en_US">
+<meta property="article:author" content="Jimmy Xu">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://yoursite.com/page/4/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":true,"isPost":false,"lang":"en","comments":"","permalink":"","path":"page/4/index.html","title":""}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>Rust Shrugged</title>
+  
+
+
+
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <div class="column">
+      <header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Rust Shrugged</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Programming and a free mind</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger" aria-label="Search" role="button">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li>
+  </ul>
+</nav>
+
+
+
+
+</header>
+        
+  
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-overview-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">Jimmy Xu</p>
+  <div class="site-description" itemprop="description">Tu ne cede malis, sed contra audentior ito</div>
+</div>
+<div class="site-state-wrap animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">10</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+          <a href="/tags/">
+        <span class="site-state-item-count">14</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+        </div>
+      </div>
+    </div>
+
+    
+  </aside>
+
+
+    </div>
+
+    <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/09/Flask%20Web%20Development%20Notes/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/08/09/Flask%20Web%20Development%20Notes/" class="post-title-link" itemprop="url">Flask Web Development Notes</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-08-09 22:54:00" itemprop="dateCreated datePublished" datetime="2018-08-09T22:54:00+00:00">2018-08-09</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">技术笔记</span></a>
+        </span>
+          , 
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h1 id="Flask-Web-Development-Notes"><a href="#Flask-Web-Development-Notes" class="headerlink" title="Flask Web Development Notes"></a>Flask Web Development Notes</h1><blockquote>
+<p>这是我暑假看 Miguel 的那本著名狗书时的笔记，书的版本是最新的 second edition。当时看的是原文版，以后会写一篇文章说阅读英语原文的经验</p>
+</blockquote>
+<h2 id="Ch2-Basic-Application-Structure"><a href="#Ch2-Basic-Application-Structure" class="headerlink" title="Ch2 Basic Application Structure"></a>Ch2 Basic Application Structure</h2><h3 id="Run-an-app"><a href="#Run-an-app" class="headerlink" title="Run an app"></a>Run an app</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">export</span> FLASK_APP=name.py</span><br><span class="line"><span class="built_in">export</span> FLASK_DEBUG=1</span><br><span class="line">flask run</span><br></pre></td></tr></table></figure>
+
+<h3 id="Dynamic-route"><a href="#Dynamic-route" class="headerlink" title="Dynamic route"></a>Dynamic route</h3><p>Flask supports the types <code>string</code>, <code>int</code>, <code>float</code>, and <code>path</code> for routes. The <code>path</code> type is a special <code>string</code> type.</p>
+<h3 id="Response"><a href="#Response" class="headerlink" title="Response"></a>Response</h3><p><em>view function</em> could take as much as three arguments, <em>status code</em> and a <em>dictionary of headers</em></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span></span>)</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">index</span>():</span><br><span class="line">	<span class="keyword">return</span> <span class="string">&#x27;&lt;h1&gt;Bad Request&lt;/h1&gt;&#x27;</span>, <span class="number">400</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Compatibility-with-older-version"><a href="#Compatibility-with-older-version" class="headerlink" title="Compatibility with older version"></a>Compatibility with older version</h3><p><code>app.run(debug=True)</code></p>
+<p><code>app.add_url_rule()</code>: builds the map between URL and view function</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">flask run --host 0.0.0.0</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt-get install sqlite3 libsqlite3-dev</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Ch3-Templates"><a href="#Ch3-Templates" class="headerlink" title="Ch3 Templates"></a>Ch3 Templates</h2><p><em>business logic</em> and <em>presentation logic</em>, Jinja2 takes the work of <em>presentation</em>. More specifically, the application only sends variables to Jinja2, after that how the HTML page is presented is up to Jinja2.</p>
+<h3 id="What-this-chapter’s-mainly-about"><a href="#What-this-chapter’s-mainly-about" class="headerlink" title="What this chapter’s mainly about"></a>What this chapter’s mainly about</h3><p>Static web pages. Topics in this chapter:</p>
+<ul>
+<li>What are templates; how to inherit</li>
+<li>How to write URLs in Flask; <code>url_for()</code> helper function; relative &amp; absolute URLs, the latter one less useful</li>
+<li>How to send static files (in template format)</li>
+<li>Miscellaneous: Bootstrap integration</li>
+</ul>
+<h2 id="Ch4-Web-Forms"><a href="#Ch4-Web-Forms" class="headerlink" title="Ch4 Web Forms"></a>Ch4 Web Forms</h2><h3 id="Form-classes-（technical"><a href="#Form-classes-（technical" class="headerlink" title="Form classes （technical)"></a>Form classes （technical)</h3><p><code>FlaskForm</code> defines the list of <code>field</code>s in each form, each represented by an object. Each <code>field</code> object have one or more <em>validators</em> attached. A <em>validator</em> is a function. Note the three terms here, <em>FlaskForm, field, validator</em>.</p>
+<h3 id="Form-submission-with-GET"><a href="#Form-submission-with-GET" class="headerlink" title="Form submission with GET"></a>Form submission with GET</h3><p>Bad. GET doesn’t have a <em>body</em>, so if submit with GET method, the <em>data</em> will be appended to the URL as a <em>query string</em>, and becomes visible in the browser’s address bar.</p>
+<p>Therefore, in <em>view function</em> that deals with forms, add a <code>POST</code> method like that:</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.route(<span class="params"><span class="string">&#x27;/&#x27;</span>, methods=[<span class="string">&#x27;GET&#x27;</span>, <span class="string">&#x27;POST&#x27;</span>]</span>)</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Miscellaneous"><a href="#Miscellaneous" class="headerlink" title="Miscellaneous"></a>Miscellaneous</h3><p>This method returns <code>True</code> when form is <del>submitted</del> submitted using POST method, and the data accepted by all <em>field validators</em>; used to <em>determine</em>, whether the form needs to be <em>rendered</em> or <em>processed</em>.</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> form.validate_on_submit():</span><br><span class="line">	<span class="comment">###</span></span><br></pre></td></tr></table></figure>
+
+<p>The first and only required argument to <code>url_for()</code> is the <em>endpoint</em> name.  By default, the endpoint of a route is the name of the view function attached to it. </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">return</span> redirect(url_for(<span class="string">&#x27;index&#x27;</span>))</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="Ch5-Databases"><a href="#Ch5-Databases" class="headerlink" title="Ch5 Databases"></a>Ch5 Databases</h2><h3 id="Terms"><a href="#Terms" class="headerlink" title="Terms"></a>Terms</h3><p>column: attribute of the entity; row: actual data element that <em>assigns</em> values to columns.</p>
+<p>table, record –&gt; collection, document, from Relational to NoSQL</p>
+<p><em>primary key</em>: a special <em>column</em>; <em>foreign keys</em>: columns</p>
+<h3 id="Sum"><a href="#Sum" class="headerlink" title="Sum"></a>Sum</h3><ul>
+<li>With ORM middleman, one doesn’t have to SQL semantics</li>
+<li>Apply different URLs in config could migrate from different (relational) databases</li>
+<li>Databases migration:<ul>
+<li>Framework: <em>Flask-Migrate</em>, the <em>Alembic wrapper</em></li>
+<li>Procedures: <code>flask db init</code>, creates a <em>migrations</em> directory (optional, only on a new project); <code>flask db migrate -m &quot;message&quot;</code>, <em>automatically</em> creates <em>migration script</em>, while <code>revision</code> manually; <code>flask db upgrade</code></li>
+<li><code>flask db downgrade</code> and <code>... upgrade</code> gives db migrations log history like <em>git</em></li>
+</ul>
+</li>
+</ul>
+<h2 id="Ch7-Large-Application-Structure"><a href="#Ch7-Large-Application-Structure" class="headerlink" title="Ch7 Large Application Structure"></a>Ch7 Large Application Structure</h2><h3 id="Add-custom-commands-via-click"><a href="#Add-custom-commands-via-click" class="headerlink" title="Add custom commands via click"></a>Add custom commands via <em>click</em></h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@app.cli.command()</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">thatWillBetheNameofCommand</span>():</span><br><span class="line">	<span class="string">&quot;&quot;&quot;This will be shown in the help messages&quot;&quot;&quot;</span></span><br><span class="line">	<span class="keyword">pass</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="Blueprint-detail"><a href="#Blueprint-detail" class="headerlink" title="Blueprint detail"></a>Blueprint detail</h3><ul>
+<li><p>In chapter 7 about <em>blueprint</em>, the module where blueprint object is must import its routes’ view functions, because</p>
+<blockquote>
+<p>Importing these modules causes the routes and error handlers to be associated with the blueprint. </p>
+</blockquote>
+</li>
+<li><p>From Eg.7.7: the blueprint name before <em>endpoint</em> can be omitted, as <code>url_for(&#39;.index&#39;)</code>. <em>Redirects</em> within the same blueprint could use the shorter form, while crossing blueprints requires the fully qualified endpoint name that includes the blueprint name.</p>
+</li>
+</ul>
+<h2 id="Ch8-User-Authentication"><a href="#Ch8-User-Authentication" class="headerlink" title="Ch8 User Authentication"></a>Ch8 User Authentication</h2><blockquote>
+<p>Hashing functions are repeatable.</p>
+</blockquote>
+<ul>
+<li><strong>Q:</strong> How could the <code>check_password_hash(hash, password)</code> check pwd without knowing the <em>salt</em> of it?</li>
+</ul>
+<h3 id="WTForm-write-your-own-validator-with-validate-prefix"><a href="#WTForm-write-your-own-validator-with-validate-prefix" class="headerlink" title="WTForm: write your own validator with validate_ prefix"></a>WTForm: write your own validator with <em>validate_</em> prefix</h3><ul>
+<li>for <code>wtforms</code> <em>validate_</em> prefix defines custom validators; while in Python standard library <code>unittest</code> the <em>test_</em> prefix is used.</li>
+<li>any function referred the database, is defined in <code>model.py</code>, as methods in those ORM models. They access the database using <code>self.attribute</code>.</li>
+</ul>
+<h3 id="Flask-Login-detail"><a href="#Flask-Login-detail" class="headerlink" title="Flask-Login detail"></a>Flask-Login detail</h3><p>Flask-Login requires the application to designate a function to be invoked when the extension needs to load a user from the database given its identifier, registered with <code>@login_manager.user_loader</code> decorator.</p>
+<p><code>_get_user()</code> searches for a user ID in the <em>user session</em> –&gt; invoke the function registered with the <code>user_loader</code> decorator, with the ID as argument</p>
+<h2 id="Ch14-API"><a href="#Ch14-API" class="headerlink" title="Ch14 API"></a>Ch14 API</h2><p>The process of converting an internal representation to a transport format such as JSON is called <strong>serialization</strong>.</p>
+<h2 id="Todo"><a href="#Todo" class="headerlink" title="Todo"></a>Todo</h2><ul>
+<li><p><input disabled="" type="checkbox"> 
+decorators in Python<br>They are functions that takes  a func as an arg then returns another arg</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>OOP</strong> concepts: constructor, method&amp;attribute<br>(so far I <em>assume</em> that) Methods are funcs, attributes are data.</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+How blocks are really defined in bootstrap&#x2F;base.html</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+what <code>&lt;&gt;</code> means in Python code (<code>&lt;&#123;&#39;key1&#39;: v, &#39;k2&#39;: v2&#125;&gt;</code>)</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+What is <em>label</em> in HTML<br>makes the form text clickable; same style with it.</p>
+</li>
+<li><p><input disabled="" type="checkbox"> </p>
+<blockquote>
+<p>The remaining class variables are the attributes of the model, defined as instances of the <code>db.Column</code> class.</p>
+</blockquote>
+<p>what is <em>instance, class variable, attribute</em></p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<code>with</code> keyword in Python</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+<code>__name__</code>, <code>__file__</code> and other dunder variable (<code>basedir = os.path.abspath(os.path.dirname(__file__)) </code>)</p>
+<ul>
+<li><code>__name__</code> has two values, <code>&quot;__main__&quot;</code> (when being executed) or the module’s name (when imported). With respect to Object, <code>__name__</code> is the special attribute of a class, function, method, descriptor, or generator instance. </li>
+<li><code>__file__</code>, the absolute path of the module</li>
+</ul>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+functionality of the <code>__init__.py</code> file in a directory</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>OOP:</strong> <code>@property</code> decorator in a class</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>DB:</strong> <code>users = db.relationship(&#39;User&#39;, backref=&#39;role&#39;, lazy=&#39;dynamic&#39;)</code>. “users” is a <em>column</em> of the table <em>role</em>. What does <code>lazy</code> kwarg mean</p>
+</li>
+<li><p><input checked="" disabled="" type="checkbox"> 
+<strong>DB:</strong> <code>Role.query.filter_by(name=&#39;Administrator&#39;).first()</code>, type of the return value</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">User.query.filter_by(username=<span class="string">&#x27;galt&#x27;</span>).first()  <span class="comment"># output: &lt;User &#x27;john&#x27;&gt;</span></span><br><span class="line">a = User.query.filter_by(username=<span class="string">&#x27;galt&#x27;</span>).first()</span><br><span class="line"><span class="built_in">type</span>(a)  <span class="comment"># output: &lt;class &#x27;app.models.User&#x27;&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>On success, return value is the <em>row</em> in the table. <code>a.id</code> would return the <code>id</code> <em>column</em> of user <code>galt</code>.</p>
+</li>
+</ul>
+<hr>
+<ul>
+<li><input disabled="" type="checkbox"> Linux command <code>export</code></li>
+<li><input disabled="" type="checkbox"> <code>form.hidden_tag()</code> element for CSRF protection</li>
+<li><input checked="" disabled="" type="checkbox"> How much freedom does ORM&#x2F;ODM provide in choosing DB, only different <em>rational databases</em>?<br>Yes.</li>
+<li><input disabled="" type="checkbox"> <code>&#123;&#123; wtf.quick_form(form) &#125;&#125;</code>, how will this template be rendered, search keyword in the book<ul>
+<li><code>&#123;&#123; name &#125;&#125;</code> construct references a <strong>variable</strong>, a <strong>placeholder</strong></li>
+</ul>
+</li>
+<li><input disabled="" type="checkbox"> How to initialize <code>SelectField</code>, 7.31</li>
+<li><input disabled="" type="checkbox"> <code>Post.query.order_by</code> will this query affect rows? 8.1</li>
+</ul>
+<h3 id="After-Flask"><a href="#After-Flask" class="headerlink" title="After Flask:"></a>After Flask:</h3><ul>
+<li><p><input disabled="" type="checkbox"> 
+WTForm package <em>validator</em> source code, I assume it’s just RegEx</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+For example, the execution of the <code>send_async_email()</code> function can be sent to a <a target="_blank" rel="noopener" href="http://www.celeryproject.org/">Celery</a> task queue. (p.107)</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Decorator:</strong> How different orders affects the registered function</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Thread:</strong> <em>worker thread</em> in Flask doc</p>
+</li>
+<li><p><input disabled="" type="checkbox"> 
+<strong>Iterator</strong> and that: </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">follows = [&#123;<span class="string">&#x27;user&#x27;</span>: item.follower, <span class="string">&#x27;timestamp&#x27;</span>: item.timestamp&#125;</span><br><span class="line"><span class="keyword">for</span> item <span class="keyword">in</span> pagination.items]</span><br></pre></td></tr></table></figure></li>
+</ul>
+<p>Check yourself: </p>
+<ul>
+<li>How to add a new row in a table, how to change a column of a row</li>
+<li>Page 182, how the foreign key of a table is added</li>
+</ul>
+<hr>
+<ul>
+<li><p>synopsis: brief summary</p>
+</li>
+<li><p>delimiter (<em>programming</em>)</p>
+</li>
+<li><p>miscellaneous</p>
+</li>
+<li><p><em>callable</em>, page 65</p>
+</li>
+<li><p>cardinality alchemy, transparent (Ch5)</p>
+</li>
+<li><blockquote>
+<p>build a perfect <strong>replica</strong> of the virtual environment…</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="Appendix"><a href="#Appendix" class="headerlink" title="Appendix"></a>Appendix</h2><h3 id="Object-in-Python"><a href="#Object-in-Python" class="headerlink" title="Object in Python"></a>Object in Python</h3><p>type of methods:</p>
+<ul>
+<li><em>instance method</em>, the 1st argument of it <em>must</em> be <code>self</code>; any method taking <code>self</code> as the 1st arg is a <em>instance method</em></li>
+<li><em>class method</em>, <code>@classmethod</code>, <code>cls</code> as the 1st arg. Calling: <code>Obj().count()</code>, where <code>Obj</code> is the name of a class</li>
+<li><em>static method</em>， <code>@staticmethod</code>. E.g. <code>Obj().someStaticMethod()</code></li>
+</ul>
+<p><code>super()</code> in Python2.x takes its own class as the first variable, like <code>super(Child, self).__init__(age, height)</code>. Also the <em>parent</em> shall be defined as <code>class Parent(object)</code>, having <code>object</code> as base class.</p>
+<h3 id="REST-API"><a href="#REST-API" class="headerlink" title="REST API"></a>REST API</h3><ul>
+<li>more business logic on client side</li>
+<li>client could <em>discover</em> resources using different URL compositions</li>
+<li>versioning for backward compatibility</li>
+</ul>
+<h3 id="Compare-to-Mage-Tutorial"><a href="#Compare-to-Mage-Tutorial" class="headerlink" title="Compare to Mage Tutorial"></a>Compare to Mage Tutorial</h3><ol>
+<li>_get</li>
+<li>plain text and HTML email</li>
+<li>from GitHub’s <em>commit</em> history you could view specifically what changed in every commit</li>
+</ol>
+<h3 id="Test-amp-Caution"><a href="#Test-amp-Caution" class="headerlink" title="Test &amp; Caution"></a>Test &amp; Caution</h3><ol>
+<li><p>Think of <strong>boundary values</strong> while designing programs.</p>
+<ul>
+<li><code>current_user.confirmed</code></li>
+<li><code>@login_required</code></li>
+<li><code>self.email.lower()</code> ensure that the string is lowercase</li>
+<li><code>verify_password(email, password):</code> before loading user from DB to check pwd, <code>email</code> must be checked first not to be <code>&#39;&#39;</code></li>
+</ul>
+</li>
+<li><p>Crucial cases where proxies provided by Flask like<code>current_app</code> can’t fake:</p>
+<ul>
+<li><code>current_app</code> can’t fake its type as the actual object type</li>
+<li>when sending <em>Signals</em> or passing data <em>to a background thread</em></li>
+</ul>
+<p> best practice:</p>
+ <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">app = current_app._get_current_object()</span><br><span class="line">my_signal.send(app)</span><br></pre></td></tr></table></figure>
+</li>
+<li><pre><code class="python"> from sqlalchemy.exc import IntegrityError
+ try:
+     db.session.commit()
+ except IntegrityError:
+     db.session.rollback()
+</code></pre>
+</li>
+<li><p><code>form.body.data = post.body</code>; how to render page according to attributes of the user;  Context processors make variables available to all templates during rendering</p>
+</li>
+<li><p><code>from app.exceptions import</code></p>
+</li>
+</ol>
+<h3 id="The-power-of-Flask-Shell"><a href="#The-power-of-Flask-Shell" class="headerlink" title="The power of Flask Shell"></a>The power of Flask Shell</h3><p>Page 214, static method <code>add_self_follows()</code> that manipulates existed <em>rows</em></p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/21/VimCheatsheet/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/07/21/VimCheatsheet/" class="post-title-link" itemprop="url">Vim Cheat Sheet</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-07-21 22:54:00" itemprop="dateCreated datePublished" datetime="2018-07-21T22:54:00+00:00">2018-07-21</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">技术笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>最近用上了 WSL，巨硬居然在 Win 上允许使用 Linux了<br>修改文件不可避免似乎就要学会 Vim 啊，后来才知道自带 nano</p>
+</blockquote>
+<h2 id="Motion"><a href="#Motion" class="headerlink" title="Motion"></a>Motion</h2><p><code>h</code>, <code>l</code>: move left and right</p>
+<p><code>j</code>, <code>k</code>: move down and up</p>
+<p><code>w</code>: next <strong>beginning</strong> of word</p>
+<p><code>e</code>, <code>ge</code>: <strong>current, last</strong> <strong>end</strong> of word</p>
+<p><code>b</code>, <code>B</code>: <strong>previous beginning</strong> of word and <strong>WORD</strong></p>
+<p><code>0</code>, <code>^</code>: to the <strong>beginning of line</strong></p>
+<p><code>$</code>: to the <strong>end</strong> of line</p>
+<p><code>gg</code>, <code>G</code>: <strong>beginning</strong>, <strong>end</strong> of <strong>file</strong> </p>
+<p><code>nG</code>: line n; <code>:set nu</code> to turn on line num</p>
+<p><code>f&lt;char&gt;</code>, <code>F&lt;char&gt;</code>: <strong>search</strong> forward, backward</p>
+<h2 id="Edit"><a href="#Edit" class="headerlink" title="Edit"></a>Edit</h2><p><code>cw</code>: <strong>C</strong>hange current word that the cursor’s at</p>
+<p><code>cc</code>: <em>delete</em> the whole line and enter INSERT mode</p>
+<p><code>C</code>: delete till the <strong>end of line</strong>, enter INSERT mode</p>
+<p><code>r&lt;char&gt;</code>: <strong>R</strong>eplace cursor with &lt;char&gt;</p>
+<p><code>R</code>: replace successively, with each&lt;char&gt;  typed; <code>Esc</code> to exit</p>
+<p><code>un</code> <strong>U</strong>ndo for <strong>n</strong> times</p>
+<p><code>U</code> undo all changes in current <strong>line</strong></p>
+<p><code>Ctrl</code> + <code>r</code>: redo</p>
+<p><code>&gt;&gt;</code>, <code>&lt;&lt;</code>: tab in NORMAL mode</p>
+<p><code>:set shiftwidth?</code></p>
+<p><code>:ce</code> <strong>center</strong> the line</p>
+<p><code>:ri</code>, <code>:le</code>: to the <strong>right</strong>, <strong>left</strong></p>
+<h3 id="Search"><a href="#Search" class="headerlink" title="Search"></a>Search</h3><p><code>/</code>, <code>?</code>: search <strong>next</strong>, <strong>last</strong></p>
+<p><code>n</code>, <code>N</code>: <strong>next</strong>, <strong>last</strong> result</p>
+<h2 id="Insert"><a href="#Insert" class="headerlink" title="Insert"></a>Insert</h2><p><code>i</code>, <code>a</code>: insert <strong>at</strong> and <strong>append</strong> cursor position</p>
+<p><code>I</code>, <code>A</code>: insert at the <strong>beginning</strong> and the <strong>end</strong> of current line</p>
+<p><code>o</code>, <code>O</code>: <strong>O</strong>pen a new line <strong>after</strong> and <strong>before</strong> current line, and enter INSERT mode</p>
+<h2 id="Copy-Paste-and-Cut"><a href="#Copy-Paste-and-Cut" class="headerlink" title="Copy, Paste, and Cut"></a>Copy, Paste, and Cut</h2><p><code>yy</code>: <strong>Y</strong>ank(copy) <strong>whole line</strong></p>
+<p><code>yw</code>, <code>ynw</code>: copy one <strong>word</strong>, <strong>n</strong> words</p>
+<p><code>y^</code>, <code>y0</code>: copy till the <strong>beginning of line</strong>, current cursor <strong>not</strong> included</p>
+<p><code>y$</code>: copy till the <strong>end</strong>, char where the cursor’s at <strong>included</strong></p>
+<p><code>yG</code>, <code>y1G</code>: copy till <strong>end</strong>, <strong>beginning</strong> of <strong>file</strong></p>
+<p><code>p</code>: (lowercase) paste on <strong>next line</strong></p>
+<p><code>P</code>: (uppercase) paste <strong>last line</strong></p>
+<p><code>dd</code>: cut</p>
+<p><code>ddp</code>: <strong>swap</strong> this and <strong>next</strong> line</p>
+<h2 id="Delete"><a href="#Delete" class="headerlink" title="Delete"></a>Delete</h2><p><code>x</code>: <strong>D</strong>elete char <strong>under</strong> cursor</p>
+<p><code>X</code>: delete char <strong>before</strong> cursor</p>
+<p><code>dd</code>: delete the entire line</p>
+<p><code>dw</code>: delete word <em>after</em> cursor; <code>w</code> + <code>dw</code></p>
+<p><code>D</code>: delete till the end of <strong>line</strong></p>
+<p><code>d^</code>: delete till the beginning</p>
+<p><code>d1G</code>, <code>dG</code>: delete till the <strong>beginning</strong> and <strong>end</strong> of <strong>file</strong></p>
+<h2 id="Repeat"><a href="#Repeat" class="headerlink" title="Repeat"></a>Repeat</h2><p><code>.</code>: repeat last command (under NORMAL mode)</p>
+<p><code>N&lt;command&gt;</code>: e.g. 2dd, 10x</p>
+<p><code>dnw</code>: delete a word <strong>n</strong> times </p>
+<h2 id="Exit"><a href="#Exit" class="headerlink" title="Exit"></a>Exit</h2><p><code>:q</code>: quit</p>
+<p><code>:wq</code>, <code>:x</code>: save and exit</p>
+<p><code>:wq!</code>: <strong>force</strong> to save and quit</p>
+<p><code>:w</code>, <code>:saveas</code></p>
+<p><code>Shift</code> + <code>zz</code>: under NORMAL mode, save and exit</p>
+
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="Jimmy Xu">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Rust Shrugged">
+      <meta itemprop="description" content="Tu ne cede malis, sed contra audentior ito">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="undefined | Rust Shrugged">
+      <meta itemprop="description" content="">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2018/07/05/%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%8C%87%E5%8D%97/" class="post-title-link" itemprop="url">程序员练级指南</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+
+      <time title="Created: 2018-07-05 23:31:00" itemprop="dateCreated datePublished" datetime="2018-07-05T23:31:00+00:00">2018-07-05</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <blockquote>
+<p>终于在极客时间上剁手了<br>这篇是耗子叔的那几篇入门指导的浓缩</p>
+</blockquote>
+<p>[TOC]</p>
+<h1 id="入门篇"><a href="#入门篇" class="headerlink" title="入门篇"></a>入门篇</h1><h2 id="零基础启蒙"><a href="#零基础启蒙" class="headerlink" title="零基础启蒙"></a>零基础启蒙</h2><h3 id="两份入门教程（Python-amp-JS）"><a href="#两份入门教程（Python-amp-JS）" class="headerlink" title="两份入门教程（Python &amp; JS）"></a>两份入门教程（Python &amp; JS）</h3><p>都是从零开始</p>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/5338024/">与孩子一起学编程</a>，六、二十章为 GUI</li>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Learn/Getting_started_with_the_web">MDN Web 开发入门</a>，教程带你建立一个网站</li>
+</ul>
+<h3 id="Python-与-JavaScript-入门语言"><a href="#Python-与-JavaScript-入门语言" class="headerlink" title="Python 与 JavaScript 入门语言"></a>Python 与 JavaScript 入门语言</h3><h4 id="Python-书籍"><a href="#Python-书籍" class="headerlink" title="Python 书籍"></a>Python 书籍</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26836700/">Python 编程快速上手</a>，控制鼠标、破解 PDF</li>
+<li><a target="_blank" rel="noopener" href="https://book.douban.com/subject/26829016/">Python 编程：从入门到实践</a>，“有 Web 项目、代码部署内容”，Django 学习笔记网站，Heroku 部署，若时间有限，这一本</li>
+</ul>
+<h4 id="JavaScript-在线教程"><a href="#JavaScript-在线教程" class="headerlink" title="JavaScript 在线教程"></a>JavaScript 在线教程</h4><ul>
+<li><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript">MDN JS 教程</a>，“从初级到中级再到高级，十分全面”</li>
+<li><a target="_blank" rel="noopener" href="http://www.w3school.com.cn/js/">W3School JS 教程，</a>偏 Web 方向</li>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/001434446689867b27157e896e74d51a89c25cc8b43bdb3000">廖雪峰 JS 全栈教程</a>，偏应用偏 Web，包括 Node.js</li>
+</ul>
+<h3 id="操作系统入门-Linux"><a href="#操作系统入门-Linux" class="headerlink" title="操作系统入门 Linux"></a>操作系统入门 Linux</h3><p><a target="_blank" rel="noopener" href="https://www.w3cschool.cn/linux/">W3CSchool Linux 教程</a></p>
+<h3 id="Microsoft-Visual-Studio-Code"><a href="#Microsoft-Visual-Studio-Code" class="headerlink" title="(Microsoft) Visual Studio Code"></a>(Microsoft) Visual Studio Code</h3><p><a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/jeasonstudio/vscode-cn-doc/details">中文手册</a>，不一定非要。吸引我：在终端工具内打印 Debug 信息</p>
+<h3 id="Web-编程入门"><a href="#Web-编程入门" class="headerlink" title="Web 编程入门"></a>Web 编程入门</h3><h4 id="前端基础"><a href="#前端基础" class="headerlink" title="前端基础"></a>前端基础</h4><ul>
+<li>MDN CSS 文档 与 HTML 文档，参考而不是记忆</li>
+<li>JS DOM 与动态网页 <a target="_blank" rel="noopener" href="https://www.w3schools.com/js/js_htmldom.asp">W3Schools 的 JavaScript HTML DOM 教程</a></li>
+<li>要点：<ul>
+<li>HTML 基本语法</li>
+<li>CSS 如何选中 HTML 元素，应用一些基本样式</li>
+<li>用 Firefox + Firebug 或 Chrome 查看炫酷网页结构</li>
+</ul>
+</li>
+</ul>
+<h4 id="后端（PHP）"><a href="#后端（PHP）" class="headerlink" title="后端（PHP）"></a>后端（PHP）</h4><h3 id="实践项目"><a href="#实践项目" class="headerlink" title="实践项目"></a>实践项目</h3><p>极简 Blog 系统，或是 BBS 系统，支持如下功能：</p>
+<ul>
+<li>用户登录和注册，无密码找回</li>
+<li>用户发帖，仅支持纯文本</li>
+<li>评论，纯文本</li>
+</ul>
+<p>从前端到后端，从 HTML&#x2F;CSS&#x2F;JS 到 Python，再到数据库</p>
+<p>注意的技术点：</p>
+<ul>
+<li>用户登录密码不保存为明文</li>
+<li>用户登录后，可对自己帖子 “重新编辑”、”删除“，但无权修改其它用户</li>
+<li>数据库设计。三张表：用户表，文章表，评论表，<strong>他们之间的关联</strong></li>
+</ul>
+<h2 id="正式入门"><a href="#正式入门" class="headerlink" title="正式入门"></a>正式入门</h2><h3 id="编程技能"><a href="#编程技能" class="headerlink" title="编程技能"></a>编程技能</h3><p><a target="_blank" rel="noopener" href="http://blog.thefirehoseproject.com/posts/learn-to-code-and-be-self-reliant/">The Key to Accelerating Your Coding Skills</a>，文章</p>
+<ul>
+<li>编程技巧：Code Complete</li>
+<li>编程语言：学习 Java</li>
+<li>操作系统：鸟哥的 Linux 私房菜</li>
+<li>网络协议：系统了解 HTTP 协议，<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP">MDN HTTP 文档</a>，关键点：<ul>
+<li>HTTP 头、HTTP 请求方法、HTTP 返回码</li>
+<li>Cookie，缓存，会话，连接管理</li>
+</ul>
+</li>
+<li>数据库设计：慕课网在线课程；推荐学习 MySQL</li>
+<li>前端：jQuery，Bootstrap；Ajax 请求后端 API 接口方式；JS Promise 模式，阮一峰教程</li>
+<li>字符编码</li>
+</ul>
+<h3 id="编程工具"><a href="#编程工具" class="headerlink" title="编程工具"></a>编程工具</h3><ul>
+<li><strong>IDE</strong>：Eclipse，<a target="_blank" rel="noopener" href="https://www.imooc.com/learn/924">Intellij IDEA</a>，VS Code</li>
+<li><strong>版本管理工具</strong>：Git 使用资料</li>
+<li><strong>调试前端</strong>：用 Chrome 调试，资料</li>
+<li><strong>数据库设计工具</strong>：MySQL WorkBench，资料</li>
+</ul>
+<h3 id="实践项目-1"><a href="#实践项目-1" class="headerlink" title="实践项目"></a>实践项目</h3><p>投票系统</p>
+<p>业务需求：技术需求：</p>
+<h3 id="入门篇小结"><a href="#入门篇小结" class="headerlink" title="入门篇小结"></a>入门篇小结</h3><ul>
+<li>1 - 2 年时间</li>
+<li>不用精通，能独立做出实践项目即是真正入门（耗子叔对入门的定义）</li>
+<li>年薪 20万</li>
+</ul>
+<h1 id="修养篇"><a href="#修养篇" class="headerlink" title="修养篇"></a>修养篇</h1><h2 id="程序员修养"><a href="#程序员修养" class="headerlink" title="程序员修养"></a>程序员修养</h2><p>Quora 帖子</p>
+<h3 id="附录：编程规范"><a href="#附录：编程规范" class="headerlink" title="附录：编程规范"></a>附录：编程规范</h3><h1 id="专业基础篇"><a href="#专业基础篇" class="headerlink" title="专业基础篇"></a>专业基础篇</h1><h2 id="编程语言"><a href="#编程语言" class="headerlink" title="编程语言"></a>编程语言</h2><ul>
+<li>C 坑</li>
+<li>C ++</li>
+<li>Java<ul>
+<li>C –&gt; C ++ –&gt; Java</li>
+</ul>
+</li>
+<li>Go</li>
+</ul>
+<h2 id="理论学科"><a href="#理论学科" class="headerlink" title="理论学科"></a>理论学科</h2><p>”计算机学科最精华的知识，人类智慧的精华“</p>
+<h3 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h3><ul>
+<li>三本书推荐，先后顺序</li>
+<li>LeetCode 使用</li>
+<li>“如果想要有科班生理论基础”：<ul>
+<li>数据结构与算法分析</li>
+</ul>
+</li>
+<li>小结</li>
+</ul>
+<h2 id="系统知识"><a href="#系统知识" class="headerlink" title="系统知识"></a>系统知识</h2><p>Wireshark 数据包分析实战</p>
+<h3 id="系统知识小程序"><a href="#系统知识小程序" class="headerlink" title="系统知识小程序"></a>系统知识小程序</h3><h3 id="实践项目-2"><a href="#实践项目-2" class="headerlink" title="实践项目"></a>实践项目</h3><ul>
+<li>实现一个 telnet 版本的聊天服务器<ul>
+<li><code>telnet ip:port</code>的方式连接服务器</li>
+<li><strong>新连接</strong>需要用户名和密码登录，无则注册</li>
+<li><em>然后</em>可以选择一个聊天室加入聊天</li>
+<li><strong>管理员</strong>有权创建删除聊天室，<strong>普通人员</strong>只有 加入、退出、查询、聊天室</li>
+<li>聊天室人数限制；每个人发出来的其他人都能看到</li>
+</ul>
+</li>
+<li>简单的 HTTP 服务器<ul>
+<li>解释浏览器传来的 HTTP 协议，只处理 URL path</li>
+<li><em>然后</em>列出所代理的目录</li>
+<li>浏览器上可以浏览目录里的文件，和下级目录</li>
+<li><em>点击文件</em>，则文件传给浏览器（浏览器可自动显示图片、PDF、等）</li>
+<li><em>点击子目录</em>，则进入子目录，并列出文件</li>
+</ul>
+</li>
+<li>生产者 &#x2F; 消费者消息队列服务</li>
+</ul>
+<h3 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h3><ul>
+<li>还有热情与成就感：恭喜，超过了绝大多数人；50 万</li>
+<li>术业有专攻，建议的方向</li>
+</ul>
+<h1 id="软件设计篇"><a href="#软件设计篇" class="headerlink" title="软件设计篇"></a>软件设计篇</h1><h2 id="软件设计"><a href="#软件设计" class="headerlink" title="软件设计"></a>软件设计</h2><h1 id="高手成长篇"><a href="#高手成长篇" class="headerlink" title="高手成长篇"></a>高手成长篇</h1><h2 id="系统底层知识"><a href="#系统底层知识" class="headerlink" title="系统底层知识"></a>系统底层知识</h2>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" title="Previous page" aria-label="Previous page" href="/page/3/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" title="Next page" aria-label="Next page" href="/page/5/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Jimmy Xu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up fa-lg"></i>
+    <span>0%</span>
+  </div>
+  <div class="reading-progress-bar"></div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
