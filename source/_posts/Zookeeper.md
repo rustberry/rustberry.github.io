@@ -2,6 +2,7 @@
 title: ZooKeeper：分布式过程协同技术详解 -- 读书笔记
 categories:
 - ZooKeeper
+date: 2019-9-21
 ---
 
 # ZooKeeper：分布式过程协同技术详解 -- 读书笔记

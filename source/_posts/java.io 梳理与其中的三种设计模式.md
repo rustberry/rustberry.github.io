@@ -2,6 +2,7 @@
 title: java.io 梳理与其中的三种设计模式
 categories:
 - Design Patterns
+date: 2019-8-2
 ---
 
 # java.io 梳理与其中的三种设计模式

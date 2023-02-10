@@ -5,6 +5,7 @@ categories:
 tags:
 - Generics
 - 泛型
+date: 2019-7-24
 ---
 
 ## 可变长泛型参数与堆污染
